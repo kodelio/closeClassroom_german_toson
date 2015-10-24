@@ -2,6 +2,7 @@
 	session_start(); //On initialise la session
 
 	include('controllers/MainController.class.php');
+
 ?>
 
 <!DOCTYPE html>
