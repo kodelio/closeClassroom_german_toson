@@ -1,53 +1,53 @@
 <?php
 
 	// views
-	include('views/NavBarView.class.php');
-	include('views/LoginView.class.php');
-	include('views/ProfileView.class.php');
-	include('views/UploadView.class.php');
-	include('views/PracticeView.class.php');
+include('views/NavBarView.class.php');
+include('views/LoginView.class.php');
+include('views/ProfileView.class.php');
+include('views/UploadView.class.php');
+include('views/PracticeView.class.php');
 
 	// models
-	include('models/Utilisateur.class.php');
+include('models/Utilisateur.class.php');
 
 	//controllers
-	include('controllers/UploadController.class.php');
+include('controllers/UploadController.class.php');
 
-	class MainControleur {
+class MainControleur {
 
-		function __construct() {
+	function __construct() {
 
-			if(isset($_COOKIE["moncookie"])) {
-				$username_cookie = substr($_COOKIE["moncookie"], 0, strrpos($_COOKIE["moncookie"], " "));
-				$password_cookie = substr($_COOKIE["moncookie"], strrpos($_COOKIE["moncookie"], " ")+1);
-				$login = new Utilisateur($username_cookie, $password_cookie);
-			}
+		if(isset($_COOKIE["moncookie"])) {
+			$username_cookie = substr($_COOKIE["moncookie"], 0, strrpos($_COOKIE["moncookie"], " "));
+			$password_cookie = substr($_COOKIE["moncookie"], strrpos($_COOKIE["moncookie"], " ")+1);
+			$login = new Utilisateur($username_cookie, $password_cookie);
+		}
 
-			navBar();
+		$this->navBar();
 
-			if (isset($_GET['page']))
+		if (isset($_GET['page']))
+		{
+			switch ($_GET['page'])
 			{
-				switch ($_GET['page'])
-				{
-					case 'login':
-						$this->login();
-						break;
+				case 'login':
+				$this->login();
+				break;
 
-					case 'logout':
-						$this->logout();
-						break;
+				case 'logout':
+				$this->logout();
+				break;
 
-					case 'practice':
-						$this->practice();
-						break;
+				case 'practice':
+				$this->practice();
+				break;
 
-					case 'upload':
-						$this->upload();
-						break;
+				case 'upload':
+				$this->upload();
+				break;
 
 					default: //404
 
-						break;
+					break;
 				}
 			}
 			else
@@ -85,7 +85,7 @@
 
 		function login(){
 			$login = new Utilisateur($_GET['username'],$_GET['password']);
-			if (isLogged())
+			if ($this->isLogged())
 			{
 				$_SESSION['isLogged'] = false;
 				$loginView = new loginView();
@@ -111,7 +111,7 @@
 		}
 
 		function practice(){
-			if (isLogged())
+			if ($this->isLogged())
 			{
 				$_SESSION['isLogged'] = false;
 				$loginView = new loginView();
@@ -126,7 +126,7 @@
 		}
 
 		function upload(){
-			if (isLogged())
+			if ($this->isLogged())
 			{
 				$_SESSION['isLogged'] = false;
 				$loginView = new loginView();
@@ -146,7 +146,7 @@
 
 
 		function newLogin(){
-			if (isLogged())
+			if ($this->isLogged())
 			{
 				$_SESSION['isLogged'] = false;
 				$loginView = new loginView();
@@ -160,4 +160,4 @@
 		}
 		
 	}
-?>
+	?>
