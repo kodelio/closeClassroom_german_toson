@@ -13,54 +13,64 @@
 	//controllers
 	include('controllers/UploadController.class.php');
 
-	class MainControleur {
+	class MainController {
 
 		function __construct() {
-
+			
+			//charge la session si cookie présent
 			if(isset($_COOKIE["moncookie"])) {
 				$username_cookie = substr($_COOKIE["moncookie"], 0, strrpos($_COOKIE["moncookie"], " "));
 				$password_cookie = substr($_COOKIE["moncookie"], strrpos($_COOKIE["moncookie"], " ")+1);
 				$login = new Utilisateur($username_cookie, $password_cookie);
 			}
 
+			//insertion de la navbar
 			navBar();
 
-			if (isset($_GET['page']))
+			//choix de la page
+			if ($this->isLogged())
 			{
-				switch ($_GET['page'])
+				if (isset($_GET['page']))
 				{
-					case 'login':
-						$this->login();
-						break;
+					switch ($_GET['page'])
+					{
+						case 'login':
+							$this->login();
+							break;
 
-					case 'logout':
-						$this->logout();
-						break;
+						case 'logout':
+							$this->logout();
+							break;
 
-					case 'practice':
-						$this->practice();
-						break;
+						case 'practice':
+							$this->practice();
+							break;
 
-					case 'upload':
-						$this->upload();
-						break;
+						case 'upload':
+							$this->upload();
+							break;
 
-					default: //404
-
-						break;
+						default: //404
+							break;
+					}
 				}
+				else
+				{
+					$this->profile();
+				}			
 			}
 			else
 			{
-				$this->newLogin();
+				$this->login();
 			}
 			
-			
+			//popup d'erreur
 			if(isset($_SESSION['error']) AND $_SESSION['error'] != null AND isset($_SESSION['display_msg_error']) AND $_SESSION['display_msg_error'])
 			{
 				include('include/ErrorModal.php');
 				$_SESSION['display_msg_error'] = false;
 			}
+			//popup de succès
 			if(isset($_SESSION['success']) AND $_SESSION['success'] != null AND isset($_SESSION['display_msg_success']) AND $_SESSION['display_msg_success'])
 			{
 				include('include/SuccessModal.php');
@@ -68,24 +78,28 @@
 			}
 		}
 		
+		//insertion de la navbar
+		function navBar() {
+			$navBarView = new navBarView();
+			echo $navBarView->getView();
+		}
+		
+		//teste si l'utilisateur est connecté
 		function isLogged() {
-			if (!isset($_SESSION['isLogged']) OR (isset($_SESSION['isLogged']) AND $_SESSION['isLogged'] == false))
+			if (isset($_SESSION['isLogged']) AND $_SESSION['isLogged'] == true)
 			{
 				return true;
 			}
-			else {
+			else
+			{
 				return false;
 			}
 		}
 
-		function navBar(){
-			$navBarView = new navBarView();
-			echo $navBarView->getView();
-		}
-
-		function login(){
+		//charge la page de login
+		function login() {
 			$login = new Utilisateur($_GET['username'],$_GET['password']);
-			if (isLogged())
+			if (!$this->isLogged())
 			{
 				$_SESSION['isLogged'] = false;
 				$loginView = new loginView();
@@ -98,7 +112,8 @@
 			}
 		}
 
-		function logout(){
+		//charge la page de déconnection
+		function logout() {
 			if (isset($_COOKIE['moncookie']))
 			{
 				unset($_COOKIE['moncookie']);
@@ -110,53 +125,28 @@
 			echo $loginView->getView();
 		}
 
-		function practice(){
-			if (isLogged())
-			{
-				$_SESSION['isLogged'] = false;
-				$loginView = new loginView();
-				echo $loginView->getView();
-			}
-			else
-			{
-				$practiceView = new PracticeView();
-				echo $practiceView->getView();
-			}
+		//charge la page practice
+		function practice() {
+			$practiceView = new PracticeView();
+			echo $practiceView->getView();
 
 		}
 
-		function upload(){
-			if (isLogged())
+		//charge la page upload
+		function upload() {
+			if (isset($_FILES['fichierUp']['name']) AND $_FILES['fichierUp']['name'] != null)
 			{
-				$_SESSION['isLogged'] = false;
-				$loginView = new loginView();
-				echo $loginView->getView();
+				$uploader = UploadController::Instance();
+				$uploader->UploadFile();
 			}
-			else
-			{
-				if (isset($_FILES['fichierUp']['name']) AND $_FILES['fichierUp']['name'] != null)
-				{
-					$uploader = UploadController::Instance();
-					$uploader->UploadFile();
-				}
-				$uploadView = new UploadView();
-				echo $uploadView->getView();
-			}
+			$uploadView = new UploadView();
+			echo $uploadView->getView();
 		}
 
-
-		function newLogin(){
-			if (isLogged())
-			{
-				$_SESSION['isLogged'] = false;
-				$loginView = new loginView();
-				echo $loginView->getView();
-			}
-			else
-			{
-				$profileView = new ProfileView();
-				echo $profileView->getView();
-			}
+		//charge la page profile
+		function profile() {
+			$profileView = new ProfileView();
+			echo $profileView->getView();
 		}
 		
 	}

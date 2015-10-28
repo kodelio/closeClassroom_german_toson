@@ -18,7 +18,7 @@
 	<body>
 		<?php
 
-			$controller = new MainControleur();
+			$controller = new MainController();
 
 		?>
 	</body>
