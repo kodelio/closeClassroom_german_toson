@@ -19,7 +19,7 @@ include('controllers/UploadController.class.php');
 		function __construct() {
 			
 			//charge la session si cookie présent
-			if(isset($_COOKIE["moncookie"])) {
+			if(!$this->isLogged() && isset($_COOKIE["moncookie"])) {
 				$username_cookie = substr($_COOKIE["moncookie"], 0, strrpos($_COOKIE["moncookie"], " "));
 				$password_cookie = substr($_COOKIE["moncookie"], strrpos($_COOKIE["moncookie"], " ")+1);
 				$login = new Utilisateur($username_cookie, $password_cookie);
