@@ -13,11 +13,12 @@ include('models/Utilisateur.class.php');
 	//controllers
 include('controllers/UploadController.class.php');
 
+include('bddManager/UtilisateurDAO.php');
 
-	class MainController {
+class MainController {
 
-		function __construct() {
-			
+	function __construct() {
+
 			//charge la session si cookie présent
 			if(!$this->isLogged() && isset($_COOKIE["moncookie"])) {
 				$username_cookie = substr($_COOKIE["moncookie"], 0, strrpos($_COOKIE["moncookie"], " "));
@@ -26,33 +27,33 @@ include('controllers/UploadController.class.php');
 			}
 
 			//insertion de la navbar
-			$this->navBar();
+		$this->navBar();
 
 			//choix de la page
-			if ($this->isLogged())
+		if ($this->isLogged())
+		{
+			if (isset($_GET['page']))
 			{
-				if (isset($_GET['page']))
+				switch ($_GET['page'])
 				{
-					switch ($_GET['page'])
-					{
-						case 'login':
-							$this->login();
-							break;
+					case 'login':
+					$this->login();
+					break;
 
-						case 'logout':
-							$this->logout();
-							break;
+					case 'logout':
+					$this->logout();
+					break;
 
-						case 'practice':
-							$this->practice();
-							break;
+					case 'practice':
+					$this->practice();
+					break;
 
-						case 'upload':
-							$this->upload();
-							break;
+					case 'upload':
+					$this->upload();
+					break;
 
 						default: //404
-							break;
+						break;
 					}
 				}
 				else
@@ -99,7 +100,10 @@ include('controllers/UploadController.class.php');
 
 		//charge la page de login
 		function login() {
-			$login = new Utilisateur($_GET['username'],$_GET['password']);
+			$managerUser = new UtilisateurDAO();
+			$managerUser->getUserByLoginAndPassword($_GET['username'],$_GET['password']);
+
+			//$login = new Utilisateur($_GET['username'],$_GET['password']);
 
 			if (!$this->isLogged())
 			{
