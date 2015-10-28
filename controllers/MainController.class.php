@@ -13,7 +13,7 @@ include('models/Utilisateur.class.php');
 	//controllers
 include('controllers/UploadController.class.php');
 
-<<<<<<< HEAD
+
 	class MainController {
 
 		function __construct() {
@@ -26,7 +26,7 @@ include('controllers/UploadController.class.php');
 			}
 
 			//insertion de la navbar
-			navBar();
+			$this->navBar();
 
 			//choix de la page
 			if ($this->isLogged())
@@ -54,43 +54,6 @@ include('controllers/UploadController.class.php');
 						default: //404
 							break;
 					}
-=======
-class MainControleur {
-
-	function __construct() {
-
-		if(isset($_COOKIE["moncookie"])) {
-			$username_cookie = substr($_COOKIE["moncookie"], 0, strrpos($_COOKIE["moncookie"], " "));
-			$password_cookie = substr($_COOKIE["moncookie"], strrpos($_COOKIE["moncookie"], " ")+1);
-			$login = new Utilisateur($username_cookie, $password_cookie);
-		}
-
-		$this->navBar();
-
-		if (isset($_GET['page']))
-		{
-			switch ($_GET['page'])
-			{
-				case 'login':
-				$this->login();
-				break;
-
-				case 'logout':
-				$this->logout();
-				break;
-
-				case 'practice':
-				$this->practice();
-				break;
-
-				case 'upload':
-				$this->upload();
-				break;
-
-					default: //404
-
-					break;
->>>>>>> 4f09a5b526a3ab55b0731056eb357c7fb55b5d7d
 				}
 				else
 				{
@@ -137,11 +100,8 @@ class MainControleur {
 		//charge la page de login
 		function login() {
 			$login = new Utilisateur($_GET['username'],$_GET['password']);
-<<<<<<< HEAD
+
 			if (!$this->isLogged())
-=======
-			if ($this->isLogged())
->>>>>>> 4f09a5b526a3ab55b0731056eb357c7fb55b5d7d
 			{
 				$_SESSION['isLogged'] = false;
 				$loginView = new loginView();
@@ -167,42 +127,15 @@ class MainControleur {
 			echo $loginView->getView();
 		}
 
-<<<<<<< HEAD
 		//charge la page practice
 		function practice() {
 			$practiceView = new PracticeView();
 			echo $practiceView->getView();
-
 		}
 
 		//charge la page upload
 		function upload() {
 			if (isset($_FILES['fichierUp']['name']) AND $_FILES['fichierUp']['name'] != null)
-=======
-		function practice(){
-			if ($this->isLogged())
-			{
-				$_SESSION['isLogged'] = false;
-				$loginView = new loginView();
-				echo $loginView->getView();
-			}
-			else
-			{
-				$practiceView = new PracticeView();
-				echo $practiceView->getView();
-			}
-
-		}
-
-		function upload(){
-			if ($this->isLogged())
-			{
-				$_SESSION['isLogged'] = false;
-				$loginView = new loginView();
-				echo $loginView->getView();
-			}
-			else
->>>>>>> 4f09a5b526a3ab55b0731056eb357c7fb55b5d7d
 			{
 				$uploader = UploadController::Instance();
 				$uploader->UploadFile();
@@ -211,27 +144,10 @@ class MainControleur {
 			echo $uploadView->getView();
 		}
 
-<<<<<<< HEAD
 		//charge la page profile
 		function profile() {
 			$profileView = new ProfileView();
 			echo $profileView->getView();
-=======
-
-		function newLogin(){
-			if ($this->isLogged())
-			{
-				$_SESSION['isLogged'] = false;
-				$loginView = new loginView();
-				echo $loginView->getView();
-			}
-			else
-			{
-				$profileView = new ProfileView();
-				echo $profileView->getView();
-			}
->>>>>>> 4f09a5b526a3ab55b0731056eb357c7fb55b5d7d
 		}
-		
 	}
 	?>
