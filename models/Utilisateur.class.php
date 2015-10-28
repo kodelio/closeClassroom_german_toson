@@ -1,24 +1,18 @@
 <?php
+
+include('include/connect.php');
+
 class Utilisateur {
 	private $_login;
 	private $_password;
 
 
 	function __construct($login, $password) {
-
-		if($bdd = mysqli_connect('localhost', 'root', '', 'german_toson_webserv'))
-		{
-		}
-		else
-		{
-			echo 'Erreur';
-		}
-
 		if(!empty($login) AND !empty($password)) // On teste si les champs sont vides
 		{
 			try
 			{
-				$resultat = mysqli_query($bdd, 'SELECT * FROM users WHERE login=\'' .$login. '\'');
+				$resultat = mysqli_query($_SESSION['bdd'], 'SELECT * FROM users WHERE login=\'' .$login. '\'');
 				$log = mysqli_fetch_assoc($resultat);
 			}
 
