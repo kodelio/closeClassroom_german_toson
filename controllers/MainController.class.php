@@ -13,97 +13,6 @@
 	//controllers
 	include('controllers/UploadController.class.php');
 
-	function isLogged() {
-		if (!isset($_SESSION['isLogged']) OR (isset($_SESSION['isLogged']) AND $_SESSION['isLogged'] == false))
-		{
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-
-	function navBar(){
-		$navBarView = new navBarView();
-		echo $navBarView->getView();
-	}
-
-	function login(){
-		$login = new Utilisateur($_GET['username'],$_GET['password']);
-		if (isLogged())
-		{
-			$_SESSION['isLogged'] = false;
-			$loginView = new loginView();
-			echo $loginView->getView();
-		}
-		else
-		{
-			$profileView = new ProfileView();
-			echo $profileView->getView();
-		}
-	}
-
-	function logout(){
-		if (isset($_COOKIE['moncookie']))
-		{
-			unset($_COOKIE['moncookie']);
-			setcookie('moncookie', '', time() - 3600, '/');
-		}
-		session_unset();
-		session_destroy();
-		$loginView = new loginView();
-		echo $loginView->getView();
-	}
-
-	function practice(){
-		if (isLogged())
-		{
-			$_SESSION['isLogged'] = false;
-			$loginView = new loginView();
-			echo $loginView->getView();
-		}
-		else
-		{
-			$practiceView = new PracticeView();
-			echo $practiceView->getView();
-		}
-
-	}
-
-	function upload(){
-		if (isLogged())
-		{
-			$_SESSION['isLogged'] = false;
-			$loginView = new loginView();
-			echo $loginView->getView();
-		}
-		else
-		{
-			if (isset($_FILES['fichierUp']['name']) AND $_FILES['fichierUp']['name'] != null)
-			{
-				$uploader = UploadController::Instance();
-				$uploader->UploadFile();
-			}
-			$uploadView = new UploadView();
-			echo $uploadView->getView();
-		}
-	}
-
-
-	function newLogin(){
-		if (isLogged())
-		{
-			$_SESSION['isLogged'] = false;
-			$loginView = new loginView();
-			echo $loginView->getView();
-		}
-		else
-		{
-			$profileView = new ProfileView();
-			echo $profileView->getView();
-		}
-	}
-
 	class MainControleur {
 
 		function __construct() {
@@ -121,19 +30,19 @@
 				switch ($_GET['page'])
 				{
 					case 'login':
-						login();
+						$this->login();
 						break;
 
 					case 'logout':
-						logout();
+						$this->logout();
 						break;
 
 					case 'practice':
-						practice();
+						$this->practice();
 						break;
 
 					case 'upload':
-						upload();
+						$this->upload();
 						break;
 
 					default: //404
@@ -143,9 +52,10 @@
 			}
 			else
 			{
-				newLogin();
+				$this->newLogin();
 			}
-
+			
+			
 			if(isset($_SESSION['error']) AND $_SESSION['error'] != null AND isset($_SESSION['display_msg_error']) AND $_SESSION['display_msg_error'])
 			{
 				include('include/ErrorModal.php');
@@ -157,5 +67,97 @@
 				$_SESSION['display_msg_success'] = false;
 			}
 		}
+		
+		function isLogged() {
+			if (!isset($_SESSION['isLogged']) OR (isset($_SESSION['isLogged']) AND $_SESSION['isLogged'] == false))
+			{
+				return true;
+			}
+			else {
+				return false;
+			}
+		}
+
+		function navBar(){
+			$navBarView = new navBarView();
+			echo $navBarView->getView();
+		}
+
+		function login(){
+			$login = new Utilisateur($_GET['username'],$_GET['password']);
+			if (isLogged())
+			{
+				$_SESSION['isLogged'] = false;
+				$loginView = new loginView();
+				echo $loginView->getView();
+			}
+			else
+			{
+				$profileView = new ProfileView();
+				echo $profileView->getView();
+			}
+		}
+
+		function logout(){
+			if (isset($_COOKIE['moncookie']))
+			{
+				unset($_COOKIE['moncookie']);
+				setcookie('moncookie', '', time() - 3600, '/');
+			}
+			session_unset();
+			session_destroy();
+			$loginView = new loginView();
+			echo $loginView->getView();
+		}
+
+		function practice(){
+			if (isLogged())
+			{
+				$_SESSION['isLogged'] = false;
+				$loginView = new loginView();
+				echo $loginView->getView();
+			}
+			else
+			{
+				$practiceView = new PracticeView();
+				echo $practiceView->getView();
+			}
+
+		}
+
+		function upload(){
+			if (isLogged())
+			{
+				$_SESSION['isLogged'] = false;
+				$loginView = new loginView();
+				echo $loginView->getView();
+			}
+			else
+			{
+				if (isset($_FILES['fichierUp']['name']) AND $_FILES['fichierUp']['name'] != null)
+				{
+					$uploader = UploadController::Instance();
+					$uploader->UploadFile();
+				}
+				$uploadView = new UploadView();
+				echo $uploadView->getView();
+			}
+		}
+
+
+		function newLogin(){
+			if (isLogged())
+			{
+				$_SESSION['isLogged'] = false;
+				$loginView = new loginView();
+				echo $loginView->getView();
+			}
+			else
+			{
+				$profileView = new ProfileView();
+				echo $profileView->getView();
+			}
+		}
+		
 	}
 ?>
