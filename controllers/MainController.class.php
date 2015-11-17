@@ -9,22 +9,25 @@ include('views/PracticeView.class.php');
 
 	// models
 include('models/Utilisateur.class.php');
+include('models/Practice.class.php');
 
 	//controllers
 include('controllers/UploadController.class.php');
 
+	//managers
 include('bddManager/UtilisateurDAO.php');
+include('bddManager/PracticeDAO.php');
 
 class MainController {
 
 	function __construct() {
 
 			//charge la session si cookie présent
-			if(!$this->isLogged() && isset($_COOKIE["moncookie"])) {
-				$username_cookie = substr($_COOKIE["moncookie"], 0, strrpos($_COOKIE["moncookie"], " "));
-				$password_cookie = substr($_COOKIE["moncookie"], strrpos($_COOKIE["moncookie"], " ")+1);
-				$login = new Utilisateur($username_cookie, $password_cookie);
-			}
+		if(!$this->isLogged() && isset($_COOKIE["moncookie"])) {
+			$username_cookie = substr($_COOKIE["moncookie"], 0, strrpos($_COOKIE["moncookie"], " "));
+			$password_cookie = substr($_COOKIE["moncookie"], strrpos($_COOKIE["moncookie"], " ")+1);
+			$login = new Utilisateur($username_cookie, $password_cookie);
+		}
 
 			//insertion de la navbar
 		$this->navBar();
@@ -141,6 +144,7 @@ class MainController {
 
 		//charge la page practice
 		function practice() {
+
 			$practiceView = new PracticeView();
 			echo $practiceView->getView();
 		}

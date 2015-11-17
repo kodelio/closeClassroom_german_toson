@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Sam 24 Octobre 2015 à 18:13
+-- Généré le :  Mar 17 Novembre 2015 à 22:03
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -19,6 +19,27 @@ SET time_zone = "+00:00";
 --
 -- Base de données :  `german_toson_webserv`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `practices`
+--
+
+CREATE TABLE IF NOT EXISTS `practices` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_bin NOT NULL,
+  `path` varchar(255) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
+
+--
+-- Contenu de la table `practices`
+--
+
+INSERT INTO `practices` (`id`, `name`, `path`) VALUES
+(1, 'Les bonnes pratiques', '/webserv/practices/pratiques.pdf'),
+(2, 'J2EE', '/webserv/practices/j2ee.pdf');
 
 -- --------------------------------------------------------
 
