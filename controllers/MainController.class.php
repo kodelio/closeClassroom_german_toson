@@ -101,7 +101,15 @@ class MainController {
 		//charge la page de login
 		function login() {
 			$managerUser = new UtilisateurDAO();
-			$managerUser->getUserByLoginAndPassword($_GET['username'],$_GET['password']);
+			if (isset($_GET['username']) && isset($_GET['password']))
+			{
+				$managerUser->getUserByLoginAndPassword($_GET['username'],$_GET['password']);
+			}
+			else
+			{
+				$_SESSION['isLogged'] = false;				
+			}
+			
 
 			//$login = new Utilisateur($_GET['username'],$_GET['password']);
 
