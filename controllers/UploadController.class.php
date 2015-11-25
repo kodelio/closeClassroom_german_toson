@@ -1,31 +1,35 @@
 <?php 
-	
-	static $_dossier;
-	static $_fichier;
-	static $_taille_maxi;
-	static $_taille;
-	static $_extensions;
-	static $_extension;
-	
-	final class UploadController
-	{
-		//instanciation du singleton pas cinglé
-		public static function Instance()
-		{
-			static $inst = null;
-			if ($inst === null) {
-				$inst = new UploadController();
-			}
-			return $inst;
-		}
 
-		public function UploadFile()
-		{
-			$_fichier = basename($_FILES['fichierUp']['name']);
-			$_taille = filesize($_FILES['fichierUp']['tmp_name']);
-			$_extension = strrchr($_FILES['fichierUp']['name'], '.');
+static $_dossier;
+static $_fichier;
+static $_taille_maxi;
+static $_taille;
+static $_extensions;
+static $_extension;
+
+final class UploadController
+{
+
+	function __construct() {
+	}
+
+		//instanciation du singleton pas cinglé
+	public static function Instance()
+	{
+		static $inst = null;
+		if ($inst === null) {
+			$inst = new UploadController();
+		}
+		return $inst;
+	}
+
+	public function UploadFile()
+	{
+		$_fichier = basename($_FILES['fichierUp']['name']);
+		$_taille = filesize($_FILES['fichierUp']['tmp_name']);
+		$_extension = strrchr($_FILES['fichierUp']['name'], '.');
 			$_extensions = array('.png', '.gif', '.jpg', '.jpeg', '.pdf', '.docx', '.txt'); // On choisi les extensions de fichiers autorisées
-			$_dossier = 'upload/';
+			$_dossier = 'practices/';
 			$_taille_maxi = 10000000;//10Mo
 			
 			if(!in_array($_extension, $_extensions)) // On teste si le fichier a la bonne extension 
@@ -42,12 +46,16 @@
 			{   
 				// On vérifie le nom du fichier (s'il ne contient pas de caractères spéciaux)
 				$_fichier = strtr($_fichier, 
-					 'ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ', 
-					 'AAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy');
+					'ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ', 
+					'AAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy');
 				$_fichier = preg_replace('/([^.a-z0-9]+)/i', '-', $_fichier);
 				
 				if(move_uploaded_file($_FILES['fichierUp']['tmp_name'], $_dossier . $_fichier)) 
 				{
+					$_SESSION['bdd'] = mysqli_connect('localhost', 'root', '', 'german_toson_webserv');
+					mysqli_query($_SESSION['bdd'], "SELECT * FROM practices");
+					mysqli_query($_SESSION['bdd'], "INSERT INTO practices (id, name, path) VALUES (3, $_fichier, $_extension)");
+					mysqli_close($_SESSION['bdd']);
 					$_SESSION['success'] = 'Le fichier a été correctement envoyé';
 					$_SESSION['display_msg_success'] = true;
 				}
@@ -57,12 +65,6 @@
 					$_SESSION['display_msg_error'] = true;
 				}
 			}			
-			
-		}
-		
-		private function __construct()
-		{
-			//nothing to do here :P
 		}
 	}
-?>
+	?>
