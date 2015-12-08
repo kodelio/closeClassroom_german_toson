@@ -8,7 +8,7 @@ class PracticeView{
 
 		return '
 		<ul class="breadcrumb col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-			<li>Connecté en tant que : <b>' .$_SESSION['username']. '</b></li>
+			<li>Connecté en tant que ' .$_SESSION['type']. ' : <b>' .$_SESSION['username']. '</b> (' .$_SESSION['email']. ')</li>
 		</ul>
 		<div class="container">  
 			<div class="panel panel-default" style="margin-top:60px;">
@@ -40,7 +40,7 @@ class PracticeView{
 		$view = '';
 		foreach ($mesCours as &$cours) {
 			$view = $view.'<div class="list-group-item">
-			<h4 class="text-primary"><a target="_blank" href="'.$cours['path'].'">'.$cours['name'].'</a></h4>
+			<h4><a class="text-primary" target="_blank" href="'.$cours['path'].'">'.$cours['name'].'</a> par '.$cours['user'].'</h4>
 		</div>';
 	}
 	return $view;

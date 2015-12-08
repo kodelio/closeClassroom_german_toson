@@ -151,10 +151,10 @@ class MainController {
 
 		//charge la page upload
 		function upload() {
-			if (isset($_FILES['fichierUp']['name']) AND $_FILES['fichierUp']['name'] != null)
+			if (isset($_POST['namePractice']) && isset($_FILES['fichierUp']['name']) AND $_FILES['fichierUp']['name'] != null)
 			{
 				$uploader = UploadController::Instance();
-				$uploader->UploadFile();
+				$uploader->UploadFile($_POST['namePractice']);
 			}
 			$uploadView = new UploadView();
 			echo $uploadView->getView();

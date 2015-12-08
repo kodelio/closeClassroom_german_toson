@@ -36,6 +36,14 @@ class UtilisateurDAO
 			{
 				$_SESSION['isLogged'] = true;
 				$_SESSION['username'] = $login;
+				if ($log['type'] == 1) {
+					$typeUser = "Professeur";
+				}
+				if ($log['type'] == 2) {
+					$typeUser = "Étudiant";
+				}
+				$_SESSION['type'] = $typeUser;
+				$_SESSION['email'] = $log['email'];
 				$cookie_value = $login.' '.$password;
 				setcookie("moncookie", $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 jour
 				new Utilisateur($login, $password);
