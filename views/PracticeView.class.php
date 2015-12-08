@@ -7,11 +7,8 @@ class PracticeView{
 	public function getViewTop(){
 
 		return '
-		<ul class="breadcrumb col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-			<li>Connecté en tant que ' .$_SESSION['type']. ' : <b>' .$_SESSION['username']. '</b> (' .$_SESSION['email']. ')</li>
-		</ul>
 		<div class="container">  
-			<div class="panel panel-default" style="margin-top:60px;">
+			<div class="panel panel-default">
 				<div class="panel-body" style="padding-top: 0px;">  
 					<h3>Cours :</h3>
 					<div class="list-group">';			
@@ -41,6 +38,7 @@ class PracticeView{
 		foreach ($mesCours as &$cours) {
 			$view = $view.'<div class="list-group-item">
 			<h4><a class="text-primary" target="_blank" href="'.$cours['path'].'">'.$cours['name'].'</a> par '.$cours['user'].'</h4>
+			<p class="list-group-item-text">'.$cours['description'].'</p>
 		</div>';
 	}
 	return $view;

@@ -3,29 +3,32 @@
 
 	include('controllers/MainController.class.php');
 
-?>
+	?>
 
-<!DOCTYPE html>
-<html lang="fr">
+	<!DOCTYPE html>
+	<html lang="fr">
 	<head>
 		<meta charset="utf-8">
-		<title>TP3 - Connexion - TOSON/GERMAN</title>
+		<title>CloseClassroom - TOSON/GERMAN</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<link href="//fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
 		<link rel="shortcut icon" href="img/favicon.ico" />
-		<link href="css/bootstrapM.css" type="text/css" rel="stylesheet" media="all"  />
-		<script src="js/jquery-1.7.2.min.js"></script>
-		<script src="js/bootstrap.js"></script>
+		<link href="style/css/bootstrapM.css" type="text/css" rel="stylesheet" media="all"  />
+		<link href="style/font-awesome-4.5.0/css/font-awesome.css" rel="stylesheet">
 	</head>
 	<body>
 		<?php
-
-			$controller = new MainController();
-
+		$controller = new MainController();
 		?>
-	</body>
-</html>
 
-<script>
-	setTimeout(function() {
-	  $('#alert').fadeOut('fast');
-	}, 3000);
-</script>
+		<script src="style/js/jquery-1.7.2.min.js"></script>
+		<script src="style/js/bootstrap.js"></script>
+
+	</body>
+	</html>
+
+	<script>
+		setTimeout(function() {
+			$('#alert').fadeOut('fast');
+		}, 3000);
+	</script>

@@ -47,6 +47,7 @@ class UtilisateurDAO
 				$cookie_value = $login.' '.$password;
 				setcookie("moncookie", $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 jour
 				new Utilisateur($login, $password);
+				header('Location: /webserv/');
 			}
 			else
 			{

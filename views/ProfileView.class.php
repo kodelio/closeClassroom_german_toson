@@ -22,9 +22,8 @@ class ProfileView{
 						Email : <b>' .$_SESSION['email']. '</b>   
 					</div>                     
 				</div>
-				<a href="index.php?page=practice" class="btn btn-info">Voir les bonnes pratiques de la programmation web</a>  
-				<br>
-				<a style="margin-top: 10px;" href="index.php?page=upload" class="btn btn-info">Upload / Download de fichiers</a>
+				<a href="index.php?page=practice" class="btn btn-info"><span class="fa fa-eye"></span> Voir les cours</a>  
+				<a href="index.php?page=upload" class="btn btn-info"><span class="fa fa-plus"></span> Envoyer un cours</a>
 			</div>
 		</div>
 		';			

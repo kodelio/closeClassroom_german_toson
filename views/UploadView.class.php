@@ -7,9 +7,6 @@ class UploadView{
 	public function getView(){
 
 		return '
-		<ul class="breadcrumb col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-			<li>Connecté en tant que ' .$_SESSION['type']. ' : <b>' .$_SESSION['username']. '</b> (' .$_SESSION['email']. ')</li>
-		</ul>
 		<div class="container"> 
 			<div id="alert">  
 			</div>

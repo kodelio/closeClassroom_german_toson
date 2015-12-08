@@ -86,7 +86,15 @@ class MainController {
 		//insertion de la navbar
 		function navBar() {
 			$navBarView = new navBarView();
-			echo $navBarView->getView();
+			
+			if ($this->isLogged())
+			{
+				echo $navBarView->getViewLogged();
+			}
+			else
+			{
+				echo $navBarView->getViewLogout();
+			}
 		}
 		
 		//teste si l'utilisateur est connecté
@@ -138,8 +146,7 @@ class MainController {
 			}
 			session_unset();
 			session_destroy();
-			$loginView = new loginView();
-			echo $loginView->getView();
+			header('Location: /webserv/');
 		}
 
 		//charge la page practice
