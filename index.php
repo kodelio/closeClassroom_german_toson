@@ -12,7 +12,7 @@
 		<title>CloseClassroom - TOSON/GERMAN</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 		<link href="//fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
-		<link rel="shortcut icon" href="img/favicon.ico" />
+		<link rel="shortcut icon" href="img/college.ico" />
 		<link href="style/css/bootstrapM.css" type="text/css" rel="stylesheet" media="all"  />
 		<link href="style/font-awesome-4.5.0/css/font-awesome.css" rel="stylesheet">
 	</head>
