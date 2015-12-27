@@ -25,6 +25,10 @@ class UploadView{
 							</div>
 
 							<div style="margin-bottom: 25px">
+								Description du cours :<br> <textarea class="form-control" name="descriptionPractice" cols="0" rows="0" placeholder="Entrez la description du cours"></textarea>                            
+							</div>
+
+							<div style="margin-bottom: 25px">
 								<input type="hidden" name="MAX_FILE_SIZE" value="10000000">
 								Fichier : <input type="file" name="fichierUp" size="50">                                       
 							</div>

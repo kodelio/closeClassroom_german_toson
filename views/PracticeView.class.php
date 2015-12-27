@@ -37,8 +37,9 @@ class PracticeView{
 		$view = '';
 		foreach ($mesCours as &$cours) {
 			$view = $view.'<div class="list-group-item">
-			<h4><a class="text-primary" target="_blank" href="'.$cours['path'].'">'.$cours['name'].'</a> par '.$cours['user'].'</h4>
+			<h4><a class="text-primary" target="_blank" href="'.$cours['path'].'"><i class="fa fa-download"></i> '.$cours['name'].'</a></h4>
 			<p class="list-group-item-text">'.$cours['description'].'</p>
+			<p>Crée le '.$cours['date'].' par '.$cours['user'].'</p>
 		</div>';
 	}
 	return $view;

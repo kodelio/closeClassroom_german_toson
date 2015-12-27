@@ -23,7 +23,7 @@ final class UploadController
 		return $inst;
 	}
 
-	public function UploadFile($namePractice)
+	public function UploadFile($namePractice, $descriptionPractice)
 	{
 		$_fichier = basename($_FILES['fichierUp']['name']);
 		$_taille = filesize($_FILES['fichierUp']['tmp_name']);
@@ -54,7 +54,9 @@ final class UploadController
 				{
 					$_SESSION['bdd'] = mysqli_connect('localhost', 'root', '', 'german_toson_webserv');
 					mysqli_query($_SESSION['bdd'], "SELECT * FROM practices");
-					mysqli_query($_SESSION['bdd'], "INSERT INTO practices (name, path, user) VALUES ('".$namePractice."', '/webserv/".$_dossier.$_fichier."', '".$_SESSION['username']."')");
+					$date = new DateTime(date("d-m-Y"));
+					$result = $date->format('d-m-Y');
+					mysqli_query($_SESSION['bdd'], "INSERT INTO practices (name, path, user, description, date) VALUES ('".$namePractice."', '/webserv/".$_dossier.$_fichier."', '".$_SESSION['username']."', '".$descriptionPractice."', '".$result."')");
 					mysqli_close($_SESSION['bdd']);
 					$_SESSION['success'] = 'Le fichier '.$_fichier.' a été correctement envoyé';
 					$_SESSION['display_msg_success'] = true;

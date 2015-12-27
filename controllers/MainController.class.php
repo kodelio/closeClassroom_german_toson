@@ -161,7 +161,7 @@ class MainController {
 			if (isset($_POST['namePractice']) && isset($_FILES['fichierUp']['name']) AND $_FILES['fichierUp']['name'] != null)
 			{
 				$uploader = UploadController::Instance();
-				$uploader->UploadFile($_POST['namePractice']);
+				$uploader->UploadFile($_POST['namePractice'], $_POST['descriptionPractice']);
 			}
 			$uploadView = new UploadView();
 			echo $uploadView->getView();

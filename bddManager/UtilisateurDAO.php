@@ -37,10 +37,16 @@ class UtilisateurDAO
 				$_SESSION['isLogged'] = true;
 				$_SESSION['username'] = $login;
 				if ($log['type'] == 1) {
+					$typeUser = "Administrateur";
+				}
+				elseif ($log['type'] == 2) {
 					$typeUser = "Professeur";
 				}
-				if ($log['type'] == 2) {
+				elseif ($log['type'] == 3) {
 					$typeUser = "Étudiant";
+				}
+				else {
+					$typeUser = "Invité";
 				}
 				$_SESSION['type'] = $typeUser;
 				$_SESSION['email'] = $log['email'];
