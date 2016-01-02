@@ -12,7 +12,7 @@ include('models/Utilisateur.class.php');
 include('models/Practice.class.php');
 
 	//controllers
-include('controllers/UploadController.class.php');
+include('controllers/PracticeController.class.php');
 
 	//managers
 include('bddManager/UtilisateurDAO.php');
@@ -52,7 +52,15 @@ class MainController {
 					break;
 
 					case 'upload':
-					$this->upload();
+					$this->createPractice();
+					break;
+
+					case 'updatePractice':
+					$this->updatePractice();
+					break;
+
+					case 'deletePractice':
+					$this->deletePractice();
 					break;
 
 						default: //404
@@ -157,14 +165,60 @@ class MainController {
 		}
 
 		//charge la page upload
-		function upload() {
+		function createPractice() {
 			if (isset($_POST['namePractice']) && isset($_FILES['fichierUp']['name']) AND $_FILES['fichierUp']['name'] != null)
 			{
-				$uploader = UploadController::Instance();
-				$uploader->UploadFile($_POST['namePractice'], $_POST['descriptionPractice']);
+				$uploader = PracticeController::Instance();
+				$uploader->uploadFile($_POST['namePractice'], $_POST['descriptionPractice']);
 			}
 			$uploadView = new UploadView();
-			echo $uploadView->getView();
+			echo $uploadView->getViewInsert();
+		}
+
+		//charge la page mise à jour cours
+		function updatePractice() {
+			$verifPractice = new PracticeDAO();
+			$isPracticeExist = $verifPractice->verifPractice($_GET['idPractice']);
+			if (!$isPracticeExist)
+			{
+				$_SESSION['error'] = 'Le cours n\'existe pas';
+				$_SESSION['display_msg_error'] = true;
+				$this->practice();
+			}
+			else 
+			{
+				if (isset($_POST['namePractice']))
+				{
+					$newFile = false;
+					if (isset($_FILES['fichierUp']['name']) AND $_FILES['fichierUp']['name'] != null)
+					{
+						$getFile = new PracticeDAO();
+						$infos = $getFile->getFile($_GET['idPractice']);
+						unlink($_SERVER['DOCUMENT_ROOT'].$infos['path']);
+
+						$newFile = true;
+						$uploader = PracticeController::Instance();
+						$uploader->updateFile($_POST['namePractice'], $_POST['descriptionPractice'], $_GET['idPractice'], $newFile);
+					}
+					else 
+					{
+						$uploader = PracticeController::Instance();
+						$uploader->updateFile($_POST['namePractice'], $_POST['descriptionPractice'], $_GET['idPractice'], $newFile);
+					}
+				}
+				$managerPractice = new PracticeDAO();
+				$infos = $managerPractice->getNameAndDescriptionPractice($_GET['idPractice']);
+				$file = $managerPractice->getFile($_GET['idPractice']);
+				$uploadView = new UploadView();
+				echo $uploadView->getViewUpdate($_GET['idPractice'], $infos['name'], $infos['description'], $file['file'], $file['path']);
+			}
+		}
+
+		//charge la page delete practice
+		function deletePractice() {
+			$uploader = PracticeController::Instance();
+			$uploader->deleteFile($_GET['idPractice']);
+			$this->practice();
 		}
 
 		//charge la page profile

@@ -29,6 +29,27 @@ class PracticeDAO
 			}
 			else
 			{
+				return false;
+			}
+		}
+		catch(Exception $e)
+		{
+			$_SESSION['error'] = 'Erreur requete BDD';
+			$_SESSION['display_msg_error'] = true;
+		}
+	}
+
+	function getNameAndDescriptionPractice($idPractice) {
+		try
+		{
+			$resultat = mysqli_query($_SESSION['bdd'], "SELECT name, description FROM practices WHERE `id`= '".$_GET['idPractice']."'");
+			if (mysqli_num_rows($resultat) != '0')
+			{
+				$tab[0] = mysqli_fetch_assoc($resultat);
+				return $tab[0];
+			}
+			else
+			{
 				return null;
 			}
 		}
@@ -38,5 +59,113 @@ class PracticeDAO
 			$_SESSION['display_msg_error'] = true;
 		}
 	}
+
+	function getDoublonByName($namePractice) {
+		try
+		{
+			$resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM practices WHERE `name`= '".$namePractice."'");
+			if (mysqli_num_rows($resultat) != '0')
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		catch(Exception $e)
+		{
+			$_SESSION['error'] = 'Erreur requete BDD';
+			$_SESSION['display_msg_error'] = true;
+		}
+	}
+
+	function createPractice($namePractice, $_dossier, $_fichier, $descriptionPractice, $result) {
+		try
+		{
+			mysqli_query($_SESSION['bdd'], "INSERT INTO practices (name, path, file, user, description, date) VALUES ('".$namePractice."', 'webserv/".$_dossier.$_fichier."', '".$_fichier."', '".$_SESSION['username']."', '".$descriptionPractice."', '".$result."')");
+		}
+		catch(Exception $e)
+		{
+			$_SESSION['error'] = 'Erreur requete BDD';
+			$_SESSION['display_msg_error'] = true;
+		}
+	}
+
+	function updatePracticeNewFile($idPractice, $namePractice, $_dossier, $_fichier, $descriptionPractice) {
+		try
+		{
+			mysqli_query($_SESSION['bdd'], "UPDATE `practices` SET `name` = '".$namePractice."', `path` = 'webserv/".$_dossier.$_fichier."', `file` = '".$_fichier."', `description` = '".$descriptionPractice."' WHERE `id` = '".$idPractice."'");
+		}
+		catch(Exception $e)
+		{
+			$_SESSION['error'] = 'Erreur requete BDD';
+			$_SESSION['display_msg_error'] = true;
+		}
+	}
+
+	function updatePracticeOldFile($idPractice, $namePractice, $descriptionPractice) {
+		try
+		{
+			mysqli_query($_SESSION['bdd'], "UPDATE `practices` SET `name` = '".$namePractice."', `description` = '".$descriptionPractice."' WHERE `id` = '".$idPractice."'");
+		}
+		catch(Exception $e)
+		{
+			$_SESSION['error'] = 'Erreur requete BDD';
+			$_SESSION['display_msg_error'] = true;
+		}
+	}
+
+	function getFile($idPractice) {
+		try
+		{
+			$resultat = mysqli_query($_SESSION['bdd'], "SELECT file, path FROM practices WHERE `id`= '".$idPractice."'");
+			if (mysqli_num_rows($resultat) != '0')
+			{
+				$tab[0] = mysqli_fetch_assoc($resultat);
+			}
+			return $tab[0];
+		}
+		catch(Exception $e)
+		{
+			$_SESSION['error'] = 'Erreur requete BDD';
+			$_SESSION['display_msg_error'] = true;
+		}
+	}
+
+	function deletePractice($idPractice) {
+		try
+		{
+			$infos = $this->getFile($idPractice);
+			unlink($_SERVER['DOCUMENT_ROOT'].$infos['path']);
+			mysqli_query($_SESSION['bdd'], "DELETE FROM `practices` WHERE `id` = '".$idPractice."'");
+		}
+		catch(Exception $e)
+		{
+			$_SESSION['error'] = 'Erreur requete BDD';
+			$_SESSION['display_msg_error'] = true;
+		}
+	}
+
+	function verifPractice($idPractice) {
+		try
+		{
+			$resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM practices WHERE `id`= '".$idPractice."'");
+			if (mysqli_num_rows($resultat) != '0')
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		catch(Exception $e)
+		{
+			$_SESSION['error'] = 'Erreur requete BDD';
+			$_SESSION['display_msg_error'] = true;
+		}
+	}
+
 }
 ?>
