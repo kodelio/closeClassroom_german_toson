@@ -83,26 +83,36 @@ final class PracticeController
 
 	public function updateFile($namePractice, $descriptionPractice, $idPractice, $newFile)
 	{
-		if (!$newFile)
+		$getDoublonByName = new PracticeDAO();
+		$doublon = $getDoublonByName->getDoublonByName($namePractice);
+
+		if($doublon)
 		{
-			if(!(isset($_SESSION['error']) AND $_SESSION['error'] != null AND isset($_SESSION['display_msg_error']) AND $_SESSION['display_msg_error']))
-			{   
-				$updatePracticeOldFile = new PracticeDAO();
-				$updatePracticeOldFile->updatePracticeOldFile($idPractice, $namePractice, $descriptionPractice);
-				$_SESSION['success'] = 'Le cours <b>'.$namePractice.'</b> a été mis à jour';
-				$_SESSION['display_msg_success'] = true;
+			$_SESSION['error'] = 'Un cours avec le même nom existe déjà !';
+			$_SESSION['display_msg_error'] = true;
+		}
+		else
+		{
+			if (!$newFile)
+			{
+				if(!(isset($_SESSION['error']) AND $_SESSION['error'] != null AND isset($_SESSION['display_msg_error']) AND $_SESSION['display_msg_error']))
+				{   
+					$updatePracticeOldFile = new PracticeDAO();
+					$updatePracticeOldFile->updatePracticeOldFile($idPractice, $namePractice, $descriptionPractice);
+					$_SESSION['success'] = 'Le cours <b>'.$namePractice.'</b> a été mis à jour';
+					$_SESSION['display_msg_success'] = true;
+				}
+				else 
+				{
+					$_SESSION['error'] = 'Le cours n\'a pas été mis à jour';
+					$_SESSION['display_msg_error'] = true;
+				}
 			}
 			else 
 			{
-				$_SESSION['error'] = 'Le cours n\'a pas été mis à jour';
-				$_SESSION['display_msg_error'] = true;
-			}
-		}
-		else 
-		{
-			$_fichier = basename($_FILES['fichierUp']['name']);
-			$_taille = filesize($_FILES['fichierUp']['tmp_name']);
-			$_extension = strrchr($_FILES['fichierUp']['name'], '.');
+				$_fichier = basename($_FILES['fichierUp']['name']);
+				$_taille = filesize($_FILES['fichierUp']['tmp_name']);
+				$_extension = strrchr($_FILES['fichierUp']['name'], '.');
 			$_extensions = array('.png', '.gif', '.jpg', '.jpeg', '.pdf', '.docx', '.txt'); // On choisi les extensions de fichiers autorisées
 			$_dossier = 'practices/';
 			$_taille_maxi = 10000000;//10Mo
@@ -143,13 +153,14 @@ final class PracticeController
 					$_SESSION['display_msg_error'] = true;
 				}
 			}
-		}				
-	}
+		}	
+	}			
+}
 
-	public function deleteFile($idPractice)
-	{
-		$managerPractice = new PracticeDAO();
-		$managerPractice->deletePractice($idPractice);	
-	}
+public function deleteFile($idPractice)
+{
+	$managerPractice = new PracticeDAO();
+	$managerPractice->deletePractice($idPractice);	
+}
 }
 ?>
