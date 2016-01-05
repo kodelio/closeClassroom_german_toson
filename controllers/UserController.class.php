@@ -8,12 +8,12 @@ class UserController
 
 	public function createUser($nameUser, $passwordUser, $emailUser)
 	{
-		$getDoublonByName = new UserDAO();
-		$doublon = $getDoublonByName->getDoublonByName($nameUser);
+		$getDoublonByEmail = new UserDAO();
+		$doublon = $getDoublonByEmail->getDoublonByEmail($emailUser);
 
 		if($doublon)
 		{
-			$_SESSION['error'] = 'Un utilisateur avec le même nom existe déjà !';
+			$_SESSION['error'] = 'Un utilisateur avec le même email existe déjà !';
 			$_SESSION['display_msg_error'] = true;
 		}
 		else
@@ -22,7 +22,7 @@ class UserController
 			{   
 				$createUser = new UserDAO();
 				$createUser->createUser($nameUser, $passwordUser, $emailUser);
-				$_SESSION['success'] = 'L\'utilisateur <b>'.$nameUser.'</b> a été crée.';
+				$_SESSION['success'] = 'L\'utilisateur <b>'.$nameUser.'</b> ('.$emailUser.') a été crée.';
 				$_SESSION['display_msg_success'] = true;
 			}
 			else 
@@ -36,12 +36,12 @@ class UserController
 
 	public function updateUser($nameUser, $passwordUser, $emailUser, $idUser)
 	{
-		$getDoublonByName = new UserDAO();
-		$doublon = $getDoublonByName->getDoublonByName($nameUser);
+		$getDoublonByEmail = new UserDAO();
+		$doublon = $getDoublonByEmail->getDoublonByEmail($emailUser);
 
 		if($doublon)
 		{
-			$_SESSION['error'] = 'Un utilisateur avec le même nom existe déjà !';
+			$_SESSION['error'] = 'Un utilisateur avec le même email existe déjà !';
 			$_SESSION['display_msg_error'] = true;
 		}
 		else
@@ -50,7 +50,7 @@ class UserController
 			{   
 				$updateUser = new PracticeDAO();
 				$updateUser->updateUser($idUser, $nameUser, $passwordUser, $emailUser);
-				$_SESSION['success'] = 'L\'utilisateur <b>'.$nameUser.'</b> a été mis à jour';
+				$_SESSION['success'] = 'L\'utilisateur <b>'.$nameUser.'</b> ('.$emailUser.') a été mis à jour';
 				$_SESSION['display_msg_success'] = true;
 			}
 			else 

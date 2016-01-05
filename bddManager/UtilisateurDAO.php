@@ -112,10 +112,10 @@ class UtilisateurDAO
 		}
 	}
 
-	function getDoublonByName($nameUser) {
+	function getDoublonByEmail($emailUser) {
 		try
 		{
-			$resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM users WHERE `login`= '".$nameUser."'");
+			$resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM users WHERE `email`= '".$emailUser."'");
 			if (mysqli_num_rows($resultat) != '0')
 			{
 				return true;

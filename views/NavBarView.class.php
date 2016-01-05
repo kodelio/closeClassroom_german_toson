@@ -20,17 +20,11 @@ class navBarView{
 
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
 					<ul class="nav navbar-nav">
-						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Fonctionnalités <span class="caret"></span></a>
-							<ul class="dropdown-menu" role="menu">
-								<li><a href="index.php">Informations utilisateur</a></li>
-								<li><a href="index.php?page=upload">Envoyer un cours</a></li>
-								<li><a href="index.php?page=practice">Voir les cours</a></li>
-							</ul>			  
-						</li>
+						<li><a href="index.php?page=user">Administration Utilisateurs</a></li>
+						<li><a href="index.php?page=practice">Cours</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="" style="font-size: 13px;"> Bonjour, <strong>'.$_SESSION['username'].'</strong> </a>
+						<li><a href="index.php" style="font-size: 13px;"> Bonjour, <strong>'.$_SESSION['username'].'</strong> </a>
 							<li><a href="index.php?page=logout">Se déconnecter</a></li>
 						</ul>
 					</div>
@@ -55,14 +49,8 @@ class navBarView{
 
 					<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
 						<ul class="nav navbar-nav">
-							<li class="dropdown">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Fonctionnalités <span class="caret"></span></a>
-								<ul class="dropdown-menu" role="menu">
-									<li><a href="index.php">Informations utilisateur</a></li>
-									<li><a href="index.php?page=upload">Envoyer un cours</a></li>
-									<li><a href="index.php?page=practice">Voir les cours</a></li>
-								</ul>			  
-							</li>
+							<li><a href="index.php?page=user">Administration Utilisateurs</a></li>
+							<li><a href="index.php?page=practice">Cours</a></li>
 						</ul>
 					</div>
 				</div>
