@@ -6,6 +6,8 @@ include('views/LoginView.class.php');
 include('views/ProfileView.class.php');
 include('views/UploadView.class.php');
 include('views/PracticeView.class.php');
+include('views/UserView.class.php');
+include('views/FormUserView.class.php');
 
 	// models
 include('models/Utilisateur.class.php');
@@ -13,6 +15,7 @@ include('models/Practice.class.php');
 
 	//controllers
 include('controllers/PracticeController.class.php');
+include('controllers/UserController.class.php');
 
 	//managers
 include('bddManager/UtilisateurDAO.php');
@@ -61,6 +64,22 @@ class MainController {
 
 					case 'deletePractice':
 					$this->deletePractice();
+					break;
+
+					case 'user':
+					$this->user();
+					break;
+
+					case 'createUser':
+					$this->createUser();
+					break;
+
+					case 'updateUser':
+					$this->updateUser();
+					break;
+
+					case 'deleteUser':
+					$this->deleteUser();
 					break;
 
 						default: //404
@@ -159,7 +178,6 @@ class MainController {
 
 		//charge la page practice
 		function practice() {
-
 			$practiceView = new PracticeView();
 			echo $practiceView->getView();
 		}
@@ -219,6 +237,51 @@ class MainController {
 			$uploader = PracticeController::Instance();
 			$uploader->deleteFile($_GET['idPractice']);
 			$this->practice();
+		}
+
+		//charge la page user
+		function user() {
+			$userView = new UserView();
+			echo $userView->getView();
+		}
+
+		//charge la page createUser
+		function createUser() {
+			if (isset($_POST['nameUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser']))
+			{
+				createUser($_POST['nameUser'], $_POST['passwordUser'], $_POST['emailUser']);
+			}
+			$userView = new FormUserView();
+			echo $userView->getViewInsert();
+		}
+
+		//charge la page mise à jour user
+		function updateUser() {
+			$verifUser = new UtilisateurDAO();
+			$isUserExist = $verifUser->verifUser($_GET['idUser']);
+			if (!$isUserExist)
+			{
+				$_SESSION['error'] = 'L\'utilisateur n\'existe pas';
+				$_SESSION['display_msg_error'] = true;
+				$this->user();
+			}
+			else 
+			{
+				if (isset($_POST['nameUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser']))
+				{
+					updateUser($_POST['nameUser'], $_POST['passwordUser'], $_POST['emailUser'], $_GET['idUser']);	
+				}
+				$managerUser = new UtilisateurDAO();
+				$infos = $managerUser->getInfoUser($_GET['idUser']);
+				$userView = new FormUserView();
+				echo $userView->getViewUpdate($_GET['idUser'], $infos['name'], $infos['email'], $infos['password']);
+			}
+		}
+
+		//charge la page delete user
+		function deleteUser() {
+			deleteUser($_GET['idUser']);
+			$this->user();
 		}
 
 		//charge la page profile
