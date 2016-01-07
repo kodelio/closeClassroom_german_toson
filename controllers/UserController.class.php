@@ -6,14 +6,20 @@ class UserController
 	function __construct() {
 	}
 
-	public function createUser($nameUser, $passwordUser, $emailUser)
+	public function createUser($loginUser, $passwordUser, $emailUser, $typeUser)
 	{
-		$getDoublonByEmail = new UserDAO();
-		$doublon = $getDoublonByEmail->getDoublonByEmail($emailUser);
+		$getDoublon = new UserDAO();
+		$doublonEmail = $getDoublon->getDoublonByEmail($emailUser, '');
+		$doublonLogin = $getDoublon->getDoublonByLogin($loginUser, '');
 
-		if($doublon)
+		if($doublonEmail)
 		{
 			$_SESSION['error'] = 'Un utilisateur avec le même email existe déjà !';
+			$_SESSION['display_msg_error'] = true;
+		}
+		else if($doublonLogin)
+		{
+			$_SESSION['error'] = 'Un utilisateur avec le même login existe déjà !';
 			$_SESSION['display_msg_error'] = true;
 		}
 		else
@@ -21,8 +27,8 @@ class UserController
 			if(!(isset($_SESSION['error']) AND $_SESSION['error'] != null AND isset($_SESSION['display_msg_error']) AND $_SESSION['display_msg_error']))
 			{   
 				$createUser = new UserDAO();
-				$createUser->createUser($nameUser, $passwordUser, $emailUser);
-				$_SESSION['success'] = 'L\'utilisateur <b>'.$nameUser.'</b> ('.$emailUser.') a été crée.';
+				$createUser->createUser($loginUser, $passwordUser, $emailUser, $typeUser);
+				$_SESSION['success'] = 'L\'utilisateur <b>'.$loginUser.'</b> ('.$emailUser.') a été crée.';
 				$_SESSION['display_msg_success'] = true;
 			}
 			else 
@@ -34,23 +40,29 @@ class UserController
 		}		
 	}
 
-	public function updateUser($nameUser, $passwordUser, $emailUser, $idUser)
+	public function updateUser($loginUser, $passwordUser, $emailUser, $typeUser, $idUser)
 	{
-		$getDoublonByEmail = new UserDAO();
-		$doublon = $getDoublonByEmail->getDoublonByEmail($emailUser);
+		$getDoublon = new UserDAO();
+		$doublonEmail = $getDoublon->getDoublonByEmail($emailUser, $idUser);
+		$doublonLogin = $getDoublon->getDoublonByLogin($loginUser, $idUser);
 
-		if($doublon)
+		if($doublonEmail)
 		{
 			$_SESSION['error'] = 'Un utilisateur avec le même email existe déjà !';
+			$_SESSION['display_msg_error'] = true;
+		}
+		else if($doublonLogin)
+		{
+			$_SESSION['error'] = 'Un utilisateur avec le même login existe déjà !';
 			$_SESSION['display_msg_error'] = true;
 		}
 		else
 		{
 			if(!(isset($_SESSION['error']) AND $_SESSION['error'] != null AND isset($_SESSION['display_msg_error']) AND $_SESSION['display_msg_error']))
 			{   
-				$updateUser = new PracticeDAO();
-				$updateUser->updateUser($idUser, $nameUser, $passwordUser, $emailUser);
-				$_SESSION['success'] = 'L\'utilisateur <b>'.$nameUser.'</b> ('.$emailUser.') a été mis à jour';
+				$updateUser = new UserDAO();
+				$updateUser->updateUser($idUser, $loginUser, $passwordUser, $emailUser, $typeUser);
+				$_SESSION['success'] = 'L\'utilisateur <b>'.$loginUser.'</b> ('.$emailUser.') a été mis à jour';
 				$_SESSION['display_msg_success'] = true;
 			}
 			else 

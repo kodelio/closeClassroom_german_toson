@@ -4,7 +4,7 @@
 include('views/NavBarView.class.php');
 include('views/LoginView.class.php');
 include('views/ProfileView.class.php');
-include('views/UploadView.class.php');
+include('views/FormPracticeView.class.php');
 include('views/PracticeView.class.php');
 include('views/UserView.class.php');
 include('views/FormUserView.class.php');
@@ -18,7 +18,7 @@ include('controllers/PracticeController.class.php');
 include('controllers/UserController.class.php');
 
 	//managers
-include('bddManager/UtilisateurDAO.php');
+include('bddManager/UserDAO.php');
 include('bddManager/PracticeDAO.php');
 
 class MainController {
@@ -54,7 +54,7 @@ class MainController {
 					$this->practice();
 					break;
 
-					case 'upload':
+					case 'createPractice':
 					$this->createPractice();
 					break;
 
@@ -138,7 +138,7 @@ class MainController {
 
 		//charge la page de login
 		function login() {
-			$managerUser = new UtilisateurDAO();
+			$managerUser = new UserDAO();
 			if (isset($_GET['username']) && isset($_GET['password']))
 			{
 				$managerUser->getUserByLoginAndPassword($_GET['username'],$_GET['password']);
@@ -182,15 +182,15 @@ class MainController {
 			echo $practiceView->getView();
 		}
 
-		//charge la page upload
+		//charge la page createPractice
 		function createPractice() {
 			if (isset($_POST['namePractice']) && isset($_FILES['fichierUp']['name']) AND $_FILES['fichierUp']['name'] != null)
 			{
 				$uploader = PracticeController::Instance();
 				$uploader->uploadFile($_POST['namePractice'], $_POST['descriptionPractice']);
 			}
-			$uploadView = new UploadView();
-			echo $uploadView->getViewInsert();
+			$formPracticeView = new FormPracticeView();
+			echo $formPracticeView->getViewInsert();
 		}
 
 		//charge la page mise à jour cours
@@ -227,8 +227,8 @@ class MainController {
 				$managerPractice = new PracticeDAO();
 				$infos = $managerPractice->getNameAndDescriptionPractice($_GET['idPractice']);
 				$file = $managerPractice->getFile($_GET['idPractice']);
-				$uploadView = new UploadView();
-				echo $uploadView->getViewUpdate($_GET['idPractice'], $infos['name'], $infos['description'], $file['file'], $file['path']);
+				$formPracticeView = new FormPracticeView();
+				echo $formPracticeView->getViewUpdate($_GET['idPractice'], $infos['name'], $infos['description'], $file['file'], $file['path']);
 			}
 		}
 
@@ -247,9 +247,10 @@ class MainController {
 
 		//charge la page createUser
 		function createUser() {
-			if (isset($_POST['nameUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser']))
+			if (isset($_POST['loginUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser']) && isset($_POST['typeUser']))
 			{
-				createUser($_POST['nameUser'], $_POST['passwordUser'], $_POST['emailUser']);
+				$userController = new UserController();
+				$createUser = $userController->createUser($_POST['loginUser'], $_POST['passwordUser'], $_POST['emailUser'], $_POST['typeUser']);
 			}
 			$userView = new FormUserView();
 			echo $userView->getViewInsert();
@@ -257,7 +258,7 @@ class MainController {
 
 		//charge la page mise à jour user
 		function updateUser() {
-			$verifUser = new UtilisateurDAO();
+			$verifUser = new UserDAO();
 			$isUserExist = $verifUser->verifUser($_GET['idUser']);
 			if (!$isUserExist)
 			{
@@ -267,20 +268,22 @@ class MainController {
 			}
 			else 
 			{
-				if (isset($_POST['nameUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser']))
+				if (isset($_POST['loginUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser']) && isset($_POST['typeUser']))
 				{
-					updateUser($_POST['nameUser'], $_POST['passwordUser'], $_POST['emailUser'], $_GET['idUser']);	
+					$userController = new UserController();
+					$updateUser = $userController->updateUser($_POST['loginUser'], $_POST['passwordUser'], $_POST['emailUser'], $_POST['typeUser'], $_GET['idUser']);	
 				}
-				$managerUser = new UtilisateurDAO();
+				$managerUser = new UserDAO();
 				$infos = $managerUser->getInfoUser($_GET['idUser']);
 				$userView = new FormUserView();
-				echo $userView->getViewUpdate($_GET['idUser'], $infos['name'], $infos['email'], $infos['password']);
+				echo $userView->getViewUpdate($_GET['idUser'], $infos['login'], $infos['password'], $infos['email'], $infos['type']);
 			}
 		}
 
 		//charge la page delete user
 		function deleteUser() {
-			deleteUser($_GET['idUser']);
+			$userController = new UserController();
+			$deleteUser = $userController->deleteUser($_GET['idUser']);
 			$this->user();
 		}
 

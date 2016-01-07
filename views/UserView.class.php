@@ -7,6 +7,7 @@ class UserView{
 	public function getViewTop(){
 
 		return '
+		<script>document.getElementById("tabUser").className = "active";</script>
 		<div class="container">  
 			<div class="panel panel-default">
 				<div class="panel-body" style="padding-top: 0px;">  
@@ -32,7 +33,7 @@ class UserView{
 	}
 
 	public function getListe(){
-		$managerUser = new UtilisateurDAO();
+		$managerUser = new UserDAO();
 		$mesUtilisateurs = $managerUser->getUsers();
 		$view = '<a style="margin-bottom: 20px;" href="index.php?page=createUser" class="btn btn-info"><span class="fa fa-plus"></span> Créer un utilisateur</a>';
 		if (!$mesUtilisateurs)

@@ -1,12 +1,13 @@
 <?php 
 
-class UploadView{
+class FormPracticeView{
 
 	function __construct(){}
 
 	public function getViewInsert(){
 
 		return '
+		<script>document.getElementById("tabPractice").className = "active";</script>
 		<div class="container"> 
 			<div id="alert">  
 			</div>
@@ -18,7 +19,7 @@ class UploadView{
 
 					<div style="padding-top:30px" class="panel-body" >
 
-						<form method="post" class="form-horizontal" role="form" action="index.php?page=upload" enctype="multipart/form-data">
+						<form method="post" class="form-horizontal" role="form" action="index.php?page=createPractice" enctype="multipart/form-data">
 
 							<div style="margin-bottom: 25px">
 								Nom du cours :<br> <input type="text" class="form-control" name="namePractice" placeholder="Entrez le titre du cours" required>                                      
@@ -35,8 +36,8 @@ class UploadView{
 
 							<div style="margin-top:10px" class="form-group">
 								<div class="col-sm-12 controls">
-									<input type="submit" name="envoyer" class="btn btn-success" value="Créer le cours">
-									<a class="btn btn-warning" href="index.php?page=practice">Annuler</a>
+									<input style="margin-top: 10px;" type="submit" name="envoyer" class="btn btn-success" value="Créer le cours">
+									<a style="margin-top: 10px;" class="btn btn-warning" href="index.php?page=practice">Annuler</a>
 								</div>
 							</div>
 						</form>     
@@ -50,6 +51,7 @@ class UploadView{
 	public function getViewUpdate($idPractice, $name, $description, $file, $path){
 
 		return '
+		<script>document.getElementById("tabPractice").className = "active";</script>
 		<div class="container"> 
 			<div id="alert">  
 			</div>
@@ -79,8 +81,8 @@ class UploadView{
 
 							<div style="margin-top:10px" class="form-group">
 								<div class="col-sm-12 controls">
-									<input type="submit" name="envoyer" class="btn btn-success" value="Mettre à jour">
-									<a class="btn btn-warning" href="index.php?page=practice">Annuler</a>
+									<input style="margin-top: 10px;" type="submit" name="envoyer" class="btn btn-success" value="Mettre à jour">
+									<a style="margin-top: 10px;" class="btn btn-warning" href="index.php?page=practice">Annuler</a>
 								</div>
 							</div>
 						</form>     

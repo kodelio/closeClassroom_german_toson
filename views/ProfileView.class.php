@@ -23,7 +23,7 @@ class ProfileView{
 					</div>                     
 				</div>
 				<a href="index.php?page=practice" class="btn btn-info"><span class="fa fa-eye"></span> Voir les cours</a>  
-				<a href="index.php?page=upload" class="btn btn-info"><span class="fa fa-plus"></span> Envoyer un cours</a>
+				<a href="index.php?page=createPractice" class="btn btn-info"><span class="fa fa-plus"></span> Envoyer un cours</a>
 			</div>
 		</div>
 		';			

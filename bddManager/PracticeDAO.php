@@ -60,10 +60,10 @@ class PracticeDAO
 		}
 	}
 
-	function getDoublonByName($namePractice) {
+	function getDoublonByName($namePractice, $idPractice) {
 		try
 		{
-			$resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM practices WHERE `name`= '".$namePractice."'");
+			$resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM practices WHERE `name`= '".$namePractice."' and `id` != '".$idPractice."' ");
 			if (mysqli_num_rows($resultat) != '0')
 			{
 				return true;

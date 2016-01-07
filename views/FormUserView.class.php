@@ -7,36 +7,50 @@ class FormUserView{
 	public function getViewInsert(){
 
 		return '
+		<script>document.getElementById("tabUser").className = "active";</script>
 		<div class="container"> 
 			<div id="alert">  
 			</div>
 			<div style="margin-top:20px;" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
 				<div class="panel panel-primary" >
 					<div class="panel-heading">
-						<div class="panel-title">Création de cours</div>
+						<div class="panel-title">Création d\'un utilisateur</div>
 					</div>     
 
 					<div style="padding-top:30px" class="panel-body" >
 
-						<form method="post" class="form-horizontal" role="form" action="index.php?page=upload" enctype="multipart/form-data">
+						<form method="post" class="form-horizontal" role="form" action="index.php?page=createUser" enctype="multipart/form-data">
 
 							<div style="margin-bottom: 25px">
-								Nom du cours :<br> <input type="text" class="form-control" name="namePractice" placeholder="Entrez le titre du cours" required>                                      
+								Login :<br> <input type="text" class="form-control" name="loginUser" placeholder="Entrez le login" required>                                      
 							</div>
 
 							<div style="margin-bottom: 25px">
-								Description du cours :<br> <textarea class="form-control" name="descriptionPractice" cols="0" rows="0" placeholder="Entrez la description du cours" required></textarea>                            
+								Email :<br> <input type="email" class="form-control" name="emailUser" placeholder="Entrez l\'email" required>                                      
 							</div>
 
 							<div style="margin-bottom: 25px">
-								<input type="hidden" name="MAX_FILE_SIZE" value="10000000">
-								Fichier : <input type="file" name="fichierUp" size="50" required>                                       
+								Mot de passe :<br> <input type="password" class="form-control" name="passwordUser" placeholder="Entrez le mot de passe" required>                                      
+							</div>
+
+							<div style="margin-bottom: 25px">
+								Type : 
+								<div class="form-group">
+									<div class="col-lg-6">
+										<select class="form-control" name="typeUser">
+											<option value="">Séléctionnez le type</option>
+											<option value="Etudiant">Etudiant</option>
+											<option value="Professeur">Professeur</option>
+											<option value="Admin">Admin</option>
+										</select>
+									</div>
+								</div>                                     
 							</div>
 
 							<div style="margin-top:10px" class="form-group">
 								<div class="col-sm-12 controls">
-									<input type="submit" name="envoyer" class="btn btn-success" value="Créer le cours">
-									<a class="btn btn-warning" href="index.php?page=practice">Annuler</a>
+									<input style="margin-top: 10px;" type="submit" name="envoyer" class="btn btn-success" value="Créer l\'utilisateur">
+									<a style="margin-top: 10px;" class="btn btn-warning" href="index.php?page=user">Annuler</a>
 								</div>
 							</div>
 						</form>     
@@ -47,40 +61,68 @@ class FormUserView{
 		';			
 	}
 
-	public function getViewUpdate($idPractice, $name, $description, $file, $path){
+	public function getViewUpdate($idUser, $loginUser, $passwordUser, $emailUser, $typeUser){
 
-		return '
+		if ($typeUser=="Etudiant") { 
+			$typeEtudiant = "selected";
+			$typeProfesseur = "";
+			$typeAdmin = "";
+		}
+		else if ($typeUser=="Professeur") { 
+			$typeEtudiant = "";
+			$typeProfesseur = "selected";
+			$typeAdmin = "";
+		}
+		else if ($typeUser=="Admin") { 
+			$typeEtudiant = "";
+			$typeProfesseur = "";
+			$typeAdmin = "selected";
+		}
+		$form = '
+		<script>document.getElementById("tabUser").className = "active";</script>
 		<div class="container"> 
 			<div id="alert">  
 			</div>
 			<div style="margin-top:20px;" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
 				<div class="panel panel-primary" >
 					<div class="panel-heading">
-						<div class="panel-title">Mise à jour du cours <b>'.$name.'</b></div>
+						<div class="panel-title">Mise à jour de l\'utilisateur <b>'.$loginUser.'</b></div>
 					</div>     
 
 					<div style="padding-top:30px" class="panel-body" >
 
-						<form method="post" class="form-horizontal" role="form" action="index.php?page=updatePractice&idPractice='.$idPractice.'" enctype="multipart/form-data">
+						<form method="post" class="form-horizontal" role="form" action="index.php?page=updateUser&idUser='.$idUser.'" enctype="multipart/form-data">
 
 							<div style="margin-bottom: 25px">
-								Nom du cours :<br> <input type="text" class="form-control" name="namePractice" value="'.$name.'" required>                                      
+								Login :<br> <input type="text" class="form-control" value="'.$loginUser.'" name="loginUser" placeholder="Entrez le login" required>                                      
 							</div>
 
 							<div style="margin-bottom: 25px">
-								Description du cours :<br> <textarea class="form-control" name="descriptionPractice" cols="0" rows="0" required>'.$description.'</textarea>                            
+								Email :<br> <input type="email" class="form-control" value="'.$emailUser.'" name="emailUser" placeholder="Entrez l\'email" required>                                      
 							</div>
 
 							<div style="margin-bottom: 25px">
-								Fichier actuel : <b>'.$file.'</b><a style="margin-left: 10px;" class="text-primary" download target="_blank" href="/'.$path.'"><i class="fa fa-download"></i></a><br /><br />
-								<input type="hidden" name="MAX_FILE_SIZE" value="10000000">
-								Fichier (ne renvoyez pas de fichier si vous souhaitez garder le cours actuel) : <input type="file" name="fichierUp" size="50">                                       
+								Mot de passe :<br> <input type="password" class="form-control" value="'.$passwordUser.'" name="passwordUser" placeholder="Entrez le mot de passe" required>                                      
+							</div>
+
+							<div style="margin-bottom: 25px">
+								Type : 
+								<div class="form-group">
+									<div class="col-lg-6">
+										<select class="form-control" name="typeUser">
+											<option value="">Séléctionnez le type</option>
+											<option value="Etudiant"'. $typeEtudiant .'>Etudiant</option>
+											<option value="Professeur"'. $typeProfesseur .'>Professeur</option>
+											<option value="Admin"'. $typeAdmin .'>Admin</option>
+										</select>
+									</div>
+								</div>                                     
 							</div>
 
 							<div style="margin-top:10px" class="form-group">
 								<div class="col-sm-12 controls">
-									<input type="submit" name="envoyer" class="btn btn-success" value="Mettre à jour">
-									<a class="btn btn-warning" href="index.php?page=practice">Annuler</a>
+									<input style="margin-top: 10px;" type="submit" name="envoyer" class="btn btn-success" value="Mettre à jour">
+									<a style="margin-top: 10px;" class="btn btn-warning" href="index.php?page=user">Annuler</a>
 								</div>
 							</div>
 						</form>     
@@ -88,7 +130,9 @@ class FormUserView{
 				</div>  
 			</div>
 		</div>
-		';			
+		';
+
+		return $form;		
 	}
 }
 

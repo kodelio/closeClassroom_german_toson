@@ -20,8 +20,8 @@ class navBarView{
 
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
 					<ul class="nav navbar-nav">
-						<li><a href="index.php?page=user">Administration Utilisateurs</a></li>
-						<li><a href="index.php?page=practice">Cours</a></li>
+						<li id="tabUser"><a href="index.php?page=user">Administration Utilisateurs</a></li>
+						<li id="tabPractice"><a href="index.php?page=practice">Cours</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="index.php" style="font-size: 13px;"> Bonjour, <strong>'.$_SESSION['username'].'</strong> </a>

@@ -26,7 +26,7 @@ final class PracticeController
 	public function uploadFile($namePractice, $descriptionPractice)
 	{
 		$getDoublonByName = new PracticeDAO();
-		$doublon = $getDoublonByName->getDoublonByName($namePractice);
+		$doublon = $getDoublonByName->getDoublonByName($namePractice, '');
 
 		if($doublon)
 		{
@@ -84,7 +84,7 @@ final class PracticeController
 	public function updateFile($namePractice, $descriptionPractice, $idPractice, $newFile)
 	{
 		$getDoublonByName = new PracticeDAO();
-		$doublon = $getDoublonByName->getDoublonByName($namePractice);
+		$doublon = $getDoublonByName->getDoublonByName($namePractice, $idPractice);
 
 		if($doublon)
 		{

@@ -7,6 +7,7 @@ class PracticeView{
 	public function getViewTop(){
 
 		return '
+		<script>document.getElementById("tabPractice").className = "active";</script>
 		<div class="container">  
 			<div class="panel panel-default">
 				<div class="panel-body" style="padding-top: 0px;">  
@@ -34,7 +35,7 @@ class PracticeView{
 	public function getListe(){
 		$managerPractice = new PracticeDAO();
 		$mesCours = $managerPractice->getPractices();
-		$view = '<a style="margin-bottom: 20px;" href="index.php?page=upload" class="btn btn-info"><span class="fa fa-plus"></span> Envoyer un cours</a>';
+		$view = '<a style="margin-bottom: 20px;" href="index.php?page=createPractice" class="btn btn-info"><span class="fa fa-plus"></span> Créer un cours</a>';
 		if (!$mesCours)
 		{
 			$view = $view.'<div class="panel panel-info" style="margin-top: 20px;">
