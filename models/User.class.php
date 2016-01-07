@@ -1,6 +1,6 @@
 <?php
 
-class Utilisateur {
+class User {
 	private $_login;
 	private $_password;
 

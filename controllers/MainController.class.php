@@ -10,7 +10,7 @@ include('views/UserView.class.php');
 include('views/FormUserView.class.php');
 
 	// models
-include('models/Utilisateur.class.php');
+include('models/User.class.php');
 include('models/Practice.class.php');
 
 	//controllers
@@ -29,7 +29,7 @@ class MainController {
 		if(!$this->isLogged() && isset($_COOKIE["moncookie"])) {
 			$username_cookie = substr($_COOKIE["moncookie"], 0, strrpos($_COOKIE["moncookie"], " "));
 			$password_cookie = substr($_COOKIE["moncookie"], strrpos($_COOKIE["moncookie"], " ")+1);
-			$login = new Utilisateur($username_cookie, $password_cookie);
+			$login = new User($username_cookie, $password_cookie);
 		}
 
 			//insertion de la navbar
@@ -148,8 +148,6 @@ class MainController {
 				$_SESSION['isLogged'] = false;				
 			}
 			
-
-			//$login = new Utilisateur($_GET['username'],$_GET['password']);
 
 			if (!$this->isLogged())
 			{

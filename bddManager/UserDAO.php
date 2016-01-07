@@ -40,7 +40,7 @@ class UserDAO
 				$_SESSION['email'] = $log['email'];
 				$cookie_value = $login.' '.$password;
 				setcookie("moncookie", $cookie_value, time() + (86400 * 30), "/"); // 86400 = 1 jour
-				new Utilisateur($login, $password);
+				new User($login, $password);
 				header('Location: /webserv/');
 			}
 			else
@@ -127,73 +127,73 @@ class UserDAO
 			if (mysqli_num_rows($resultat) != '0')
 			{
 				return true;
-}
-else
-{
-	return false;
-}
-}
-catch(Exception $e)
-{
-	$_SESSION['error'] = 'Erreur requete BDD';
-	$_SESSION['display_msg_error'] = true;
-}
-}
-
-function createUser($loginUser, $passwordUser, $emailUser, $typeUser) {
-	try
-	{
-		mysqli_query($_SESSION['bdd'], "INSERT INTO users (type, login, password, email) VALUES ('".$typeUser."', '".$loginUser."', '".$passwordUser."', '".$emailUser."')");
-	}
-	catch(Exception $e)
-	{
-		$_SESSION['error'] = 'Erreur requete BDD';
-		$_SESSION['display_msg_error'] = true;
-	}
-}
-
-function updateUser($idUser, $loginUser, $passwordUser, $emailUser, $typeUser) {
-	try
-	{
-		mysqli_query($_SESSION['bdd'], "UPDATE `users` SET `type` = '".$typeUser."', `login` = '".$loginUser."', `password` = '".$passwordUser."', `email` = '".$emailUser."' WHERE `id` = '".$idUser."'");
-	}
-	catch(Exception $e)
-	{
-		$_SESSION['error'] = 'Erreur requete BDD';
-		$_SESSION['display_msg_error'] = true;
-	}
-}
-
-function deleteUser($idUser) {
-	try
-	{
-		mysqli_query($_SESSION['bdd'], "DELETE FROM `users` WHERE `id` = '".$idUser."'");
-	}
-	catch(Exception $e)
-	{
-		$_SESSION['error'] = 'Erreur requete BDD';
-		$_SESSION['display_msg_error'] = true;
-	}
-}
-
-function verifUser($idUser) {
-	try
-	{
-		$resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM users WHERE `id`= '".$idUser."'");
-		if (mysqli_num_rows($resultat) != '0')
-		{
-			return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
-		else
+		catch(Exception $e)
 		{
-			return false;
+			$_SESSION['error'] = 'Erreur requete BDD';
+			$_SESSION['display_msg_error'] = true;
 		}
 	}
-	catch(Exception $e)
-	{
-		$_SESSION['error'] = 'Erreur requete BDD';
-		$_SESSION['display_msg_error'] = true;
+
+	function createUser($loginUser, $passwordUser, $emailUser, $typeUser) {
+		try
+		{
+			mysqli_query($_SESSION['bdd'], "INSERT INTO users (type, login, password, email) VALUES ('".$typeUser."', '".$loginUser."', '".$passwordUser."', '".$emailUser."')");
+		}
+		catch(Exception $e)
+		{
+			$_SESSION['error'] = 'Erreur requete BDD';
+			$_SESSION['display_msg_error'] = true;
+		}
 	}
-}
+
+	function updateUser($idUser, $loginUser, $passwordUser, $emailUser, $typeUser) {
+		try
+		{
+			mysqli_query($_SESSION['bdd'], "UPDATE `users` SET `type` = '".$typeUser."', `login` = '".$loginUser."', `password` = '".$passwordUser."', `email` = '".$emailUser."' WHERE `id` = '".$idUser."'");
+		}
+		catch(Exception $e)
+		{
+			$_SESSION['error'] = 'Erreur requete BDD';
+			$_SESSION['display_msg_error'] = true;
+		}
+	}
+
+	function deleteUser($idUser) {
+		try
+		{
+			mysqli_query($_SESSION['bdd'], "DELETE FROM `users` WHERE `id` = '".$idUser."'");
+		}
+		catch(Exception $e)
+		{
+			$_SESSION['error'] = 'Erreur requete BDD';
+			$_SESSION['display_msg_error'] = true;
+		}
+	}
+
+	function verifUser($idUser) {
+		try
+		{
+			$resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM users WHERE `id`= '".$idUser."'");
+			if (mysqli_num_rows($resultat) != '0')
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		catch(Exception $e)
+		{
+			$_SESSION['error'] = 'Erreur requete BDD';
+			$_SESSION['display_msg_error'] = true;
+		}
+	}
 }
 ?>
