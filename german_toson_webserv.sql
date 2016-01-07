@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Dim 03 Janvier 2016 à 17:04
+-- Généré le :  Jeu 07 Janvier 2016 à 09:41
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -52,23 +52,24 @@ INSERT INTO `practices` (`id`, `name`, `path`, `user`, `description`, `date`, `f
 
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `type` int(10) unsigned NOT NULL,
+  `type` varchar(20) COLLATE utf8_bin NOT NULL,
   `login` varchar(20) COLLATE utf8_bin NOT NULL,
   `password` varchar(60) COLLATE utf8_bin NOT NULL,
   `email` varchar(60) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `login` (`login`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=8 ;
 
 --
 -- Contenu de la table `users`
 --
 
 INSERT INTO `users` (`id`, `type`, `login`, `password`, `email`) VALUES
-(1, 1, 'admin', 'toto', 'admin@gmail.com'),
-(2, 2, 'Laurent', 'tata', 'laurentt96@outlook.fr'),
-(3, 3, 'Arnaud', 'titi', 'arnaud.german@gmail.com');
+(1, 'Admin', 'admin', 'toto', 'admin@gmail.com'),
+(2, 'Professeur', 'Laurent', 'tata', 'laurentt96@outlook.fr'),
+(3, 'Etudiant', 'Arnaud', 'titi', 'arnaud.german@gmail.com'),
+(7, 'Etudiant', 'test2', 'test', 'test@gmail.com');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
