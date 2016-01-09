@@ -36,6 +36,7 @@ class UserDAO
 			{
 				$_SESSION['isLogged'] = true;
 				$_SESSION['username'] = $login;
+				$_SESSION['idUser'] = $log['id'];
 				$_SESSION['type'] = $log['type'];
 				$_SESSION['email'] = $log['email'];
 				$cookie_value = $login.' '.$password;
@@ -79,10 +80,10 @@ class UserDAO
 		}
 	}
 
-	function getInfoUser($idPractice) {
+	function getInfoUser($idUser) {
 		try
 		{
-			$resultat = mysqli_query($_SESSION['bdd'], "SELECT login, email, password, type FROM users WHERE `id`= '".$_GET['idUser']."'");
+			$resultat = mysqli_query($_SESSION['bdd'], "SELECT id, login, email, password, type FROM users WHERE `id`= '".$idUser."'");
 			if (mysqli_num_rows($resultat) != '0')
 			{
 				$tab[0] = mysqli_fetch_assoc($resultat);

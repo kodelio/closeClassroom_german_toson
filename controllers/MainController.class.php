@@ -25,17 +25,17 @@ class MainController {
 
 	function __construct() {
 
-			//charge la session si cookie présent
+		//charge la session si cookie présent
 		if(!$this->isLogged() && isset($_COOKIE["moncookie"])) {
 			$username_cookie = substr($_COOKIE["moncookie"], 0, strrpos($_COOKIE["moncookie"], " "));
 			$password_cookie = substr($_COOKIE["moncookie"], strrpos($_COOKIE["moncookie"], " ")+1);
 			$login = new User($username_cookie, $password_cookie);
 		}
 
-			//insertion de la navbar
+		//insertion de la navbar
 		$this->navBar();
 
-			//choix de la page
+		//choix de la page
 		if ($this->isLogged())
 		{
 			if (isset($_GET['page']))
@@ -82,106 +82,117 @@ class MainController {
 					$this->deleteUser();
 					break;
 
-						default: //404
-						break;
-					}
-				}
-				else
-				{
+					default:
+					$_SESSION['error'] = 'La page n\'existe pas';
+					$_SESSION['display_msg_error'] = true;
 					$this->profile();
-				}			
+					break;
+				}
 			}
 			else
 			{
-				$this->login();
-			}
-			
-			//popup d'erreur
-			if(isset($_SESSION['error']) AND $_SESSION['error'] != null AND isset($_SESSION['display_msg_error']) AND $_SESSION['display_msg_error'])
-			{
-				include('include/ErrorModal.php');
-				$_SESSION['display_msg_error'] = false;
-			}
-			//popup de succès
-			if(isset($_SESSION['success']) AND $_SESSION['success'] != null AND isset($_SESSION['display_msg_success']) AND $_SESSION['display_msg_success'])
-			{
-				include('include/SuccessModal.php');
-				$_SESSION['display_msg_success'] = false;
-			}
+				$this->profile();
+			}			
 		}
-		
-		//insertion de la navbar
-		function navBar() {
-			$navBarView = new navBarView();
-			
-			if ($this->isLogged())
-			{
-				echo $navBarView->getViewLogged();
-			}
-			else
-			{
-				echo $navBarView->getViewLogout();
-			}
-		}
-		
-		//teste si l'utilisateur est connecté
-		function isLogged() {
-			if (isset($_SESSION['isLogged']) AND $_SESSION['isLogged'] == true)
-			{
-				return true;
-			}
-			else
-			{
-				return false;
-			}
+		else
+		{
+			$this->login();
 		}
 
-		//charge la page de login
-		function login() {
-			$managerUser = new UserDAO();
-			if (isset($_GET['username']) && isset($_GET['password']))
-			{
-				$managerUser->getUserByLoginAndPassword($_GET['username'],$_GET['password']);
-			}
-			else
-			{
-				$_SESSION['isLogged'] = false;				
-			}
-			
+		//popup d'erreur
+		if(isset($_SESSION['error']) AND $_SESSION['error'] != null AND isset($_SESSION['display_msg_error']) AND $_SESSION['display_msg_error'])
+		{
+			include('include/ErrorModal.php');
+			$_SESSION['display_msg_error'] = false;
+		}
+		//popup de succès
+		if(isset($_SESSION['success']) AND $_SESSION['success'] != null AND isset($_SESSION['display_msg_success']) AND $_SESSION['display_msg_success'])
+		{
+			include('include/SuccessModal.php');
+			$_SESSION['display_msg_success'] = false;
+		}
+	}
 
-			if (!$this->isLogged())
-			{
-				$_SESSION['isLogged'] = false;
-				$loginView = new loginView();
-				echo $loginView->getView();
-			}
-			else
-			{
-				$profileView = new ProfileView();
-				echo $profileView->getView();
-			}
+	//insertion de la navbar
+	function navBar() {
+		$navBarView = new navBarView();
+
+		if ($this->isLogged())
+		{
+			$infosUser = new UserDAO();
+			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
+			echo $navBarView->getViewLogged($infos['login'], $infos['type']);
+		}
+		else
+		{
+			echo $navBarView->getViewLogout();
+		}
+	}
+
+	//teste si l'utilisateur est connecté
+	function isLogged() {
+		if (isset($_SESSION['isLogged']) AND $_SESSION['isLogged'] == true)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+
+	//charge la page de login
+	function login() {
+		$managerUser = new UserDAO();
+		if (isset($_GET['username']) && isset($_GET['password']))
+		{
+			$managerUser->getUserByLoginAndPassword($_GET['username'],$_GET['password']);
+		}
+		else
+		{
+			$_SESSION['isLogged'] = false;				
 		}
 
-		//charge la page de déconnection
-		function logout() {
-			if (isset($_COOKIE['moncookie']))
-			{
-				unset($_COOKIE['moncookie']);
-				setcookie('moncookie', '', time() - 3600, '/');
-			}
-			session_unset();
-			session_destroy();
-			header('Location: /webserv/');
-		}
 
-		//charge la page practice
-		function practice() {
-			$practiceView = new PracticeView();
-			echo $practiceView->getView();
+		if (!$this->isLogged())
+		{
+			$_SESSION['isLogged'] = false;
+			$loginView = new loginView();
+			echo $loginView->getView();
 		}
+		else
+		{
+			$profileView = new ProfileView();
+			echo $profileView->getView();
+		}
+	}
 
-		//charge la page createPractice
-		function createPractice() {
+	//charge la page de déconnexion
+	function logout() {
+		if (isset($_COOKIE['moncookie']))
+		{
+			unset($_COOKIE['moncookie']);
+			setcookie('moncookie', '', time() - 3600, '/');
+		}
+		session_unset();
+		session_destroy();
+		header('Location: /webserv/');
+	}
+
+	//charge la page practice
+	function practice() {
+		$infosUser = new UserDAO();
+		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
+		$practiceView = new PracticeView();
+		echo $practiceView->getView($infos['type']);
+	}
+
+	//charge la page createPractice
+	function createPractice() {
+		$infosUser = new UserDAO();
+		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
+		if ($infos['type'] != "Etudiant")
+		{
 			if (isset($_POST['namePractice']) && isset($_FILES['fichierUp']['name']) AND $_FILES['fichierUp']['name'] != null)
 			{
 				$uploader = PracticeController::Instance();
@@ -190,9 +201,19 @@ class MainController {
 			$formPracticeView = new FormPracticeView();
 			echo $formPracticeView->getViewInsert();
 		}
+		else {
+			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
+			$_SESSION['display_msg_error'] = true;
+			$this->practice();
+		}
+	}
 
-		//charge la page mise à jour cours
-		function updatePractice() {
+	//charge la page mise à jour cours
+	function updatePractice() {
+		$infosUser = new UserDAO();
+		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
+		if ($infos['type'] != "Etudiant")
+		{
 			$verifPractice = new PracticeDAO();
 			$isPracticeExist = $verifPractice->verifPractice($_GET['idPractice']);
 			if (!$isPracticeExist)
@@ -229,22 +250,52 @@ class MainController {
 				echo $formPracticeView->getViewUpdate($_GET['idPractice'], $infos['name'], $infos['description'], $file['file'], $file['path']);
 			}
 		}
+		else {
+			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
+			$_SESSION['display_msg_error'] = true;
+			$this->practice();
+		}
+	}
 
-		//charge la page delete practice
-		function deletePractice() {
+	//charge la page delete practice
+	function deletePractice() {
+		$infosUser = new UserDAO();
+		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
+		if ($infos['type'] != "Etudiant")
+		{
 			$uploader = PracticeController::Instance();
 			$uploader->deleteFile($_GET['idPractice']);
 			$this->practice();
 		}
+		else {
+			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
+			$_SESSION['display_msg_error'] = true;
+			$this->practice();
+		}
+	}
 
-		//charge la page user
-		function user() {
+	//charge la page user
+	function user() {
+		$infosUser = new UserDAO();
+		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
+		if ($infos['type'] == "Admin")
+		{
 			$userView = new UserView();
 			echo $userView->getView();
 		}
+		else {
+			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
+			$_SESSION['display_msg_error'] = true;
+			$this->profile();
+		}
+	}
 
-		//charge la page createUser
-		function createUser() {
+	//charge la page createUser
+	function createUser() {
+		$infosUser = new UserDAO();
+		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
+		if ($infos['type'] == "Admin")
+		{
 			if (isset($_POST['loginUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser']) && isset($_POST['typeUser']))
 			{
 				$userController = new UserController();
@@ -253,9 +304,19 @@ class MainController {
 			$userView = new FormUserView();
 			echo $userView->getViewInsert();
 		}
+		else {
+			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
+			$_SESSION['display_msg_error'] = true;
+			$this->profile();
+		}
+	}
 
-		//charge la page mise à jour user
-		function updateUser() {
+	//charge la page mise à jour user
+	function updateUser() {
+		$infosUser = new UserDAO();
+		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
+		if ($infos['type'] == "Admin")
+		{
 			$verifUser = new UserDAO();
 			$isUserExist = $verifUser->verifUser($_GET['idUser']);
 			if (!$isUserExist)
@@ -277,18 +338,36 @@ class MainController {
 				echo $userView->getViewUpdate($_GET['idUser'], $infos['login'], $infos['password'], $infos['email'], $infos['type']);
 			}
 		}
+		else {
+			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
+			$_SESSION['display_msg_error'] = true;
+			$this->profile();
+		}
+	}
 
-		//charge la page delete user
-		function deleteUser() {
+	//charge la page delete user
+	function deleteUser() {
+		$infosUser = new UserDAO();
+		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
+		if ($infos['type'] == "Admin")
+		{
 			$userController = new UserController();
 			$deleteUser = $userController->deleteUser($_GET['idUser']);
 			$this->user();
 		}
-
-		//charge la page profile
-		function profile() {
-			$profileView = new ProfileView();
-			echo $profileView->getView();
+		else {
+			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
+			$_SESSION['display_msg_error'] = true;
+			$this->profile();
 		}
 	}
-	?>
+
+	//charge la page profile
+	function profile() {
+		$infosUser = new UserDAO();
+		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
+		$profileView = new ProfileView();
+		echo $profileView->getView($infos['id'], $infos['login'], $infos['email'], $infos['type']);
+	}
+}
+?>
