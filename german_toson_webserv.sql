@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Jeu 07 Janvier 2016 à 09:41
+-- Généré le :  Sam 16 Janvier 2016 à 15:44
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -30,19 +30,19 @@ CREATE TABLE IF NOT EXISTS `practices` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_bin NOT NULL,
   `path` varchar(255) COLLATE utf8_bin NOT NULL,
-  `user` varchar(30) COLLATE utf8_bin NOT NULL,
+  `user` int(11) NOT NULL,
   `description` text COLLATE utf8_bin NOT NULL,
   `date` varchar(12) COLLATE utf8_bin NOT NULL,
   `file` varchar(100) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=46 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=47 ;
 
 --
 -- Contenu de la table `practices`
 --
 
 INSERT INTO `practices` (`id`, `name`, `path`, `user`, `description`, `date`, `file`) VALUES
-(45, 'lol', 'webserv/practices/pratiques_02-01-2016_admin.pdf', 'admin', 'fegr', '02-01-2016', 'pratiques_02-01-2016_admin.pdf');
+(45, 'lol', 'webserv/practices/pratiques_02-01-2016_admin.pdf', 1, 'fegr', '02-01-2016', 'pratiques_02-01-2016_admin.pdf');
 
 -- --------------------------------------------------------
 
