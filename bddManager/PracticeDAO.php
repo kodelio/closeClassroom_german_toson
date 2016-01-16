@@ -39,6 +39,34 @@ class PracticeDAO
 		}
 	}
 
+	function getPracticesByUser($idUser) {
+		try
+		{
+			$resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM practices WHERE `user`= '".$idUser."'");
+			if (mysqli_num_rows($resultat) != '0')
+			{
+				$tab[0] = mysqli_fetch_assoc($resultat);
+				if (mysqli_num_rows($resultat) > '0')
+				{
+					for ($i=1; $i<mysqli_num_rows($resultat); $i++)
+					{
+						array_push($tab, mysqli_fetch_assoc($resultat));
+					}
+				}
+				return $tab;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		catch(Exception $e)
+		{
+			$_SESSION['error'] = 'Erreur requete BDD';
+			$_SESSION['display_msg_error'] = true;
+		}
+	}
+
 	function getNameAndDescriptionPractice($idPractice) {
 		try
 		{
@@ -83,7 +111,7 @@ class PracticeDAO
 	function createPractice($namePractice, $_dossier, $_fichier, $descriptionPractice, $result) {
 		try
 		{
-			mysqli_query($_SESSION['bdd'], "INSERT INTO practices (name, path, file, user, description, date) VALUES ('".$namePractice."', 'webserv/".$_dossier.$_fichier."', '".$_fichier."', '".$_SESSION['username']."', '".$descriptionPractice."', '".$result."')");
+			mysqli_query($_SESSION['bdd'], "INSERT INTO practices (name, path, file, user, description, date) VALUES ('".$namePractice."', 'webserv/".$_dossier.$_fichier."', '".$_fichier."', '".$_SESSION['idUser']."', '".$descriptionPractice."', '".$result."')");
 		}
 		catch(Exception $e)
 		{

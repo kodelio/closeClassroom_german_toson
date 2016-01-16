@@ -183,8 +183,19 @@ class MainController {
 	function practice() {
 		$infosUser = new UserDAO();
 		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
-		$practiceView = new PracticeView();
-		echo $practiceView->getView($infos['type']);
+		$managerPractice = new PracticeDAO();
+		if ($infos['type'] == "Professeur")
+		{
+			$mesCours = $managerPractice->getPracticesByUser($infos['id']);
+			$practiceView = new PracticeView();
+			echo $practiceView->getView($mesCours, $infos['type']);
+		}
+		else
+		{
+			$mesCours = $managerPractice->getPractices();
+			$practiceView = new PracticeView();
+			echo $practiceView->getView($mesCours, $infos['type']);
+		}
 	}
 
 	//charge la page createPractice

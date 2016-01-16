@@ -27,6 +27,7 @@ class LoginView{
 							<div style="margin-top:10px" class="form-group">
 								<div class="col-sm-12 controls">
 									<button type="submit" id="send_btn" class="btn btn-success">Se connecter</button>
+									<a href="index.php?page=register" class="btn btn-info">S\'inscrire</a>
 									<br><br>			
 								</div>
 							</div>
