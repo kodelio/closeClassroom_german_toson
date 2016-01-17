@@ -187,12 +187,26 @@ class MainController {
 		if ($infos['type'] == "Professeur")
 		{
 			$mesCours = $managerPractice->getPracticesByUser($infos['id']);
+			if ($mesCours) {
+				foreach ($mesCours as &$cours) {
+					$idUserForPractice = $cours['user'];
+					$getInfoUser = $infosUser->getInfoUser($idUserForPractice);
+					$cours['user'] = $getInfoUser['login'];
+				}
+			}
 			$practiceView = new PracticeView();
 			echo $practiceView->getView($mesCours, $infos['type']);
 		}
 		else
 		{
 			$mesCours = $managerPractice->getPractices();
+			if ($mesCours) {
+				foreach ($mesCours as &$cours) {
+					$idUserForPractice = $cours['user'];
+					$getInfoUser = $infosUser->getInfoUser($idUserForPractice);
+					$cours['user'] = $getInfoUser['login'];
+				}
+			}
 			$practiceView = new PracticeView();
 			echo $practiceView->getView($mesCours, $infos['type']);
 		}
