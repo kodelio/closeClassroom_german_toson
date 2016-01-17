@@ -25,16 +25,23 @@ class UserView{
 		';
 	}
 
-	public function getView()
+	public function getView($userView)
 	{
-		$view = ''.$this->getViewTop().$this->getListe().$this->getViewBottom();
+		$view = ''.$this->getViewTop().$this->getListe($userView).$this->getViewBottom();
 		return $view;
 		
 	}
 
-	public function getListe(){
+	public function getListe($userView){
 		$managerUser = new UserDAO();
-		$mesUtilisateurs = $managerUser->getUsers();
+		if($userView == "Professeur")
+		{
+			$mesUtilisateurs = $managerUser->getEtudiants();
+		}
+		else {
+			$mesUtilisateurs = $managerUser->getUsers();
+		}
+		
 		$view = '<a style="margin-bottom: 20px;" href="index.php?page=createUser" class="btn btn-info"><span class="fa fa-plus"></span> Créer un utilisateur</a>';
 		if (!$mesUtilisateurs)
 		{

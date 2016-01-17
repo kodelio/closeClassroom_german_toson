@@ -306,7 +306,12 @@ class MainController {
 		if ($infos['type'] == "Admin")
 		{
 			$userView = new UserView();
-			echo $userView->getView();
+			echo $userView->getView($infos['type']);
+		}
+		else if ($infos['type'] == "Professeur")
+		{
+			$userView = new UserView();
+			echo $userView->getView($infos['type']);
 		}
 		else {
 			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
