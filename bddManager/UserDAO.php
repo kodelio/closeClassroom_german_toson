@@ -80,6 +80,34 @@ class UserDAO
 		}
 	}
 
+	function getEtudiants() {
+		try
+		{
+			$resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM users WHERE `type`= 'Etudiant'");
+			if (mysqli_num_rows($resultat) != '0')
+			{
+				$tab[0] = mysqli_fetch_assoc($resultat);
+				if (mysqli_num_rows($resultat) > '0')
+				{
+					for ($i=1; $i<mysqli_num_rows($resultat); $i++)
+					{
+						array_push($tab, mysqli_fetch_assoc($resultat));
+					}
+				}
+				return $tab;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		catch(Exception $e)
+		{
+			$_SESSION['error'] = 'Erreur requete BDD';
+			$_SESSION['display_msg_error'] = true;
+		}
+	}
+
 	function getInfoUser($idUser) {
 		try
 		{
