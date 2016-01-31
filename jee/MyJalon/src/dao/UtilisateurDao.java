@@ -16,7 +16,7 @@ public class UtilisateurDao {
 		
 		Connection connection = BddDao.connect();
 		Statement statement = connection.createStatement();
-		ResultSet result = statement.executeQuery("select * from user where login = '" + login + "' and password = '" + password + "'");
+		ResultSet result = statement.executeQuery("select * from users where login = '" + login + "' and password = '" + password + "'");
 		if(result.next()) {
 			int userId = Integer.parseInt(result.getString("id"));
 			String userUserType = result.getString("type");
@@ -50,7 +50,7 @@ public class UtilisateurDao {
 	public static void createUser(String login, String password, String name, UserType usertype) throws Exception {//TODO
 		Connection connection = BddDao.connect();
 		Statement statement = connection.createStatement();
-		ResultSet result = statement.executeQuery("select * from user where login = '" + login + "'");
+		ResultSet result = statement.executeQuery("select * from users where login = '" + login + "'");
 		if(result.next()) {
 			Exception e = new Exception("Ce login existe déjà");
 			result.close();
@@ -63,7 +63,7 @@ public class UtilisateurDao {
 			result.close();
 			statement.close();
 			statement = connection.createStatement();
-			int update = statement.executeUpdate("INSERT INTO user (login, password, name, type) VALUES ('" + login + "', '" + password + "', '" + name + "', '" + usertype.toString() + "');");
+			int update = statement.executeUpdate("INSERT INTO users (login, password, name, type) VALUES ('" + login + "', '" + password + "', '" + name + "', '" + usertype.toString() + "');");
 			statement.close();
 			connection.close();
 		}
