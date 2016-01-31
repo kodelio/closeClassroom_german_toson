@@ -16,14 +16,17 @@ public class UtilisateurDao {
 		
 		Connection connection = BddDao.connect();
 		Statement statement = connection.createStatement();
-		ResultSet result = statement.executeQuery("select * from utilisateur where login = '" + login + "' and password = '" + password + "'");
+		ResultSet result = statement.executeQuery("select * from user where login = '" + login + "' and password = '" + password + "'");
 		if(result.next()) {
 			int userId = Integer.parseInt(result.getString("id"));
+			String userUserType = result.getString("type");
 			String userLogin = result.getString("login");
 			String userPassword = result.getString("password");
+			String userEmail = result.getString("email");
 			String userName = result.getString("name");
-			String userUserType = result.getString("usertype");
-			Utilisateur user = new Utilisateur(userId, userLogin, userPassword, userName, userUserType);
+			String userFirst_name = result.getString("first_name");
+			
+			Utilisateur user = new Utilisateur(userId, userUserType, userLogin, userPassword, userEmail, userName, userFirst_name );
 			
 			result.close();
 			statement.close();
@@ -44,10 +47,10 @@ public class UtilisateurDao {
 		return UtilisateurDao.login(login,password);
 	}
 
-	public static void createUser(String login, String password, String name, UserType usertype) throws Exception {
+	public static void createUser(String login, String password, String name, UserType usertype) throws Exception {//TODO
 		Connection connection = BddDao.connect();
 		Statement statement = connection.createStatement();
-		ResultSet result = statement.executeQuery("select * from utilisateur where login = '" + login + "'");
+		ResultSet result = statement.executeQuery("select * from user where login = '" + login + "'");
 		if(result.next()) {
 			Exception e = new Exception("Ce login existe déjà");
 			result.close();
@@ -60,7 +63,7 @@ public class UtilisateurDao {
 			result.close();
 			statement.close();
 			statement = connection.createStatement();
-			int update = statement.executeUpdate("INSERT INTO utilisateur (login, password, name, usertype) VALUES ('" + login + "', '" + password + "', '" + name + "', '" + usertype.toString() + "');");
+			int update = statement.executeUpdate("INSERT INTO user (login, password, name, type) VALUES ('" + login + "', '" + password + "', '" + name + "', '" + usertype.toString() + "');");
 			statement.close();
 			connection.close();
 		}

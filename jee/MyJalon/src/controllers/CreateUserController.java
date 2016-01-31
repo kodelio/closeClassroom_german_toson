@@ -31,7 +31,7 @@ public class CreateUserController extends HttpServlet {
 		if (user == null) {
 			this.getServletContext().getRequestDispatcher("/login/").forward(request, response);
 		} else {
-			if(user.getUserType().equals(UserType.ADMIN))
+			if(user.getUserType().equals(UserType.Admin))
 			{
 				request.setAttribute("usertypes", UserType.values());
 				this.getServletContext().getRequestDispatcher("/WEB-INF/views/createUser.jsp").forward(request, response);
@@ -54,7 +54,7 @@ public class CreateUserController extends HttpServlet {
 		}
 		else 
 		{			
-			if(user.getUserType().equals(UserType.ADMIN))
+			if(user.getUserType().equals(UserType.Admin))
 			{
 				//TODO
 				String login = request.getParameter("login");

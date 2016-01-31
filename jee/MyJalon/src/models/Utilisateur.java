@@ -2,30 +2,37 @@ package models;
 
 public class Utilisateur {
 	private int id;
+	private UserType UserType;
 	private String login;
 	private String password;
+	private String email;
 	private String name;
-	private UserType UserType;
+	private String first_name;
+	
 	
 	
 	@SuppressWarnings("unused")
 	private Utilisateur() {		
 	}
 	
-	public Utilisateur(int id, String login, String password, String name, String userType) {
+	public Utilisateur(int id, String userType, String login, String password, String email, String name, String first_name) {
 		this.id = id;
+		this.UserType = models.UserType.valueOf(userType);
 		this.login = login;
 		this.password = password;
+		this.email = email;
 		this.name = name;
-		this.UserType = models.UserType.valueOf(userType);
+		this.first_name = first_name;		
 	}
 	
-	public Utilisateur(int id, String login, String password, String name, UserType userType) {
+	public Utilisateur(int id, UserType userType, String login, String password, String email, String name, String first_name) {
 		this.id = id;
+		this.UserType = userType;
 		this.login = login;
 		this.password = password;
+		this.email = email;
 		this.name = name;
-		this.UserType = userType;
+		this.first_name = first_name;		
 	}
 	
 	public int getId() {
@@ -34,6 +41,18 @@ public class Utilisateur {
 	
 	public void setId(int id) {
 		this.id = id;
+	}
+	
+	public UserType getUserType() {
+		return this.UserType;
+	}
+	
+	public void setUserType(UserType userType) {
+		this.UserType = userType;
+	}
+	
+	public void setUserType(String userType) {
+		this.UserType = models.UserType.valueOf(userType);
 	}
 	
 	public String getLogin() {
@@ -52,6 +71,14 @@ public class Utilisateur {
 		this.password = password;
 	}
 	
+	public String getEmail() {
+		return email;
+	}
+	
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -60,15 +87,11 @@ public class Utilisateur {
 		this.name = name;
 	}
 	
-	public UserType getUserType() {
-		return this.UserType;
+	public String getFirst_name() {
+		return first_name;
 	}
 	
-	public void setUserType(UserType userType) {
-		this.UserType = userType;
-	}
-	
-	public void setUserType(String userType) {
-		this.UserType = models.UserType.valueOf(userType);
+	public void setFirst_name(String first_name) {
+		this.first_name = first_name;
 	}
 }
