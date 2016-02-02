@@ -8,6 +8,7 @@ include('views/FormPracticeView.class.php');
 include('views/PracticeView.class.php');
 include('views/UserView.class.php');
 include('views/FormUserView.class.php');
+include('views/FormRegisterView.class.php');
 
 	// models
 include('models/User.class.php');
@@ -82,6 +83,12 @@ class MainController {
 					$this->deleteUser();
 					break;
 
+					case 'deleteUser':
+					$_SESSION['error'] = 'Vous ne pouvez pas vous inscrite en étant connecté';
+					$_SESSION['display_msg_error'] = true;
+					$this->profile();
+					break;
+
 					default:
 					$_SESSION['error'] = 'La page n\'existe pas';
 					$_SESSION['display_msg_error'] = true;
@@ -93,6 +100,9 @@ class MainController {
 			{
 				$this->profile();
 			}			
+		}
+		else if ((isset($_GET['page'])) && ($_GET['page'] == 'register')) {
+			$this->register();
 		}
 		else
 		{
@@ -398,6 +408,30 @@ class MainController {
 		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
 		$profileView = new ProfileView();
 		echo $profileView->getView($infos['id'], $infos['login'], $infos['email'], $infos['type']);
+	}
+
+	//charge la page d'inscription
+	function register() {
+		$registerView = new FormRegisterView();
+		if (isset($_POST['loginUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser']) && isset($_POST['typeUser']))
+		{
+			if ($_POST['typeUser'] == "Admin")
+			{
+				$_SESSION['error'] = 'Impossible de s\'inscrire en tant qu\'administrateur';
+				$_SESSION['display_msg_error'] = true;
+				echo $registerView->getView();
+			}
+			else if ($_POST['passwordUser'] != $_POST['passwordUserCheck']) {
+				$_SESSION['error'] = 'Les mots de passe ne sont pas identiques';
+				$_SESSION['display_msg_error'] = true;
+				echo $registerView->getView();
+			}
+			else {
+				$userController = new UserController();
+				$createUser = $userController->register($_POST['loginUser'], $_POST['passwordUser'], $_POST['emailUser'], $_POST['typeUser']);
+			}
+		}
+		echo $registerView->getView();
 	}
 }
 ?>

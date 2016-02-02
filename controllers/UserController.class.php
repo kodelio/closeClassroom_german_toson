@@ -36,7 +36,6 @@ class UserController
 				$_SESSION['error'] = 'L\'utilisateur n\'a pas été crée';
 				$_SESSION['display_msg_error'] = true;
 			}
-
 		}		
 	}
 
@@ -77,6 +76,39 @@ class UserController
 	{
 		$managerUser = new UserDAO();
 		$managerUser->deleteUser($idUser);	
+	}
+
+	public function register($loginUser, $passwordUser, $emailUser, $typeUser)
+	{
+		$getDoublon = new UserDAO();
+		$doublonEmail = $getDoublon->getDoublonByEmail($emailUser, '');
+		$doublonLogin = $getDoublon->getDoublonByLogin($loginUser, '');
+
+		if($doublonEmail)
+		{
+			$_SESSION['error'] = 'Un utilisateur avec le même email existe déjà !';
+			$_SESSION['display_msg_error'] = true;
+		}
+		else if($doublonLogin)
+		{
+			$_SESSION['error'] = 'Un utilisateur avec le même login existe déjà !';
+			$_SESSION['display_msg_error'] = true;
+		}
+		else
+		{
+			if(!(isset($_SESSION['error']) AND $_SESSION['error'] != null AND isset($_SESSION['display_msg_error']) AND $_SESSION['display_msg_error']))
+			{   
+				$registerUser = new UserDAO();
+				$registerUser->register($loginUser, $passwordUser, $emailUser, $typeUser);
+				$_SESSION['success'] = 'Votre compte <b>'.$loginUser.'</b> ('.$emailUser.') a été crée.';
+				$_SESSION['display_msg_success'] = true;
+			}
+			else 
+			{
+				$_SESSION['error'] = 'L\'inscription n\'a pas été réalisée';
+				$_SESSION['display_msg_error'] = true;
+			}
+		}
 	}
 }
 ?>

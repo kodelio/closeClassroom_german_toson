@@ -224,5 +224,17 @@ class UserDAO
 			$_SESSION['display_msg_error'] = true;
 		}
 	}
+
+	function register($loginUser, $passwordUser, $emailUser, $typeUser) {
+		try
+		{
+			mysqli_query($_SESSION['bdd'], "INSERT INTO users (type, login, password, email) VALUES ('".$typeUser."', '".$loginUser."', '".$passwordUser."', '".$emailUser."')");
+		}
+		catch(Exception $e)
+		{
+			$_SESSION['error'] = 'Erreur requete BDD';
+			$_SESSION['display_msg_error'] = true;
+		}
+	}
 }
 ?>
