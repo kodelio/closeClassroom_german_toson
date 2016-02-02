@@ -338,8 +338,15 @@ class MainController {
 		{
 			if (isset($_POST['loginUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser']) && isset($_POST['typeUser']))
 			{
-				$userController = new UserController();
-				$createUser = $userController->createUser($_POST['loginUser'], $_POST['passwordUser'], $_POST['emailUser'], $_POST['typeUser']);
+				if ($_POST['typeUser'] == "")
+				{
+					$_SESSION['error'] = 'Vous devez renseigner le type d\'utilisateur';
+					$_SESSION['display_msg_error'] = true;
+				}
+				else {
+					$userController = new UserController();
+					$createUser = $userController->createUser($_POST['loginUser'], $_POST['passwordUser'], $_POST['emailUser'], $_POST['typeUser']);
+				}
 			}
 			$userView = new FormUserView();
 			echo $userView->getViewInsert();
@@ -369,8 +376,16 @@ class MainController {
 			{
 				if (isset($_POST['loginUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser']) && isset($_POST['typeUser']))
 				{
-					$userController = new UserController();
-					$updateUser = $userController->updateUser($_POST['loginUser'], $_POST['passwordUser'], $_POST['emailUser'], $_POST['typeUser'], $_GET['idUser']);	
+					if ($_POST['typeUser'] == "")
+					{
+						$_SESSION['error'] = 'Vous devez renseigner le type d\'utilisateur';
+						$_SESSION['display_msg_error'] = true;
+					}
+					else 
+					{
+						$userController = new UserController();
+						$updateUser = $userController->updateUser($_POST['loginUser'], $_POST['passwordUser'], $_POST['emailUser'], $_POST['typeUser'], $_GET['idUser']);
+					}		
 				}
 				$managerUser = new UserDAO();
 				$infos = $managerUser->getInfoUser($_GET['idUser']);
@@ -412,25 +427,18 @@ class MainController {
 
 	//charge la page d'inscription
 	function register() {
-		$registerView = new FormRegisterView();
-		if (isset($_POST['loginUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser']) && isset($_POST['typeUser']))
+		if (isset($_POST['loginUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser']))
 		{
-			if ($_POST['typeUser'] == "Admin")
-			{
-				$_SESSION['error'] = 'Impossible de s\'inscrire en tant qu\'administrateur';
-				$_SESSION['display_msg_error'] = true;
-				echo $registerView->getView();
-			}
-			else if ($_POST['passwordUser'] != $_POST['passwordUserCheck']) {
+			if ($_POST['passwordUser'] != $_POST['passwordUserCheck']) {
 				$_SESSION['error'] = 'Les mots de passe ne sont pas identiques';
 				$_SESSION['display_msg_error'] = true;
-				echo $registerView->getView();
 			}
 			else {
 				$userController = new UserController();
-				$createUser = $userController->register($_POST['loginUser'], $_POST['passwordUser'], $_POST['emailUser'], $_POST['typeUser']);
+				$createUser = $userController->register($_POST['loginUser'], $_POST['passwordUser'], $_POST['emailUser']);
 			}
 		}
+		$registerView = new FormRegisterView();
 		echo $registerView->getView();
 	}
 }

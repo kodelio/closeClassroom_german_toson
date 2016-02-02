@@ -78,7 +78,7 @@ class UserController
 		$managerUser->deleteUser($idUser);	
 	}
 
-	public function register($loginUser, $passwordUser, $emailUser, $typeUser)
+	public function register($loginUser, $passwordUser, $emailUser)
 	{
 		$getDoublon = new UserDAO();
 		$doublonEmail = $getDoublon->getDoublonByEmail($emailUser, '');
@@ -99,8 +99,9 @@ class UserController
 			if(!(isset($_SESSION['error']) AND $_SESSION['error'] != null AND isset($_SESSION['display_msg_error']) AND $_SESSION['display_msg_error']))
 			{   
 				$registerUser = new UserDAO();
-				$registerUser->register($loginUser, $passwordUser, $emailUser, $typeUser);
-				$_SESSION['success'] = 'Votre compte <b>'.$loginUser.'</b> ('.$emailUser.') a été crée.';
+				$registerUser->register($loginUser, $passwordUser, $emailUser);
+				//TODO mail d'inscription
+				$_SESSION['success'] = 'Votre compte <b>'.$loginUser.'</b> ('.$emailUser.') a été crée. Vous allez reçevoir un mail avec vos infos.';
 				$_SESSION['display_msg_success'] = true;
 			}
 			else 

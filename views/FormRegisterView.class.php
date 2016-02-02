@@ -37,19 +37,6 @@ class FormRegisterView{
 								Retapez votre mot de passe :<br> <input type="password" class="form-control" name="passwordUserCheck" placeholder="Entrez une deuxième fois votre mot de passe" required>                                      
 							</div>
 
-							<div style="margin-bottom: 25px">
-								Type : 
-								<div class="form-group">
-									<div class="col-lg-6">
-										<select class="form-control" name="typeUser">
-											<option value="">Séléctionnez le type</option>
-											<option value="Etudiant">Etudiant</option>
-											<option value="Professeur">Professeur</option>
-										</select>
-									</div>
-								</div>                                     
-							</div>
-
 							<div style="margin-top:10px" class="form-group">
 								<div class="col-sm-12 controls">
 									<input style="margin-top: 10px;" type="submit" name="envoyer" class="btn btn-success" value="S\'inscrire">

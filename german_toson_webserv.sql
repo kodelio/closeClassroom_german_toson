@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Mar 02 Février 2016 à 14:31
+-- Généré le :  Mar 02 Février 2016 à 19:46
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `practices` (
 --
 
 INSERT INTO `practices` (`id`, `name`, `path`, `user`, `description`, `date`, `file`, `subject`) VALUES
-(45, 'lol', 'webserv/practices/pratiques_02-01-2016_admin.pdf', 1, 'fegr', '02-01-2016', 'pratiques_02-01-2016_admin.pdf', 1);
+(45, 'Pratiques', 'webserv/practices/pratiques_02-01-2016_admin.pdf', 2, 'Cours sur les bonnes pratiques du web', '02-01-2016', 'pratiques_02-01-2016_admin.pdf', 1);
 
 -- --------------------------------------------------------
 
@@ -99,7 +99,7 @@ CREATE TABLE IF NOT EXISTS `subject` (
 --
 
 INSERT INTO `subject` (`id`, `name`, `description`, `promotion`) VALUES
-(1, 'Maths', 'Maths S3 Alt', 0);
+(1, 'Web', 'Web S3 Alt', 0);
 
 -- --------------------------------------------------------
 
@@ -118,17 +118,16 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `login` (`login`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=10 ;
 
 --
 -- Contenu de la table `users`
 --
 
 INSERT INTO `users` (`id`, `type`, `login`, `password`, `email`, `name`, `first_name`) VALUES
-(1, 'Admin', 'admin', 'toto', 'admin@gmail.com', 'admin', 'admin'),
-(2, 'Professeur', 'Laurent', 'tata', 'laurentt96@outlook.fr', 'TOSON', 'Laurent'),
-(3, 'Etudiant', 'Arnaud', 'titi', 'arnaud.german@gmail.com', 'GERMAN', 'Arnaud'),
-(7, 'Etudiant', 'test2', 'test', 'test@gmail.com', 'test', 'test');
+(1, 'Admin', 'admin', 'admin', 'contact@laurent-toson.fr', 'admin', 'admin'),
+(2, 'Professeur', 'laurent', 'laurent', 'laurentt96@outlook.fr', 'TOSON', 'Laurent'),
+(3, 'Etudiant', 'arnaud', 'arnaud', 'arnaud.german@gmail.com', 'GERMAN', 'Arnaud');
 
 --
 -- Contraintes pour les tables exportées
