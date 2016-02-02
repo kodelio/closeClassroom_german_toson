@@ -1,62 +1,61 @@
-<?php 
+<?php
 
-class UserView{
 
-	function __construct(){}
+class UserView
+{
+    public function __construct()
+    {
+    }
 
-	public function getViewTop(){
-
-		return '
+    public function getViewTop()
+    {
+        return '
 		<script>document.getElementById("tabUser").className = "active";</script>
 		<div class="container">  
 			<div class="panel panel-default">
 				<div class="panel-body" style="padding-top: 0px;">  
 					<h3>Utilisateurs :</h3>
-					<div class="list-group">';			
-					}
+					<div class="list-group">';
+    }
 
-					public function getViewBottom(){
-
-						return '
+    public function getViewBottom()
+    {
+        return '
 					</div>
 				</div>
 			</div>
 		</div>
 		';
-	}
+    }
 
-	public function getView($userView)
-	{
-		$view = ''.$this->getViewTop().$this->getListe($userView).$this->getViewBottom();
-		return $view;
-		
-	}
+    public function getView($userView)
+    {
+        $view = ''.$this->getViewTop().$this->getListe($userView).$this->getViewBottom();
 
-	public function getListe($userView){
-		$managerUser = new UserDAO();
-		if($userView == "Professeur")
-		{
-			$mesUtilisateurs = $managerUser->getEtudiants();
-		}
-		else {
-			$mesUtilisateurs = $managerUser->getUsers();
-		}
-		
-		$view = '<a style="margin-bottom: 20px;" href="index.php?page=createUser" class="btn btn-info"><span class="fa fa-plus"></span> Créer un utilisateur</a>';
-		if (!$mesUtilisateurs)
-		{
-			$view = $view.'<div class="panel panel-info" style="margin-top: 20px;">
+        return $view;
+    }
+
+    public function getListe($userView)
+    {
+        $managerUser = new UserDAO();
+        if ($userView == 'Professeur') {
+            $mesUtilisateurs = $managerUser->getEtudiants();
+        } else {
+            $mesUtilisateurs = $managerUser->getUsers();
+        }
+
+        $view = '<a style="margin-bottom: 20px;" href="index.php?page=createUser" class="btn btn-info"><span class="fa fa-plus"></span> Créer un utilisateur</a>';
+        if (!$mesUtilisateurs) {
+            $view = $view.'<div class="panel panel-info" style="margin-top: 20px;">
 			<div class="panel-heading">
 				<h3 class="panel-title">Aucun utilisateur</h3>
 			</div>
 			<div class="panel-body">
 				Il n\'y a aucun utilisateur dans la base de données !</div>
 			</div>';
-		}
-		else 
-		{
-			foreach ($mesUtilisateurs as &$utilisateurs) {
-				$view = $view.'<div class="list-group-item">
+        } else {
+            foreach ($mesUtilisateurs as &$utilisateurs) {
+                $view = $view.'<div class="list-group-item">
 				<form method="POST" action="index.php?page=deleteUser&idUser='.$utilisateurs['id'].'" accept-charset="UTF-8" class="form-inline"><input name="_method" type="hidden" value="DELETE">
 					<a style="float: right; margin-left: 5px;" data-toggle="modal" href="#deleteUsers'.$utilisateurs['id'].'" role="button" class="btn btn-danger"><i class="fa fa-trash"></i></a>
 					<div id="deleteUsers'.$utilisateurs['id'].'" class="modal" style="display: none;">
@@ -82,10 +81,9 @@ class UserView{
 				<p class="list-group-item-text">'.$utilisateurs['email'].'</p>
 				<p>Type : '.$utilisateurs['type'].'</b></p>
 			</div>';
-		}
-	}
-	return $view;
-}
-}
+            }
+        }
 
-?>
+        return $view;
+    }
+}

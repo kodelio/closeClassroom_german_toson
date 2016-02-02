@@ -1,14 +1,16 @@
-<?php 
+<?php
 
-class navBarView{
 
-	function __construct(){}
+class navBarView
+{
+    public function __construct()
+    {
+    }
 
-	public function getViewLogged($loginUser, $typeUser){
-
-		if ($typeUser == "Admin")
-		{
-			$view = '<nav class="navbar navbar-inverse">
+    public function getViewLogged($loginUser, $typeUser)
+    {
+        if ($typeUser == 'Admin') {
+            $view = '<nav class="navbar navbar-inverse">
 			<div class="container-fluid">
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
@@ -31,12 +33,9 @@ class navBarView{
 						</ul>
 					</div>
 				</div>
-			</nav>';	
-		}
-
-		else
-		{
-			$view = '<nav class="navbar navbar-inverse">
+			</nav>';
+        } else {
+            $view = '<nav class="navbar navbar-inverse">
 			<div class="container-fluid">
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-2">
@@ -58,14 +57,15 @@ class navBarView{
 						</ul>
 					</div>
 				</div>
-			</nav>';	
-		}
-		return $view;
-	}
+			</nav>';
+        }
 
+        return $view;
+    }
 
-	public function getViewLogout(){
-		return '
+    public function getViewLogout()
+    {
+        return '
 		<nav class="navbar navbar-inverse">
 			<div class="container-fluid">
 				<div class="navbar-header">
@@ -84,12 +84,6 @@ class navBarView{
 				</div>
 			</div>
 		</nav>						
-		';	
-	}	
+		';
+    }
 }
-
-
-
-
-
-?>

@@ -1,12 +1,15 @@
-<?php 
+<?php
 
-class LoginView{
-	
-	function __construct(){}
-	
-	public function getView(){
-		
-		return '
+
+class LoginView
+{
+    public function __construct()
+    {
+    }
+
+    public function getView()
+    {
+        return '
 		<div class="container col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
 			<div id="loginbox" style="margin-top:20px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
 				<div class="panel panel-primary" >
@@ -40,8 +43,6 @@ class LoginView{
 			<button type="button" class="close" data-dismiss="alert">×</button>
 			En poursuivant votre navigation sur cette application, vous acceptez l\'installation et l\'utilisation de cookies sur votre poste, voir nos conditions.
 		</div>
-		';			
-	}
+		';
+    }
 }
-
-?>
