@@ -1,13 +1,11 @@
 <?php
 
-class Practice {
-	private $_practices;
+class Practice
+{
+    private $_practices;
 
-
-	function __construct($resultat) {
-		$this->_practices = $resultat;
-	}
-
+    public function __construct($resultat)
+    {
+        $this->_practices = $resultat;
+    }
 }
-
-?>

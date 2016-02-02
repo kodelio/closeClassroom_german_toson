@@ -1,7 +1,7 @@
 <?php
-	session_start(); //On initialise la session
-	include('controllers/MainController.class.php');
-	?>
+    session_start(); //On initialise la session
+    include 'controllers/MainController.class.php';
+    ?>
 
 	<!DOCTYPE html>
 	<html lang="fr">
@@ -18,8 +18,8 @@
 	</head>
 	<body>
 		<?php
-		$controller = new MainController();
-		?>
+        $controller = new MainController();
+        ?>
 	</body>
 	</html>
 

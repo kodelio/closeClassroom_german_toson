@@ -1,12 +1,15 @@
-<?php 
+<?php
 
-class FormRegisterView{
 
-	function __construct(){}
+class FormRegisterView
+{
+    public function __construct()
+    {
+    }
 
-	public function getView(){
-
-		return '
+    public function getView()
+    {
+        return '
 		<script>document.getElementById("tabUser").className = "active";</script>
 		<div class="container"> 
 			<div id="alert">  
@@ -48,8 +51,6 @@ class FormRegisterView{
 				</div>  
 			</div>
 		</div>
-		';			
-	}
+		';
+    }
 }
-
-?>

@@ -1,12 +1,15 @@
-<?php 
+<?php
 
-class FormPracticeView{
 
-	function __construct(){}
+class FormPracticeView
+{
+    public function __construct()
+    {
+    }
 
-	public function getViewInsert(){
-
-		return '
+    public function getViewInsert()
+    {
+        return '
 		<script>document.getElementById("tabPractice").className = "active";</script>
 		<div class="container"> 
 			<div id="alert">  
@@ -45,12 +48,12 @@ class FormPracticeView{
 				</div>  
 			</div>
 		</div>
-		';			
-	}
+		';
+    }
 
-	public function getViewUpdate($idPractice, $name, $description, $file, $path){
-
-		return '
+    public function getViewUpdate($idPractice, $name, $description, $file, $path)
+    {
+        return '
 		<script>document.getElementById("tabPractice").className = "active";</script>
 		<div class="container"> 
 			<div id="alert">  
@@ -90,8 +93,6 @@ class FormPracticeView{
 				</div>  
 			</div>
 		</div>
-		';			
-	}
+		';
+    }
 }
-
-?>

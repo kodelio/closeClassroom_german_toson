@@ -1,12 +1,15 @@
-<?php 
+<?php
 
-class FormUserView{
 
-	function __construct(){}
+class FormUserView
+{
+    public function __construct()
+    {
+    }
 
-	public function getViewInsert(){
-
-		return '
+    public function getViewInsert()
+    {
+        return '
 		<script>document.getElementById("tabUser").className = "active";</script>
 		<div class="container"> 
 			<div id="alert">  
@@ -58,27 +61,25 @@ class FormUserView{
 				</div>  
 			</div>
 		</div>
-		';			
-	}
+		';
+    }
 
-	public function getViewUpdate($idUser, $loginUser, $passwordUser, $emailUser, $typeUser){
-
-		if ($typeUser=="Etudiant") { 
-			$typeEtudiant = "selected";
-			$typeProfesseur = "";
-			$typeAdmin = "";
-		}
-		else if ($typeUser=="Professeur") { 
-			$typeEtudiant = "";
-			$typeProfesseur = "selected";
-			$typeAdmin = "";
-		}
-		else if ($typeUser=="Admin") { 
-			$typeEtudiant = "";
-			$typeProfesseur = "";
-			$typeAdmin = "selected";
-		}
-		$form = '
+    public function getViewUpdate($idUser, $loginUser, $passwordUser, $emailUser, $typeUser)
+    {
+        if ($typeUser == 'Etudiant') {
+            $typeEtudiant = 'selected';
+            $typeProfesseur = '';
+            $typeAdmin = '';
+        } elseif ($typeUser == 'Professeur') {
+            $typeEtudiant = '';
+            $typeProfesseur = 'selected';
+            $typeAdmin = '';
+        } elseif ($typeUser == 'Admin') {
+            $typeEtudiant = '';
+            $typeProfesseur = '';
+            $typeAdmin = 'selected';
+        }
+        $form = '
 		<script>document.getElementById("tabUser").className = "active";</script>
 		<div class="container"> 
 			<div id="alert">  
@@ -111,9 +112,9 @@ class FormUserView{
 									<div class="col-lg-6">
 										<select class="form-control" name="typeUser">
 											<option value="">Séléctionnez le type</option>
-											<option value="Etudiant"'. $typeEtudiant .'>Etudiant</option>
-											<option value="Professeur"'. $typeProfesseur .'>Professeur</option>
-											<option value="Admin"'. $typeAdmin .'>Admin</option>
+											<option value="Etudiant"'.$typeEtudiant.'>Etudiant</option>
+											<option value="Professeur"'.$typeProfesseur.'>Professeur</option>
+											<option value="Admin"'.$typeAdmin.'>Admin</option>
 										</select>
 									</div>
 								</div>                                     
@@ -132,8 +133,6 @@ class FormUserView{
 		</div>
 		';
 
-		return $form;		
-	}
+        return $form;
+    }
 }
-
-?>
