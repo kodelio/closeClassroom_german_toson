@@ -225,10 +225,10 @@ class UserDAO
 		}
 	}
 
-	function register($loginUser, $passwordUser, $emailUser, $typeUser) {
+	function register($loginUser, $passwordUser, $emailUser) {
 		try
 		{
-			mysqli_query($_SESSION['bdd'], "INSERT INTO users (type, login, password, email) VALUES ('".$typeUser."', '".$loginUser."', '".$passwordUser."', '".$emailUser."')");
+			mysqli_query($_SESSION['bdd'], "INSERT INTO users (type, login, password, email) VALUES ('Etudiant', '".$loginUser."', '".$passwordUser."', '".$emailUser."')");
 		}
 		catch(Exception $e)
 		{
