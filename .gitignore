@@ -42,3 +42,6 @@ Network Trash Folder
 Temporary Items
 .apdisk
 jee/MyJalon/.classpath
+.buildpath
+.settings/org.eclipse.php.core.prefs
+.settings/org.eclipse.wst.common.project.facet.core.xml
