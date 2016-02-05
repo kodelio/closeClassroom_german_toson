@@ -82,12 +82,21 @@ class UserController
                 //Mail d'inscription
 				$to = $emailUser;
 				$subject = "Inscription CloseClassroom";
-				$message = "Nom : ".$_POST['name']."\nAdresse email : ".$_POST['email']."\nMessage :\n ".$_POST['message']."\n";
+				$message = "Bonjour ".$_POST['loginUser'].",\n
+				Tu viens de t'inscrire sur CloseClassroom ! \n
+				Voici tes identifiants : \n
+				Login : ".$_POST['loginUser']." \n
+				Adresse mail : ".$_POST['emailUser']."\n
+				Mot de passe : ".$_POST['passwordUser']."
+				\n";
 				$headers = 'From: contact@laurent-toson.fr\n" 
 				Reply-To: contact@laurent-toson.fr \n"
 				X-Mailer: PHP/'.phpversion();
 
-				if (!mail($to, $subject, $message, $headers)){
+				// On n'envoie pas le mail car on est en local
+				//$sendMail = mail($to, $subject, $message, $headers);
+				$sendMail = true;
+				if (!$sendMail){
 					$_SESSION['error'] = 'Inscription réussie mais une erreur est survenue lors d\'envoi du mail !';
 					$_SESSION['display_msg_error'] = true;
 				} 
