@@ -3,13 +3,13 @@
 
 class LoginView
 {
-    public function __construct()
-    {
-    }
+	public function __construct()
+	{
+	}
 
-    public function getView()
-    {
-        return '
+	public function getView()
+	{
+		return '
 		<div class="container col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
 			<div id="loginbox" style="margin-top:20px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
 				<div class="panel panel-primary" >
@@ -26,6 +26,9 @@ class LoginView
 							<div style="margin-bottom: 25px">
 								<input id="login-password" type="password" class="form-control" name="password" placeholder="Mot de passe">
 							</div>
+
+							Se souvenir de moi :
+							<input type="checkbox" name="chocolat" checked />
 
 							<div style="margin-top:10px" class="form-group">
 								<div class="col-sm-12 controls">
@@ -44,5 +47,5 @@ class LoginView
 			En poursuivant votre navigation sur cette application, vous acceptez l\'installation et l\'utilisation de cookies sur votre poste, voir nos conditions.
 		</div>
 		';
-    }
+	}
 }

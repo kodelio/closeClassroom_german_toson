@@ -37,12 +37,14 @@ class MainController
 {
 	public function __construct()
 	{
-
         //charge la session si cookie présent
-		if (!$this->isLogged() && isset($_COOKIE['moncookie'])) {
-			$username_cookie = substr($_COOKIE['moncookie'], 0, strrpos($_COOKIE['moncookie'], ' '));
-			$password_cookie = substr($_COOKIE['moncookie'], strrpos($_COOKIE['moncookie'], ' ') + 1);
-			$login = new User($username_cookie, $password_cookie);
+		if (!$this->isLogged() && isset($_COOKIE['nougatine'])) {
+			$username_cookie = substr($_COOKIE['nougatine'], 0, strrpos($_COOKIE['nougatine'], ' '));
+			$username_cookie = substr($_COOKIE['nougatine'], strrpos($_COOKIE['nougatine'], ' ') + 1);
+			var_dump($username_cookie);
+			var_dump($password_cookie);
+			$login = new UserDAO();
+			$login->getUserByLoginAndPassword($username_cookie, $username_cookie, true);
 		}
 
         //insertion de la navbar
@@ -186,7 +188,7 @@ class MainController
 	{
 		$managerUser = new UserDAO();
 		if (isset($_GET['username']) && isset($_GET['password'])) {
-			$managerUser->getUserByLoginAndPassword($_GET['username'], $_GET['password']);
+			$managerUser->getUserByLoginAndPassword($_GET['username'], $_GET['password'], $_GET['chocolat']);
 		} else {
 			$_SESSION['isLogged'] = false;
 		}
@@ -204,9 +206,9 @@ class MainController
     //charge la page de déconnexion
 	public function logout()
 	{
-		if (isset($_COOKIE['moncookie'])) {
-			unset($_COOKIE['moncookie']);
-			setcookie('moncookie', '', time() - 3600, '/');
+		if (isset($_COOKIE['nougatine'])) {
+			unset($_COOKIE['nougatine']);
+			setcookie('nougatine', '', time() - 3600, '/webserv/');
 		}
 		session_unset();
 		session_destroy();
@@ -446,7 +448,7 @@ class MainController
 		$mesModules = $managerModule->getModules();
 		$moduleView = new ModuleView();
 		echo $moduleView->getView($mesModules, $infos['type']);
-		
+
 	}
 
     //charge la page createModule
@@ -523,7 +525,7 @@ class MainController
 		$mesFormations = $managerFormation->getFormations();
 		$formationView = new FormationView();
 		echo $formationView->getView($mesFormations, $infos['type']);
-		
+
 	}
 
     //charge la page createFormation
