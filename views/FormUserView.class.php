@@ -3,13 +3,13 @@
 
 class FormUserView
 {
-    public function __construct()
-    {
-    }
+	public function __construct()
+	{
+	}
 
-    public function getViewInsert()
-    {
-        return '
+	public function getViewInsert()
+	{
+		return '
 		<script>document.getElementById("tabUser").className = "active";</script>
 		<div class="container"> 
 			<div id="alert">  
@@ -26,6 +26,14 @@ class FormUserView
 
 							<div style="margin-bottom: 25px">
 								Login :<br> <input type="text" class="form-control" name="loginUser" placeholder="Entrez le login" required>                                      
+							</div>
+
+							<div style="margin-bottom: 25px">
+								Nom :<br> <input type="text" class="form-control" name="nameUser" placeholder="Entrez le nom" required>                                      
+							</div>
+
+							<div style="margin-bottom: 25px">
+								Prénom :<br> <input type="text" class="form-control" name="firstNameUser" placeholder="Entrez le prénom" required>                                      
 							</div>
 
 							<div style="margin-bottom: 25px">
@@ -62,24 +70,24 @@ class FormUserView
 			</div>
 		</div>
 		';
-    }
+	}
 
-    public function getViewUpdate($idUser, $loginUser, $passwordUser, $emailUser, $typeUser)
-    {
-        if ($typeUser == 'Etudiant') {
-            $typeEtudiant = 'selected';
-            $typeProfesseur = '';
-            $typeAdmin = '';
-        } elseif ($typeUser == 'Professeur') {
-            $typeEtudiant = '';
-            $typeProfesseur = 'selected';
-            $typeAdmin = '';
-        } elseif ($typeUser == 'Admin') {
-            $typeEtudiant = '';
-            $typeProfesseur = '';
-            $typeAdmin = 'selected';
-        }
-        $form = '
+	public function getViewUpdate($idUser, $loginUser, $passwordUser, $emailUser, $typeUser, $nameUser, $firstNameUser)
+	{
+		if ($typeUser == 'Etudiant') {
+			$typeEtudiant = 'selected';
+			$typeProfesseur = '';
+			$typeAdmin = '';
+		} elseif ($typeUser == 'Professeur') {
+			$typeEtudiant = '';
+			$typeProfesseur = 'selected';
+			$typeAdmin = '';
+		} elseif ($typeUser == 'Admin') {
+			$typeEtudiant = '';
+			$typeProfesseur = '';
+			$typeAdmin = 'selected';
+		}
+		$form = '
 		<script>document.getElementById("tabUser").className = "active";</script>
 		<div class="container"> 
 			<div id="alert">  
@@ -96,6 +104,14 @@ class FormUserView
 
 							<div style="margin-bottom: 25px">
 								Login :<br> <input type="text" class="form-control" value="'.$loginUser.'" name="loginUser" placeholder="Entrez le login" required>                                      
+							</div>
+
+							<div style="margin-bottom: 25px">
+								Nom :<br> <input type="text" class="form-control" value="'.$nameUser.'" name="nameUser" placeholder="Entrez le nom" required>                                      
+							</div>
+
+							<div style="margin-bottom: 25px">
+								Prénom :<br> <input type="text" class="form-control" value="'.$firstNameUser.'" name="firstNameUser" placeholder="Entrez le prénom" required>                                      
 							</div>
 
 							<div style="margin-bottom: 25px">
@@ -133,6 +149,6 @@ class FormUserView
 		</div>
 		';
 
-        return $form;
-    }
+		return $form;
+	}
 }

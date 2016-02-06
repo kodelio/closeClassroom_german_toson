@@ -7,7 +7,7 @@ class UserController
 	{
 	}
 
-	public function createUser($loginUser, $passwordUser, $emailUser, $typeUser)
+	public function createUser($loginUser, $passwordUser, $emailUser, $typeUser, $nameUser, $firstNameUser)
 	{
 		$getDoublon = new UserDAO();
 		$doublonEmail = $getDoublon->getDoublonByEmail($emailUser, '');
@@ -22,7 +22,7 @@ class UserController
 		} else {
 			if (!(isset($_SESSION['error']) and $_SESSION['error'] != null and isset($_SESSION['display_msg_error']) and $_SESSION['display_msg_error'])) {
 				$createUser = new UserDAO();
-				$createUser->createUser($loginUser, $passwordUser, $emailUser, $typeUser);
+				$createUser->createUser($loginUser, $passwordUser, $emailUser, $typeUser, $nameUser, $firstNameUser);
 				$_SESSION['success'] = 'L\'utilisateur <b>'.$loginUser.'</b> ('.$emailUser.') a été crée.';
 				$_SESSION['display_msg_success'] = true;
 			} else {
@@ -32,7 +32,7 @@ class UserController
 		}
 	}
 
-	public function updateUser($loginUser, $passwordUser, $emailUser, $typeUser, $idUser)
+	public function updateUser($loginUser, $passwordUser, $emailUser, $typeUser, $idUser, $nameUser, $firstNameUser)
 	{
 		$getDoublon = new UserDAO();
 		$doublonEmail = $getDoublon->getDoublonByEmail($emailUser, $idUser);
@@ -47,7 +47,7 @@ class UserController
 		} else {
 			if (!(isset($_SESSION['error']) and $_SESSION['error'] != null and isset($_SESSION['display_msg_error']) and $_SESSION['display_msg_error'])) {
 				$updateUser = new UserDAO();
-				$updateUser->updateUser($idUser, $loginUser, $passwordUser, $emailUser, $typeUser);
+				$updateUser->updateUser($idUser, $loginUser, $passwordUser, $emailUser, $typeUser, $nameUser, $firstNameUser);
 				$_SESSION['success'] = 'L\'utilisateur <b>'.$loginUser.'</b> ('.$emailUser.') a été mis à jour';
 				$_SESSION['display_msg_success'] = true;
 			} else {
@@ -63,7 +63,7 @@ class UserController
 		$managerUser->deleteUser($idUser);
 	}
 
-	public function register($loginUser, $passwordUser, $emailUser)
+	public function register($loginUser, $passwordUser, $emailUser, $nameUser, $firstNameUser)
 	{
 		$getDoublon = new UserDAO();
 		$doublonEmail = $getDoublon->getDoublonByEmail($emailUser, '');
@@ -78,7 +78,7 @@ class UserController
 		} else {
 			if (!(isset($_SESSION['error']) and $_SESSION['error'] != null and isset($_SESSION['display_msg_error']) and $_SESSION['display_msg_error'])) {
 				$registerUser = new UserDAO();
-				$registerUser->register($loginUser, $passwordUser, $emailUser);
+				$registerUser->register($loginUser, $passwordUser, $emailUser, $nameUser, $firstNameUser);
                 //Mail d'inscription
 				$to = $emailUser;
 				$subject = "Inscription CloseClassroom";

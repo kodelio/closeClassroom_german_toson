@@ -7,7 +7,7 @@ class navBarView
     {
     }
 
-    public function getViewLogged($loginUser, $typeUser)
+    public function getViewLogged($firstNameUser, $typeUser)
     {
         if ($typeUser == 'Admin') {
             $view = '<nav class="navbar navbar-inverse">
@@ -28,7 +28,7 @@ class navBarView
 						<li id="tabPractice"><a href="index.php?page=practice">Cours</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="index.php" style="font-size: 13px;"> Bonjour, <strong>'.$loginUser.'</strong> </a>
+						<li><a href="index.php" style="font-size: 13px;"> Bonjour, <strong>'.$firstNameUser.'</strong> </a>
 							<li><a href="index.php?page=logout">Se déconnecter</a></li>
 						</ul>
 					</div>
@@ -52,7 +52,7 @@ class navBarView
 						<li id="tabPractice"><a href="index.php?page=practice">Cours</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<li><a href="index.php" style="font-size: 13px;"> Bonjour, <strong>'.$loginUser.'</strong> </a>
+						<li><a href="index.php" style="font-size: 13px;"> Bonjour, <strong>'.$firstNameUser.'</strong> </a>
 							<li><a href="index.php?page=logout">Se déconnecter</a></li>
 						</ul>
 					</div>

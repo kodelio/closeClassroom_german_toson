@@ -3,13 +3,13 @@
 
 class FormRegisterView
 {
-    public function __construct()
-    {
-    }
+	public function __construct()
+	{
+	}
 
-    public function getView()
-    {
-        return '
+	public function getView()
+	{
+		return '
 		<script>document.getElementById("tabUser").className = "active";</script>
 		<div class="container"> 
 			<div id="alert">  
@@ -26,6 +26,14 @@ class FormRegisterView
 
 							<div style="margin-bottom: 25px">
 								Login :<br> <input type="text" class="form-control" name="loginUser" placeholder="Entrez le login" required>                                      
+							</div>
+
+							<div style="margin-bottom: 25px">
+								Nom :<br> <input type="text" class="form-control" name="nameUser" placeholder="Entrez le nom" required>                                      
+							</div>
+
+							<div style="margin-bottom: 25px">
+								Prénom :<br> <input type="text" class="form-control" name="firstNameUser" placeholder="Entrez le prénom" required>                                      
 							</div>
 
 							<div style="margin-bottom: 25px">
@@ -52,5 +60,5 @@ class FormRegisterView
 			</div>
 		</div>
 		';
-    }
+	}
 }
