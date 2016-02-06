@@ -37,7 +37,7 @@ class ModuleView
 
 	public function getListe($mesModules, $typeUser)
 	{
-		if ($typeUser != 'Etudiant') {
+		if ($typeUser == 'Admin') {
 			$view = '<a style="margin-bottom: 20px;" href="index.php?page=createModule" class="btn btn-info"><span class="fa fa-plus"></span> Créer un module</a>';
 		} else {
 			$view = '';
@@ -53,7 +53,7 @@ class ModuleView
 		} else {
 			foreach ($mesModules as &$module) {
 				$modif = '';
-				if ($typeUser != 'Etudiant') {
+				if ($typeUser == 'Admin') {
 					$modif = '<form method="POST" action="index.php?page=deleteModule&idModule='.$module['id'].'" accept-charset="UTF-8" class="form-inline"><input name="_method" type="hidden" value="DELETE">
 					<a style="float: right; margin-left: 5px;" data-toggle="modal" href="#deleteModule'.$module['id'].'" role="button" class="btn btn-danger"><i class="fa fa-trash"></i></a>
 					<div id="deleteModule'.$module['id'].'" class="modal" style="display: none;">
