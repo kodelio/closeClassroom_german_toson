@@ -1,6 +1,6 @@
 <?php
 
-class ModuleDAO
+class FormationDAO
 {
     public function __construct()
     {
@@ -8,10 +8,10 @@ class ModuleDAO
         $_SESSION['bdd'] = $connect->connect();
     }
 
-    public function getModules()
+    public function getFormations()
     {
         try {
-            $resultat = mysqli_query($_SESSION['bdd'], 'SELECT * FROM modules');
+            $resultat = mysqli_query($_SESSION['bdd'], 'SELECT * FROM formations');
             if (mysqli_num_rows($resultat) != '0') {
                 $tab[0] = mysqli_fetch_assoc($resultat);
                 if (mysqli_num_rows($resultat) > '0') {
@@ -30,10 +30,11 @@ class ModuleDAO
         }
     }
 
-    public function getModulesByFormation($idFormation)
+    public function getFormationsByUser($idUser)
     {
         try {
-            $resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM modules WHERE `id_formation`= '".$idFormation."'");
+            //TODO
+            $resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM assouserformation WHERE `id_user`= '".$idUser."'");
             if (mysqli_num_rows($resultat) != '0') {
                 $tab[0] = mysqli_fetch_assoc($resultat);
                 if (mysqli_num_rows($resultat) > '0') {
@@ -52,10 +53,10 @@ class ModuleDAO
         }
     }
 
-    public function getNameModule($idModule)
+    public function getNameAndDescriptionFormation($idFormation)
     {
         try {
-            $resultat = mysqli_query($_SESSION['bdd'], "SELECT name FROM modules WHERE `id`= '".$idModule."'");
+            $resultat = mysqli_query($_SESSION['bdd'], "SELECT name, description FROM formations WHERE `id`= '".$idFormation."'");
             if (mysqli_num_rows($resultat) != '0') {
                 $tab[0] = mysqli_fetch_assoc($resultat);
 
@@ -69,40 +70,40 @@ class ModuleDAO
         }
     }
 
-    public function createModule($nameModule)
+    public function createFormation($nameFormation, $descriptionFormation)
     {
         try {
-            mysqli_query($_SESSION['bdd'], "INSERT INTO modules (name) VALUES ('".$nameModule."')");
+            mysqli_query($_SESSION['bdd'], "INSERT INTO formations (name, description) VALUES ('".$nameFormation."', '".$descriptionFormation."')");
         } catch (Exception $e) {
             $_SESSION['error'] = 'Erreur requete BDD';
             $_SESSION['display_msg_error'] = true;
         }
     }
 
-    public function updateModule($idModule, $nameModule)
+    public function updateFormation($idFormation, $nameFormation, $descriptionFormation)
     {
         try {
-            mysqli_query($_SESSION['bdd'], "UPDATE `modules` SET `name` = '".$nameModule."' WHERE `id` = '".$idModule."'");
+            mysqli_query($_SESSION['bdd'], "UPDATE `formations` SET `name` = '".$nameFormation."', `description` = '".$descriptionFormation."' WHERE `id` = '".$idFormation."'");
         } catch (Exception $e) {
             $_SESSION['error'] = 'Erreur requete BDD';
             $_SESSION['display_msg_error'] = true;
         }
     }
 
-    public function deleteModule($idModule)
+    public function deleteFormation($idFormation)
     {
         try {
-            mysqli_query($_SESSION['bdd'], "DELETE FROM `modules` WHERE `id` = '".$idModule."'");
+            mysqli_query($_SESSION['bdd'], "DELETE FROM `formations` WHERE `id` = '".$idFormation."'");
         } catch (Exception $e) {
             $_SESSION['error'] = 'Erreur requete BDD';
             $_SESSION['display_msg_error'] = true;
         }
     }
 
-    public function verifModule($idModule)
+    public function verifFormation($idFormation)
     {
         try {
-            $resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM modules WHERE `id`= '".$idModule."'");
+            $resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM formations WHERE `id`= '".$idFormation."'");
             if (mysqli_num_rows($resultat) != '0') {
                 return true;
             } else {

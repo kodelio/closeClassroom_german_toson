@@ -11,21 +11,27 @@ include 'views/FormUserView.class.php';
 include 'views/FormRegisterView.class.php';
 include 'views/FormModuleView.class.php';
 include 'views/ModuleView.class.php';
+include 'views/FormFormationView.class.php';
+include 'views/FormationView.class.php';
 
     // models
 include 'models/User.class.php';
 include 'models/Practice.class.php';
 include 'models/Module.class.php';
+include 'models/Formation.class.php';
 
     //controllers
 include 'controllers/PracticeController.class.php';
 include 'controllers/UserController.class.php';
 include 'controllers/ModuleController.class.php';
+include 'controllers/FormationController.class.php';
 
     //managers
+include 'bddManager/ConnectDAO.php';
 include 'bddManager/UserDAO.php';
 include 'bddManager/PracticeDAO.php';
 include 'bddManager/ModuleDAO.php';
+include 'bddManager/FormationDAO.php';
 
 class MainController
 {
@@ -84,6 +90,22 @@ class MainController
 
 					case 'deleteModule':
 					$this->deleteModule();
+					break;
+
+					case 'formation':
+					$this->formation();
+					break;
+
+					case 'createFormation':
+					$this->createFormation();
+					break;
+
+					case 'updateFormation':
+					$this->updateFormation();
+					break;
+
+					case 'deleteFormation':
+					$this->deleteFormation();
 					break;
 
 					case 'user':
@@ -421,9 +443,9 @@ class MainController
 		$infosUser = new UserDAO();
 		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
 		$managerModule = new ModuleDAO();
-		$mesCours = $managerModule->getModules();
+		$mesModules = $managerModule->getModules();
 		$moduleView = new ModuleView();
-		echo $moduleView->getView($mesCours, $infos['type']);
+		echo $moduleView->getView($mesModules, $infos['type']);
 		
 	}
 
@@ -489,6 +511,83 @@ class MainController
 			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
 			$_SESSION['display_msg_error'] = true;
 			$this->module();
+		}
+	}
+
+	//charge la page formation
+	public function formation()
+	{
+		$infosUser = new UserDAO();
+		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
+		$managerFormation = new FormationDAO();
+		$mesFormations = $managerFormation->getFormations();
+		$formationView = new FormationView();
+		echo $formationView->getView($mesFormations, $infos['type']);
+		
+	}
+
+    //charge la page createFormation
+	public function createFormation()
+	{
+		$infosUser = new UserDAO();
+		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
+		if ($infos['type'] != 'Etudiant') {
+			if (isset($_POST['nameFormation'])) {
+				$formationController = new FormationController();
+				$formationController->createFormation($_POST['nameFormation'], $_POST['descriptionFormation']);
+			}
+			$formFormationView = new FormFormationView();
+			echo $formFormationView->getViewInsert();
+		} else {
+			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
+			$_SESSION['display_msg_error'] = true;
+			$this->formation();
+		}
+	}
+
+    //charge la page mise à jour formation
+	public function updateFormation()
+	{
+		$infosUser = new UserDAO();
+		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
+		if ($infos['type'] != 'Etudiant') {
+			$verifFormation = new FormationDAO();
+			$isFormationExist = $verifFormation->verifFormation($_GET['idFormation']);
+			if (!$isFormationExist) {
+				$_SESSION['error'] = 'La formation n\'existe pas';
+				$_SESSION['display_msg_error'] = true;
+				$this->formation();
+			} else {
+				if (isset($_POST['nameFormation'])) {
+					$formationController = new FormationController();
+					$formationController->updateFormation($_POST['nameFormation'], $_POST['descriptionFormation'], $_GET['idFormation']);
+				}
+
+				$managerFormation = new FormationDAO();
+				$infos = $managerFormation->getNameAndDescriptionFormation($_GET['idFormation']);
+				$formFormationView = new FormFormationView();
+				echo $formFormationView->getViewUpdate($_GET['idFormation'], $infos['name'], $infos['description']);
+			}
+		} else {
+			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
+			$_SESSION['display_msg_error'] = true;
+			$this->formation();
+		}
+	}
+
+    //charge la page delete formation
+	public function deleteFormation()
+	{
+		$infosUser = new UserDAO();
+		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
+		if ($infos['type'] != 'Etudiant') {
+			$formationController = new FormationController();
+			$formationController->deleteFormation($_GET['idFormation']);
+			$this->formation();
+		} else {
+			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
+			$_SESSION['display_msg_error'] = true;
+			$this->formation();
 		}
 	}
 }
