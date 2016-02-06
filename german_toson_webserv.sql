@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Mar 02 Février 2016 à 19:46
+-- Généré le :  Sam 06 Février 2016 à 16:46
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -23,15 +23,91 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Structure de la table `follow_promotion`
+-- Structure de la table `assomoduleformation`
 --
 
-CREATE TABLE IF NOT EXISTS `follow_promotion` (
-  `user` int(11) NOT NULL,
-  `promotion` int(11) NOT NULL,
-  UNIQUE KEY `user` (`user`,`promotion`),
-  KEY `promotion` (`promotion`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
+CREATE TABLE IF NOT EXISTS `assomoduleformation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_formation` int(11) NOT NULL,
+  `id_module` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_formation` (`id_formation`,`id_module`),
+  KEY `id_module` (`id_module`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+
+--
+-- Contenu de la table `assomoduleformation`
+--
+
+INSERT INTO `assomoduleformation` (`id`, `id_formation`, `id_module`) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 2, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `assouserformation`
+--
+
+CREATE TABLE IF NOT EXISTS `assouserformation` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `id_user` int(11) NOT NULL,
+  `id_formation` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_user` (`id_user`),
+  KEY `id_formation` (`id_formation`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+
+--
+-- Contenu de la table `assouserformation`
+--
+
+INSERT INTO `assouserformation` (`id`, `id_user`, `id_formation`) VALUES
+(1, 3, 1),
+(2, 2, 1),
+(3, 2, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `formations`
+--
+
+CREATE TABLE IF NOT EXISTS `formations` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) COLLATE utf8_bin NOT NULL,
+  `description` varchar(255) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
+
+--
+-- Contenu de la table `formations`
+--
+
+INSERT INTO `formations` (`id`, `name`, `description`) VALUES
+(1, 'DUT Informatique', 'DUT en informatique sur 2 ans'),
+(2, 'Terminale STI2D', 'Option SIN');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `modules`
+--
+
+CREATE TABLE IF NOT EXISTS `modules` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) COLLATE utf8_bin NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
+
+--
+-- Contenu de la table `modules`
+--
+
+INSERT INTO `modules` (`id`, `name`) VALUES
+(1, 'Maths'),
+(2, 'Programmation Serveur Web');
 
 -- --------------------------------------------------------
 
@@ -47,59 +123,18 @@ CREATE TABLE IF NOT EXISTS `practices` (
   `description` text COLLATE utf8_bin NOT NULL,
   `date` varchar(12) COLLATE utf8_bin NOT NULL,
   `file` varchar(256) COLLATE utf8_bin NOT NULL,
-  `subject` int(11) NOT NULL,
+  `id_module` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user` (`user`),
-  KEY `subject` (`subject`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=48 ;
+  KEY `module` (`id_module`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
 
 --
 -- Contenu de la table `practices`
 --
 
-INSERT INTO `practices` (`id`, `name`, `path`, `user`, `description`, `date`, `file`, `subject`) VALUES
-(45, 'Pratiques', 'webserv/practices/pratiques_02-01-2016_admin.pdf', 2, 'Cours sur les bonnes pratiques du web', '02-01-2016', 'pratiques_02-01-2016_admin.pdf', 1);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `promotion`
---
-
-CREATE TABLE IF NOT EXISTS `promotion` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(32) COLLATE utf8_bin NOT NULL,
-  `description` varchar(256) COLLATE utf8_bin NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
-
---
--- Contenu de la table `promotion`
---
-
-INSERT INTO `promotion` (`id`, `name`, `description`) VALUES
-(1, 'S3 Alt', '3e semestre DUT Informatique en alternance');
-
--- --------------------------------------------------------
-
---
--- Structure de la table `subject`
---
-
-CREATE TABLE IF NOT EXISTS `subject` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(32) COLLATE utf8_bin NOT NULL,
-  `description` varchar(256) COLLATE utf8_bin NOT NULL,
-  `promotion` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
-
---
--- Contenu de la table `subject`
---
-
-INSERT INTO `subject` (`id`, `name`, `description`, `promotion`) VALUES
-(1, 'Web', 'Web S3 Alt', 0);
+INSERT INTO `practices` (`id`, `name`, `path`, `user`, `description`, `date`, `file`, `id_module`) VALUES
+(1, 'Pratiques', 'webserv/practices/pratiques_02-01-2016_admin.pdf', 2, 'Cours sur les bonnes pratiques du web', '02-01-2016', 'pratiques_02-01-2016_admin.pdf', 1);
 
 -- --------------------------------------------------------
 
@@ -118,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `login` (`login`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=10 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
 
 --
 -- Contenu de la table `users`
@@ -134,18 +169,25 @@ INSERT INTO `users` (`id`, `type`, `login`, `password`, `email`, `name`, `first_
 --
 
 --
--- Contraintes pour la table `follow_promotion`
+-- Contraintes pour la table `assomoduleformation`
 --
-ALTER TABLE `follow_promotion`
-  ADD CONSTRAINT `follow_promotion_ibfk_1` FOREIGN KEY (`user`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `follow_promotion_ibfk_2` FOREIGN KEY (`promotion`) REFERENCES `promotion` (`id`);
+ALTER TABLE `assomoduleformation`
+  ADD CONSTRAINT `formation_id` FOREIGN KEY (`id_formation`) REFERENCES `formations` (`id`),
+  ADD CONSTRAINT `module_id` FOREIGN KEY (`id_module`) REFERENCES `modules` (`id`);
+
+--
+-- Contraintes pour la table `assouserformation`
+--
+ALTER TABLE `assouserformation`
+  ADD CONSTRAINT `formation_asso` FOREIGN KEY (`id_formation`) REFERENCES `formations` (`id`),
+  ADD CONSTRAINT `user_asso` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`);
 
 --
 -- Contraintes pour la table `practices`
 --
 ALTER TABLE `practices`
-  ADD CONSTRAINT `practices_ibfk_1` FOREIGN KEY (`user`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `practices_ibfk_2` FOREIGN KEY (`subject`) REFERENCES `subject` (`id`);
+  ADD CONSTRAINT `id_user` FOREIGN KEY (`user`) REFERENCES `users` (`id`),
+  ADD CONSTRAINT `id_module` FOREIGN KEY (`id_module`) REFERENCES `modules` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

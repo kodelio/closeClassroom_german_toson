@@ -9,18 +9,23 @@ include 'views/PracticeView.class.php';
 include 'views/UserView.class.php';
 include 'views/FormUserView.class.php';
 include 'views/FormRegisterView.class.php';
+include 'views/FormModuleView.class.php';
+include 'views/ModuleView.class.php';
 
     // models
 include 'models/User.class.php';
 include 'models/Practice.class.php';
+include 'models/Module.class.php';
 
     //controllers
 include 'controllers/PracticeController.class.php';
 include 'controllers/UserController.class.php';
+include 'controllers/ModuleController.class.php';
 
     //managers
 include 'bddManager/UserDAO.php';
 include 'bddManager/PracticeDAO.php';
+include 'bddManager/ModuleDAO.php';
 
 class MainController
 {
@@ -63,6 +68,22 @@ class MainController
 
 					case 'deletePractice':
 					$this->deletePractice();
+					break;
+
+					case 'module':
+					$this->module();
+					break;
+
+					case 'createModule':
+					$this->createModule();
+					break;
+
+					case 'updateModule':
+					$this->updateModule();
+					break;
+
+					case 'deleteModule':
+					$this->deleteModule();
 					break;
 
 					case 'user':
@@ -392,5 +413,82 @@ class MainController
 		}
 		$registerView = new FormRegisterView();
 		echo $registerView->getView();
+	}
+
+	//charge la page module
+	public function module()
+	{
+		$infosUser = new UserDAO();
+		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
+		$managerModule = new ModuleDAO();
+		$mesCours = $managerModule->getModules();
+		$moduleView = new ModuleView();
+		echo $moduleView->getView($mesCours, $infos['type']);
+		
+	}
+
+    //charge la page createModule
+	public function createModule()
+	{
+		$infosUser = new UserDAO();
+		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
+		if ($infos['type'] != 'Etudiant') {
+			if (isset($_POST['nameModule'])) {
+				$moduleController = new ModuleController();
+				$moduleController->createModule($_POST['nameModule']);
+			}
+			$formModuleView = new FormModuleView();
+			echo $formModuleView->getViewInsert();
+		} else {
+			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
+			$_SESSION['display_msg_error'] = true;
+			$this->module();
+		}
+	}
+
+    //charge la page mise à jour module
+	public function updateModule()
+	{
+		$infosUser = new UserDAO();
+		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
+		if ($infos['type'] != 'Etudiant') {
+			$verifModule = new ModuleDAO();
+			$isModuleExist = $verifModule->verifModule($_GET['idModule']);
+			if (!$isModuleExist) {
+				$_SESSION['error'] = 'Le module n\'existe pas';
+				$_SESSION['display_msg_error'] = true;
+				$this->module();
+			} else {
+				if (isset($_POST['nameModule'])) {
+					$moduleController = new ModuleController();
+					$moduleController->updateModule($_POST['nameModule'], $_GET['idModule']);
+				}
+
+				$managerModule = new ModuleDAO();
+				$infos = $managerModule->getNameModule($_GET['idModule']);
+				$formModuleView = new FormModuleView();
+				echo $formModuleView->getViewUpdate($_GET['idModule'], $infos['name']);
+			}
+		} else {
+			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
+			$_SESSION['display_msg_error'] = true;
+			$this->module();
+		}
+	}
+
+    //charge la page delete module
+	public function deleteModule()
+	{
+		$infosUser = new UserDAO();
+		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
+		if ($infos['type'] != 'Etudiant') {
+			$moduleController = new ModuleController();
+			$moduleController->deleteModule($_GET['idModule']);
+			$this->module();
+		} else {
+			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
+			$_SESSION['display_msg_error'] = true;
+			$this->module();
+		}
 	}
 }

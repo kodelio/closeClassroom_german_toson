@@ -59,7 +59,7 @@ class PracticeDAO
     public function getNameAndDescriptionPractice($idPractice)
     {
         try {
-            $resultat = mysqli_query($_SESSION['bdd'], "SELECT name, description FROM practices WHERE `id`= '".$_GET['idPractice']."'");
+            $resultat = mysqli_query($_SESSION['bdd'], "SELECT name, description FROM practices WHERE `id`= '".$idPractice."'");
             if (mysqli_num_rows($resultat) != '0') {
                 $tab[0] = mysqli_fetch_assoc($resultat);
 
