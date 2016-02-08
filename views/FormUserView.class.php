@@ -17,7 +17,7 @@ class FormUserView
 			<div style="margin-top:20px;" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
 				<div class="panel panel-primary" >
 					<div class="panel-heading">
-						<div class="panel-title">Création d\'un utilisateur</div>
+						<div class="panel-title">Création d\'un professeur</div>
 					</div>     
 
 					<div style="padding-top:30px" class="panel-body" >
@@ -42,20 +42,6 @@ class FormUserView
 
 							<div style="margin-bottom: 25px">
 								Mot de passe :<br> <input type="password" class="form-control" name="passwordUser" placeholder="Entrez le mot de passe" required>                                      
-							</div>
-
-							<div style="margin-bottom: 25px">
-								Type : 
-								<div class="form-group">
-									<div class="col-lg-6">
-										<select class="form-control" name="typeUser">
-											<option value="">Séléctionnez le type</option>
-											<option value="Etudiant">Etudiant</option>
-											<option value="Professeur">Professeur</option>
-											<option value="Admin">Admin</option>
-										</select>
-									</div>
-								</div>                                     
 							</div>
 
 							<div style="margin-top:10px" class="form-group">

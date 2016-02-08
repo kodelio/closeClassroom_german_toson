@@ -62,10 +62,6 @@ class MainController
 					$this->logout();
 					break;
 
-					case 'practice':
-					$this->practice();
-					break;
-
 					case 'createPractice':
 					$this->createPractice();
 					break;
@@ -78,16 +74,16 @@ class MainController
 					$this->deletePractice();
 					break;
 
-					case 'module':
-					$this->module();
-					break;
-
 					case 'createModule':
 					$this->createModule();
 					break;
 
 					case 'updateModule':
 					$this->updateModule();
+					break;
+
+					case 'showModule':
+					$this->showModule();
 					break;
 
 					case 'deleteModule':
@@ -106,6 +102,10 @@ class MainController
 					$this->updateFormation();
 					break;
 
+					case 'showFormation':
+					$this->showFormation();
+					break;
+
 					case 'deleteFormation':
 					$this->deleteFormation();
 					break;
@@ -115,7 +115,7 @@ class MainController
 					break;
 
 					case 'createUser':
-					$this->createUser();
+					$this->createProfesseur();
 					break;
 
 					case 'updateUser':
@@ -215,37 +215,6 @@ class MainController
 		header('Location: /webserv/');
 	}
 
-    //charge la page practice
-	public function practice()
-	{
-		$infosUser = new UserDAO();
-		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
-		$managerPractice = new PracticeDAO();
-		if ($infos['type'] == 'Professeur') {
-			$mesCours = $managerPractice->getPracticesByUser($infos['id']);
-			if ($mesCours) {
-				foreach ($mesCours as &$cours) {
-					$idUserForPractice = $cours['user'];
-					$getInfoUser = $infosUser->getInfoUser($idUserForPractice);
-					$cours['user'] = $getInfoUser['login'];
-				}
-			}
-			$practiceView = new PracticeView();
-			echo $practiceView->getView($mesCours, $infos['type']);
-		} else {
-			$mesCours = $managerPractice->getPractices();
-			if ($mesCours) {
-				foreach ($mesCours as &$cours) {
-					$idUserForPractice = $cours['user'];
-					$getInfoUser = $infosUser->getInfoUser($idUserForPractice);
-					$cours['user'] = $getInfoUser['login'];
-				}
-			}
-			$practiceView = new PracticeView();
-			echo $practiceView->getView($mesCours, $infos['type']);
-		}
-	}
-
     //charge la page createPractice
 	public function createPractice()
 	{
@@ -261,7 +230,7 @@ class MainController
 		} else {
 			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
 			$_SESSION['display_msg_error'] = true;
-			$this->practice();
+			$this->showModule();
 		}
 	}
 
@@ -276,7 +245,7 @@ class MainController
 			if (!$isPracticeExist) {
 				$_SESSION['error'] = 'Le cours n\'existe pas';
 				$_SESSION['display_msg_error'] = true;
-				$this->practice();
+				$this->showModule();
 			} else {
 				if (isset($_POST['namePractice'])) {
 					$newFile = false;
@@ -302,7 +271,7 @@ class MainController
 		} else {
 			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
 			$_SESSION['display_msg_error'] = true;
-			$this->practice();
+			$this->showModule();
 		}
 	}
 
@@ -314,11 +283,11 @@ class MainController
 		if ($infos['type'] != 'Etudiant') {
 			$uploader = PracticeController::Instance();
 			$uploader->deleteFile($_GET['idPractice']);
-			$this->practice();
+			$this->showModule();
 		} else {
 			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
 			$_SESSION['display_msg_error'] = true;
-			$this->practice();
+			$this->showModule();
 		}
 	}
 
@@ -340,20 +309,16 @@ class MainController
 		}
 	}
 
-    //charge la page createUser
-	public function createUser()
+    //charge la page createProfesseur
+	public function createProfesseur()
 	{
 		$infosUser = new UserDAO();
 		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
 		if ($infos['type'] == 'Admin') {
-			if (isset($_POST['loginUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser']) && isset($_POST['typeUser'])) {
-				if ($_POST['typeUser'] == '') {
-					$_SESSION['error'] = 'Vous devez renseigner le type d\'utilisateur';
-					$_SESSION['display_msg_error'] = true;
-				} else {
-					$userController = new UserController();
-					$createUser = $userController->createUser($_POST['loginUser'], $_POST['passwordUser'], $_POST['emailUser'], $_POST['typeUser'], $_POST['nameUser'], $_POST['firstNameUser']);
-				}
+			if (isset($_POST['loginUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser'])) {
+				$userController = new UserController();
+				$professeur = "Professeur";
+				$createProfesseur = $userController->createProfesseur($_POST['loginUser'], $_POST['passwordUser'], $_POST['emailUser'], $professeur, $_POST['nameUser'], $_POST['firstNameUser']);
 			}
 			$userView = new FormUserView();
 			echo $userView->getViewInsert();
@@ -439,17 +404,6 @@ class MainController
 		echo $registerView->getView();
 	}
 
-	//charge la page module
-	public function module()
-	{
-		$infosUser = new UserDAO();
-		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
-		$managerModule = new ModuleDAO();
-		$mesModules = $managerModule->getModules();
-		$moduleView = new ModuleView();
-		echo $moduleView->getView($mesModules, $infos['type']);
-
-	}
 
     //charge la page createModule
 	public function createModule()
@@ -466,7 +420,7 @@ class MainController
 		} else {
 			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
 			$_SESSION['display_msg_error'] = true;
-			$this->module();
+			$this->showFormation();
 		}
 	}
 
@@ -481,7 +435,7 @@ class MainController
 			if (!$isModuleExist) {
 				$_SESSION['error'] = 'Le module n\'existe pas';
 				$_SESSION['display_msg_error'] = true;
-				$this->module();
+				$this->showFormation();
 			} else {
 				if (isset($_POST['nameModule'])) {
 					$moduleController = new ModuleController();
@@ -496,7 +450,7 @@ class MainController
 		} else {
 			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
 			$_SESSION['display_msg_error'] = true;
-			$this->module();
+			$this->showFormation();
 		}
 	}
 
@@ -508,11 +462,11 @@ class MainController
 		if ($infos['type'] != 'Etudiant') {
 			$moduleController = new ModuleController();
 			$moduleController->deleteModule($_GET['idModule']);
-			$this->module();
+			$this->showFormation();
 		} else {
 			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
 			$_SESSION['display_msg_error'] = true;
-			$this->module();
+			$this->showFormation();
 		}
 	}
 
@@ -586,6 +540,70 @@ class MainController
 			$formationController = new FormationController();
 			$formationController->deleteFormation($_GET['idFormation']);
 			$this->formation();
+		} else {
+			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
+			$_SESSION['display_msg_error'] = true;
+			$this->formation();
+		}
+	}
+
+	//charge la page show module
+	public function showModule()
+	{
+		$infosUser = new UserDAO();
+		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
+		if ($infos['type'] != 'Etudiant') {
+			$verifModule = new ModuleDAO();
+			$isModuleExist = $verifModule->verifModule($_GET['idModule']);
+			if (!$isModuleExist) {
+				$_SESSION['error'] = 'Le module n\'existe pas';
+				$_SESSION['display_msg_error'] = true;
+				$this->showFormation();
+			} else {
+				$managerPractice = new PracticeDAO();
+				$mesCours = $managerPractice->getPracticesByModule($_GET['idModule']);
+				
+				if ($mesCours) {
+					foreach ($mesCours as &$cours) {
+						$idUserForPractice = $cours['user'];
+						$getInfoUser = $infosUser->getInfoUser($idUserForPractice);
+						$cours['user'] = $getInfoUser['login'];
+					}
+				}
+
+				$managerModule = new ModuleDAO();
+				$infosModule = $managerModule->getNameModule($_GET['idModule']);
+				$practiceView = new PracticeView();
+				echo $practiceView->getView($mesCours, $infos['type'], $infosModule['name']);
+			}
+		} else {
+			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
+			$_SESSION['display_msg_error'] = true;
+			$this->showFormation();
+		}
+	}
+
+	//charge la page show formation
+	public function showFormation()
+	{
+		$infosUser = new UserDAO();
+		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
+		if ($infos['type'] != 'Etudiant') {
+			$verifFormation = new FormationDAO();
+			$isFormationExist = $verifFormation->verifFormation($_GET['idFormation']);
+			if (!$isFormationExist) {
+				$_SESSION['error'] = 'La formation n\'existe pas';
+				$_SESSION['display_msg_error'] = true;
+				$this->formation();
+			} else {
+				$managerModule = new ModuleDAO();
+				$mesModules = $managerModule->getModulesByFormation($_GET['idFormation']);
+
+				$managerFormation = new FormationDAO();
+				$infosFormation = $managerFormation->getNameAndDescriptionFormation($_GET['idFormation']);
+				$moduleView = new ModuleView();
+				echo $moduleView->getView($mesModules, $infos['type'], $infosFormation['name']);
+			}
 		} else {
 			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
 			$_SESSION['display_msg_error'] = true;

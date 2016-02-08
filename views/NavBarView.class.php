@@ -25,8 +25,6 @@ class navBarView
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
 					<ul class="nav navbar-nav">
 						<li id="tabUser"><a href="index.php?page=user">Administration Utilisateurs</a></li>
-						<li id="tabPractice"><a href="index.php?page=practice">Cours</a></li>
-						<li id="tabModule"><a href="index.php?page=module">Modules</a></li>
 						<li id="tabFormation"><a href="index.php?page=formation">Formations</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
@@ -52,8 +50,6 @@ class navBarView
 
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
 					<ul class="nav navbar-nav">
-						<li id="tabPractice"><a href="index.php?page=practice">Cours</a></li>
-						<li id="tabModule"><a href="index.php?page=module">Modules</a></li>
 						<li id="tabFormation"><a href="index.php?page=formation">Formations</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
@@ -79,7 +75,6 @@ class navBarView
 
 				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-2">
 					<ul class="nav navbar-nav">
-						<li id="tabPractice"><a href="index.php?page=practice">Cours</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li><a href="index.php" style="font-size: 13px;"> Bonjour, <strong>'.$firstNameUser.'</strong> </a>

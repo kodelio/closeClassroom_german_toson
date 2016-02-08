@@ -138,7 +138,7 @@ class UserDAO
         }
     }
     
-    public function createUser($loginUser, $passwordUser, $emailUser, $typeUser, $nameUser, $firstNameUser)
+    public function createProfesseur($loginUser, $passwordUser, $emailUser, $typeUser, $nameUser, $firstNameUser)
     {
         try {
             mysqli_query($_SESSION['bdd'], "INSERT INTO users (type, login, password, email, name, first_name) VALUES ('" . $typeUser . "', '" . $loginUser . "', '" . $passwordUser . "', '" . $emailUser . "', '" . $nameUser . "', '" . $firstNameUser . "')");

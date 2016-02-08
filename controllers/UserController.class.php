@@ -7,7 +7,7 @@ class UserController
 	{
 	}
 
-	public function createUser($loginUser, $passwordUser, $emailUser, $typeUser, $nameUser, $firstNameUser)
+	public function createProfesseur($loginUser, $passwordUser, $emailUser, $typeUser, $nameUser, $firstNameUser)
 	{
 		$getDoublon = new UserDAO();
 		$doublonEmail = $getDoublon->getDoublonByEmail($emailUser, '');
@@ -21,8 +21,8 @@ class UserController
 			$_SESSION['display_msg_error'] = true;
 		} else {
 			if (!(isset($_SESSION['error']) and $_SESSION['error'] != null and isset($_SESSION['display_msg_error']) and $_SESSION['display_msg_error'])) {
-				$createUser = new UserDAO();
-				$createUser->createUser($loginUser, $passwordUser, $emailUser, $typeUser, $nameUser, $firstNameUser);
+				$createProfesseur = new UserDAO();
+				$createProfesseur->createProfesseur($loginUser, $passwordUser, $emailUser, $typeUser, $nameUser, $firstNameUser);
 				$_SESSION['success'] = 'L\'utilisateur <b>'.$loginUser.'</b> ('.$emailUser.') a été crée.';
 				$_SESSION['display_msg_success'] = true;
 			} else {

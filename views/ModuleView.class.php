@@ -7,14 +7,14 @@ class ModuleView
 	{
 	}
 
-	public function getViewTop()
+	public function getViewTop($nameFormation)
 	{
 		return '
 		<script>document.getElementById("tabModule").className = "active";</script>
 		<div class="container">  
 			<div class="panel panel-default">
 				<div class="panel-body" style="padding-top: 0px;">  
-					<h3>Modules :</h3>
+					<h3>Modules de la formation '.$nameFormation.' :</h3>
 					<div class="list-group">';
 					}
 
@@ -28,9 +28,9 @@ class ModuleView
 		';
 	}
 
-	public function getView($mesModules, $typeUser)
+	public function getView($mesModules, $typeUser, $nameFormation)
 	{
-		$view = ''.$this->getViewTop().$this->getListe($mesModules, $typeUser).$this->getViewBottom();
+		$view = ''.$this->getViewTop($nameFormation).$this->getListe($mesModules, $typeUser).$this->getViewBottom();
 
 		return $view;
 	}
@@ -77,7 +77,7 @@ class ModuleView
 				<a style="float: right;" href="index.php?page=updateModule&idModule='.$module['id'].'" role="button" class="btn btn-info"><i class="fa fa-edit"></i></a>';
 			}
 			$view = $view.'<div class="list-group-item">'.$modif.'
-			<h4>'.$module['name'].'</h4>
+			<h4><a href="index.php?page=showModule&idModule='.$module['id'].'">'.$module['name'].'</a></h4>
 		</div>';
 	}
 }

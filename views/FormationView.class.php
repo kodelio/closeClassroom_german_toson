@@ -77,7 +77,7 @@ class FormationView
 				<a style="float: right;" href="index.php?page=updateFormation&idFormation='.$formation['id'].'" role="button" class="btn btn-info"><i class="fa fa-edit"></i></a>';
 			}
 			$view = $view.'<div class="list-group-item">'.$modif.'
-			<h4>'.$formation['name'].'</h4>
+			<h4><a href="index.php?page=showFormation&idFormation='.$formation['id'].'">'.$formation['name'].'</a></h4>
 			<p class="list-group-item-text">'.$formation['description'].'</p>
 		</div>';
 	}

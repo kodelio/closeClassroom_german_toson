@@ -33,7 +33,6 @@ class FormationDAO
     public function getFormationsByUser($idUser)
     {
         try {
-            //TODO
             $resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM assouserformation WHERE `id_user`= '".$idUser."'");
             if (mysqli_num_rows($resultat) != '0') {
                 $tab[0] = mysqli_fetch_assoc($resultat);
