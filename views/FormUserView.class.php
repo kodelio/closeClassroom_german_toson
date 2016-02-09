@@ -108,7 +108,7 @@ class FormUserView
 								Mot de passe :<br> <input type="password" class="form-control" value="'.$passwordUser.'" name="passwordUser" placeholder="Entrez le mot de passe" required>                                      
 							</div>
 
-							<div style="margin-bottom: 25px">
+							<div style="margin-bottom: 25px; display: none;">
 								Type : 
 								<div class="form-group">
 									<div class="col-lg-6">
