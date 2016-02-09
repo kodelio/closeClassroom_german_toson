@@ -25,7 +25,7 @@ final class PracticeController
         return $inst;
     }
 
-    public function uploadFile($namePractice, $descriptionPractice)
+    public function uploadFile($namePractice, $descriptionPractice, $idModule)
     {
         $getDoublonByName = new PracticeDAO();
         $doublon = $getDoublonByName->getDoublonByName($namePractice, '');
@@ -67,7 +67,7 @@ final class PracticeController
 
                 if (move_uploaded_file($_FILES['fichierUp']['tmp_name'], $_dossier.$_fichier)) {
                     $createPractice = new PracticeDAO();
-                    $createPractice->createPractice($namePractice, $_dossier, $_fichier, $descriptionPractice, $result);
+                    $createPractice->createPractice($namePractice, $_dossier, $_fichier, $descriptionPractice, $result, $idModule);
                     $_SESSION['success'] = 'Le cours <b>'.$namePractice.'</b> a été crée.';
                     $_SESSION['display_msg_success'] = true;
                 } else {
@@ -102,30 +102,30 @@ final class PracticeController
                 $_taille = filesize($_FILES['fichierUp']['tmp_name']);
                 $_extension = strrchr($_FILES['fichierUp']['name'], '.');
                 $_extensions = ['.png', '.gif', '.jpg', '.jpeg', '.pdf', '.docx', '.txt']; // On choisi les extensions de fichiers autorisées
-            $_dossier = 'practices/';
+                $_dossier = 'practices/';
                 $_taille_maxi = 10000000; //10Mo
 
-            if (!in_array($_extension, $_extensions)) {
+                if (!in_array($_extension, $_extensions)) {
                 // On teste si le fichier a la bonne extension
 
-                $_SESSION['error'] = 'Vous devez uploader un fichier de type png, gif, jpg, jpeg, pdf, txt ou doc...';
-                $_SESSION['display_msg_error'] = true;
-            }
+                    $_SESSION['error'] = 'Vous devez uploader un fichier de type png, gif, jpg, jpeg, pdf, txt ou doc...';
+                    $_SESSION['display_msg_error'] = true;
+                }
                 if ($_taille > $_taille_maxi) {
                     // On teste la taille du fichier avec la taille maximale autorisée
 
-                $_SESSION['error'] = 'Le fichier est trop gros...';
+                    $_SESSION['error'] = 'Le fichier est trop gros...';
                     $_SESSION['display_msg_error'] = true;
                 }
                 if (!(isset($_SESSION['error']) and $_SESSION['error'] != null and isset($_SESSION['display_msg_error']) and $_SESSION['display_msg_error'])) {
                     // On vérifie le nom du fichier (s'il ne contient pas de caractères spéciaux)
-                $_fichier = strtr($_fichier,
-                    'ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ',
-                    'AAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy');
+                    $_fichier = strtr($_fichier,
+                        'ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ',
+                        'AAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy');
                     $_fichier = preg_replace('/([^.a-z0-9]+)/i', '-', $_fichier);
 
                 // On ajoute la date et le l'user au nom du fichier
-                $date = new DateTime(date('d-m-Y'));
+                    $date = new DateTime(date('d-m-Y'));
                     $result = $date->format('d-m-Y');
                     $_fichier = ''.pathinfo($_fichier, PATHINFO_FILENAME).'_'.$result.'_'.$_SESSION['username'].$_extension.'';
 

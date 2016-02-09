@@ -126,14 +126,14 @@ class MainController
 					$this->deleteUser();
 					break;
 
-					case 'deleteUser':
-					$_SESSION['error'] = 'Vous ne pouvez pas vous inscrite en étant connecté';
+					case 'register':
+					$_SESSION['error'] = 'Vous ne pouvez pas vous inscrire en étant connecté';
 					$_SESSION['display_msg_error'] = true;
 					$this->profile();
 					break;
 
 					default:
-					$_SESSION['error'] = 'La page n\'existe pas';
+					$_SESSION['error'] = '[1] La page n\'existe pas';
 					$_SESSION['display_msg_error'] = true;
 					$this->profile();
 					break;
@@ -221,16 +221,22 @@ class MainController
 		$infosUser = new UserDAO();
 		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
 		if ($infos['type'] != 'Etudiant') {
-			if (isset($_POST['namePractice']) && isset($_FILES['fichierUp']['name']) and $_FILES['fichierUp']['name'] != null) {
+			if (isset($_POST['namePractice']) && isset($_POST['idModule']) && $_POST['idModule'] != null && isset($_FILES['fichierUp']['name']) and $_FILES['fichierUp']['name'] != null) {
 				$uploader = PracticeController::Instance();
-				$uploader->uploadFile($_POST['namePractice'], $_POST['descriptionPractice']);
+				$uploader->uploadFile($_POST['namePractice'], $_POST['descriptionPractice'], $_POST['idModule']);
 			}
+			else if (isset($_POST['idModule']) && $_POST['idModule'] == null) {
+				$_SESSION['error'] = 'Erreur avec le module';
+				$_SESSION['display_msg_error'] = true;
+			}
+			$managerModule = new ModuleDAO();
+			$mesModules = $managerModule->getModules();
 			$formPracticeView = new FormPracticeView();
-			echo $formPracticeView->getViewInsert();
+			echo $formPracticeView->getViewInsert($mesModules);
 		} else {
 			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
 			$_SESSION['display_msg_error'] = true;
-			$this->showModule();
+			$this->profile();
 		}
 	}
 
@@ -246,7 +252,7 @@ class MainController
 				if (!$isPracticeExist) {
 					$_SESSION['error'] = 'Le cours n\'existe pas';
 					$_SESSION['display_msg_error'] = true;
-					$this->showModule();
+					$this->profile();
 				} else {
 					if (isset($_POST['namePractice'])) {
 						$newFile = false;
@@ -272,11 +278,11 @@ class MainController
 			} else {
 				$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
 				$_SESSION['display_msg_error'] = true;
-				$this->showModule();
+				$this->profile();
 			}
 		}
 		else {
-			$_SESSION['error'] = 'La page n\'existe pas';
+			$_SESSION['error'] = '[2] La page n\'existe pas';
 			$_SESSION['display_msg_error'] = true;
 			$this->profile();
 		}
@@ -285,21 +291,23 @@ class MainController
     //charge la page delete practice
 	public function deletePractice()
 	{
-		if (isset($_GET['isUser'])){
+		if (isset($_GET['idPractice'])){
 			$infosUser = new UserDAO();
 			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
 			if ($infos['type'] != 'Etudiant') {
 				$uploader = PracticeController::Instance();
 				$uploader->deleteFile($_GET['idPractice']);
-				$this->showModule();
+				$_SESSION['success'] = 'Le cours a bien été supprimé';
+				$_SESSION['display_msg_success'] = true;
+				$this->profile();
 			} else {
 				$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
 				$_SESSION['display_msg_error'] = true;
-				$this->showModule();
+				$this->profile();
 			}
 		}
 		else {
-			$_SESSION['error'] = 'La page n\'existe pas';
+			$_SESSION['error'] = '[3] La page n\'existe pas';
 			$_SESSION['display_msg_error'] = true;
 			$this->profile();
 		}
@@ -380,7 +388,7 @@ class MainController
 			}
 		}
 		else {
-			$_SESSION['error'] = 'La page n\'existe pas';
+			$_SESSION['error'] = '[4] La page n\'existe pas';
 			$_SESSION['display_msg_error'] = true;
 			$this->profile();
 		}
@@ -389,12 +397,14 @@ class MainController
     //charge la page delete user
 	public function deleteUser()
 	{
-		if (isset($_GET['isUser'])){
+		if (isset($_GET['idUser'])){
 			$infosUser = new UserDAO();
 			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
 			if ($infos['type'] == 'Admin') {
 				$userController = new UserController();
 				$deleteUser = $userController->deleteUser($_GET['idUser']);
+				$_SESSION['success'] = 'L\'utilisateur a bien été supprimé';
+				$_SESSION['display_msg_success'] = true;
 				$this->user();
 			} else {
 				$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
@@ -403,7 +413,7 @@ class MainController
 			}
 		}
 		else {
-			$_SESSION['error'] = 'La page n\'existe pas';
+			$_SESSION['error'] = '[5] La page n\'existe pas';
 			$_SESSION['display_msg_error'] = true;
 			$this->profile();
 		}
@@ -450,7 +460,7 @@ class MainController
 		} else {
 			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
 			$_SESSION['display_msg_error'] = true;
-			$this->showFormation();
+			$this->profile();
 		}
 	}
 
@@ -466,7 +476,7 @@ class MainController
 				if (!$isModuleExist) {
 					$_SESSION['error'] = 'Le module n\'existe pas';
 					$_SESSION['display_msg_error'] = true;
-					$this->showFormation();
+					$this->profile();
 				} else {
 					if (isset($_POST['nameModule'])) {
 						$moduleController = new ModuleController();
@@ -481,11 +491,11 @@ class MainController
 			} else {
 				$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
 				$_SESSION['display_msg_error'] = true;
-				$this->showFormation();
+				$this->profile();
 			}
 		}
 		else {
-			$_SESSION['error'] = 'La page n\'existe pas';
+			$_SESSION['error'] = '[6] La page n\'existe pas';
 			$_SESSION['display_msg_error'] = true;
 			$this->profile();
 		}
@@ -500,15 +510,17 @@ class MainController
 			if ($infos['type'] != 'Etudiant') {
 				$moduleController = new ModuleController();
 				$moduleController->deleteModule($_GET['idModule']);
-				$this->showFormation();
+				$_SESSION['success'] = 'Le module a bien été supprimé';
+				$_SESSION['display_msg_success'] = true;
+				$this->profile();
 			} else {
 				$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
 				$_SESSION['display_msg_error'] = true;
-				$this->showFormation();
+				$this->profile();
 			}
 		}
 		else {
-			$_SESSION['error'] = 'La page n\'existe pas';
+			$_SESSION['error'] = '[7] La page n\'existe pas';
 			$_SESSION['display_msg_error'] = true;
 			$this->profile();
 		}
@@ -541,7 +553,7 @@ class MainController
 		} else {
 			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
 			$_SESSION['display_msg_error'] = true;
-			$this->formation();
+			$this->profile();
 		}
 	}
 
@@ -557,7 +569,7 @@ class MainController
 				if (!$isFormationExist) {
 					$_SESSION['error'] = 'La formation n\'existe pas';
 					$_SESSION['display_msg_error'] = true;
-					$this->formation();
+					$this->profile();
 				} else {
 					if (isset($_POST['nameFormation'])) {
 						$formationController = new FormationController();
@@ -572,11 +584,11 @@ class MainController
 			} else {
 				$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
 				$_SESSION['display_msg_error'] = true;
-				$this->formation();
+				$this->profile();
 			}
 		}
 		else {
-			$_SESSION['error'] = 'La page n\'existe pas';
+			$_SESSION['error'] = '[8] La page n\'existe pas';
 			$_SESSION['display_msg_error'] = true;
 			$this->profile();
 		}
@@ -591,15 +603,17 @@ class MainController
 			if ($infos['type'] != 'Etudiant') {
 				$formationController = new FormationController();
 				$formationController->deleteFormation($_GET['idFormation']);
-				$this->formation();
+				$_SESSION['success'] = 'La formation a bien été supprimée';
+				$_SESSION['display_msg_success'] = true;
+				$this->profile();
 			} else {
 				$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
 				$_SESSION['display_msg_error'] = true;
-				$this->formation();
+				$this->profile();
 			}
 		}
 		else {
-			$_SESSION['error'] = 'La page n\'existe pas';
+			$_SESSION['error'] = '[9] La page n\'existe pas';
 			$_SESSION['display_msg_error'] = true;
 			$this->profile();
 		}
@@ -617,7 +631,7 @@ class MainController
 				if (!$isModuleExist) {
 					$_SESSION['error'] = 'Le module n\'existe pas';
 					$_SESSION['display_msg_error'] = true;
-					$this->showFormation();
+					$this->profile();
 				} else {
 					$managerPractice = new PracticeDAO();
 					$mesCours = $managerPractice->getPracticesByModule($_GET['idModule']);
@@ -638,11 +652,11 @@ class MainController
 			} else {
 				$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
 				$_SESSION['display_msg_error'] = true;
-				$this->showFormation();
+				$this->profile();
 			}
 		}
 		else {
-			$_SESSION['error'] = 'La page n\'existe pas';
+			$_SESSION['error'] = '[10] La page n\'existe pas';
 			$_SESSION['display_msg_error'] = true;
 			$this->profile();
 		}
@@ -660,7 +674,7 @@ class MainController
 				if (!$isFormationExist) {
 					$_SESSION['error'] = 'La formation n\'existe pas';
 					$_SESSION['display_msg_error'] = true;
-					$this->formation();
+					$this->profile();
 				} else {
 					$managerModule = new ModuleDAO();
 					$mesModules = $managerModule->getModulesByFormation($_GET['idFormation']);
@@ -673,11 +687,11 @@ class MainController
 			} else {
 				$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
 				$_SESSION['display_msg_error'] = true;
-				$this->formation();
+				$this->profile();
 			}
 		}
 		else {
-			$_SESSION['error'] = 'La page n\'existe pas';
+			$_SESSION['error'] = '[11] La page n\'existe pas';
 			$_SESSION['display_msg_error'] = true;
 			$this->profile();
 		}

@@ -32,7 +32,6 @@ class ModuleDAO
 
     public function getModulesByFormation($idFormation)
     {
-        // a partir la liste d'id des modules, récupérer les infos des modules
         try {
             $resultat = mysqli_query($_SESSION['bdd'], "SELECT * from modules WHERE id IN (SELECT id_module from assomoduleformation where id_formation = '".$idFormation."');");
             if (mysqli_num_rows($resultat) != '0') {

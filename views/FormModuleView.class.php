@@ -31,7 +31,7 @@ class FormModuleView
 							<div style="margin-top:10px" class="form-group">
 								<div class="col-sm-12 controls">
 									<input style="margin-top: 10px;" type="submit" name="envoyer" class="btn btn-success" value="Créer le module">
-									<a style="margin-top: 10px;" class="btn btn-warning" href="index.php?page=module">Annuler</a>
+									<a style="margin-top: 10px;" class="btn btn-warning" href="javascript:history.go(-1)">Annuler</a>
 								</div>
 							</div>
 						</form>     
@@ -66,7 +66,7 @@ class FormModuleView
 							<div style="margin-top:10px" class="form-group">
 								<div class="col-sm-12 controls">
 									<input style="margin-top: 10px;" type="submit" name="envoyer" class="btn btn-success" value="Mettre à jour">
-									<a style="margin-top: 10px;" class="btn btn-warning" href="index.php?page=module">Annuler</a>
+									<a style="margin-top: 10px;" class="btn btn-warning" href="javascript:history.go(-1)">Annuler</a>
 								</div>
 							</div>
 						</form>     
