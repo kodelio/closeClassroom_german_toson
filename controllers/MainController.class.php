@@ -1,6 +1,6 @@
 <?php
 
-    // views
+// views
 include 'views/NavBarView.class.php';
 include 'views/LoginView.class.php';
 include 'views/ProfileView.class.php';
@@ -14,19 +14,19 @@ include 'views/ModuleView.class.php';
 include 'views/FormFormationView.class.php';
 include 'views/FormationView.class.php';
 
-    // models
+// models
 include 'models/User.class.php';
 include 'models/Practice.class.php';
 include 'models/Module.class.php';
 include 'models/Formation.class.php';
 
-    //controllers
+//controllers
 include 'controllers/PracticeController.class.php';
 include 'controllers/UserController.class.php';
 include 'controllers/ModuleController.class.php';
 include 'controllers/FormationController.class.php';
 
-    //managers
+//managers
 include 'bddManager/ConnectDAO.php';
 include 'bddManager/UserDAO.php';
 include 'bddManager/PracticeDAO.php';
@@ -46,10 +46,10 @@ class MainController
 			$login = new UserDAO();
 			$login->getUserByLoginAndPassword($username_cookie, $username_cookie, true);
 		}
-
+		
         //insertion de la navbar
 		$this->navBar();
-
+		
         //choix de la page
 		if ($this->isLogged()) {
 			if (isset($_GET['page'])) {
@@ -57,81 +57,81 @@ class MainController
 					case 'login':
 					$this->login();
 					break;
-
+					
 					case 'logout':
 					$this->logout();
 					break;
-
+					
 					case 'createPractice':
 					$this->createPractice();
 					break;
-
+					
 					case 'updatePractice':
 					$this->updatePractice();
 					break;
-
+					
 					case 'deletePractice':
 					$this->deletePractice();
 					break;
-
+					
 					case 'createModule':
 					$this->createModule();
 					break;
-
+					
 					case 'updateModule':
 					$this->updateModule();
 					break;
-
+					
 					case 'showModule':
 					$this->showModule();
 					break;
-
+					
 					case 'deleteModule':
 					$this->deleteModule();
 					break;
-
+					
 					case 'formation':
 					$this->formation();
 					break;
-
+					
 					case 'createFormation':
 					$this->createFormation();
 					break;
-
+					
 					case 'updateFormation':
 					$this->updateFormation();
 					break;
-
+					
 					case 'showFormation':
 					$this->showFormation();
 					break;
-
+					
 					case 'deleteFormation':
 					$this->deleteFormation();
 					break;
-
+					
 					case 'user':
 					$this->user();
 					break;
-
+					
 					case 'createUser':
 					$this->createProfesseur();
 					break;
-
+					
 					case 'updateUser':
 					$this->updateUser();
 					break;
-
+					
 					case 'deleteUser':
 					$this->deleteUser();
 					break;
-
+					
 					case 'register':
 					$_SESSION['error'] = 'Vous ne pouvez pas vous inscrire en étant connecté';
 					$_SESSION['display_msg_error'] = true;
 					$this->profile();
 					break;
-
+					
 					default:
 					$_SESSION['error'] = '[1] La page n\'existe pas';
 					$_SESSION['display_msg_error'] = true;
@@ -146,7 +146,7 @@ class MainController
 		} else {
 			$this->login();
 		}
-
+		
         //popup d'erreur
 		if (isset($_SESSION['error']) and $_SESSION['error'] != null and isset($_SESSION['display_msg_error']) and $_SESSION['display_msg_error']) {
 			include 'include/ErrorModal.php';
@@ -158,12 +158,12 @@ class MainController
 			$_SESSION['display_msg_success'] = false;
 		}
 	}
-
+	
     //insertion de la navbar
 	public function navBar()
 	{
 		$navBarView = new navBarView();
-
+		
 		if ($this->isLogged()) {
 			$infosUser = new UserDAO();
 			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
@@ -172,7 +172,7 @@ class MainController
 			echo $navBarView->getViewLogout();
 		}
 	}
-
+	
     //teste si l'utilisateur est connecté
 	public function isLogged()
 	{
@@ -182,7 +182,7 @@ class MainController
 			return false;
 		}
 	}
-
+	
     //charge la page de login
 	public function login()
 	{
@@ -192,7 +192,7 @@ class MainController
 		} else {
 			$_SESSION['isLogged'] = false;
 		}
-
+		
 		if (!$this->isLogged()) {
 			$_SESSION['isLogged'] = false;
 			$loginView = new loginView();
@@ -202,7 +202,7 @@ class MainController
 			echo $profileView->getView();
 		}
 	}
-
+	
     //charge la page de déconnexion
 	public function logout()
 	{
@@ -214,7 +214,7 @@ class MainController
 		session_destroy();
 		header('Location: /webserv/');
 	}
-
+	
     //charge la page createPractice
 	public function createPractice()
 	{
@@ -224,8 +224,7 @@ class MainController
 			if (isset($_POST['namePractice']) && isset($_POST['idModule']) && $_POST['idModule'] != null && isset($_FILES['fichierUp']['name']) and $_FILES['fichierUp']['name'] != null) {
 				$uploader = PracticeController::Instance();
 				$uploader->uploadFile($_POST['namePractice'], $_POST['descriptionPractice'], $_POST['idModule']);
-			}
-			else if (isset($_POST['idModule']) && $_POST['idModule'] == null) {
+			} else if (isset($_POST['idModule']) && $_POST['idModule'] == null) {
 				$_SESSION['error'] = 'Erreur avec le module';
 				$_SESSION['display_msg_error'] = true;
 			}
@@ -239,11 +238,11 @@ class MainController
 			$this->profile();
 		}
 	}
-
+	
     //charge la page mise à jour cours
 	public function updatePractice()
 	{
-		if (isset($_GET['idPractice'])){
+		if (isset($_GET['idPractice'])) {
 			$infosUser = new UserDAO();
 			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
 			if ($infos['type'] != 'Etudiant') {
@@ -259,8 +258,8 @@ class MainController
 						if (isset($_FILES['fichierUp']['name']) and $_FILES['fichierUp']['name'] != null) {
 							$getFile = new PracticeDAO();
 							$infos = $getFile->getFile($_GET['idPractice']);
-							unlink($_SERVER['DOCUMENT_ROOT'].$infos['path']);
-
+							unlink($_SERVER['DOCUMENT_ROOT'] . $infos['path']);
+							
 							$newFile = true;
 							$uploader = PracticeController::Instance();
 							$uploader->updateFile($_POST['namePractice'], $_POST['descriptionPractice'], $_GET['idPractice'], $newFile);
@@ -280,18 +279,17 @@ class MainController
 				$_SESSION['display_msg_error'] = true;
 				$this->profile();
 			}
-		}
-		else {
+		} else {
 			$_SESSION['error'] = '[2] La page n\'existe pas';
 			$_SESSION['display_msg_error'] = true;
 			$this->profile();
 		}
 	}
-
+	
     //charge la page delete practice
 	public function deletePractice()
 	{
-		if (isset($_GET['idPractice'])){
+		if (isset($_GET['idPractice'])) {
 			$infosUser = new UserDAO();
 			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
 			if ($infos['type'] != 'Etudiant') {
@@ -305,16 +303,15 @@ class MainController
 				$_SESSION['display_msg_error'] = true;
 				$this->profile();
 			}
-		}
-		else {
+		} else {
 			$_SESSION['error'] = '[3] La page n\'existe pas';
 			$_SESSION['display_msg_error'] = true;
 			$this->profile();
 		}
 	}
 	
-
-
+	
+	
     //charge la page user
 	public function user()
 	{
@@ -332,7 +329,7 @@ class MainController
 			$this->profile();
 		}
 	}
-
+	
     //charge la page createProfesseur
 	public function createProfesseur()
 	{
@@ -352,11 +349,11 @@ class MainController
 			$this->profile();
 		}
 	}
-
+	
     //charge la page mise à jour user
 	public function updateUser()
 	{
-		if (isset($_GET['idUser'])){
+		if (isset($_GET['idUser'])) {
 			$infosUser = new UserDAO();
 			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
 			if ($infos['type'] == 'Admin') {
@@ -386,18 +383,17 @@ class MainController
 				$_SESSION['display_msg_error'] = true;
 				$this->profile();
 			}
-		}
-		else {
+		} else {
 			$_SESSION['error'] = '[4] La page n\'existe pas';
 			$_SESSION['display_msg_error'] = true;
 			$this->profile();
 		}
 	}
-
+	
     //charge la page delete user
 	public function deleteUser()
 	{
-		if (isset($_GET['idUser'])){
+		if (isset($_GET['idUser'])) {
 			$infosUser = new UserDAO();
 			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
 			if ($infos['type'] == 'Admin') {
@@ -411,14 +407,13 @@ class MainController
 				$_SESSION['display_msg_error'] = true;
 				$this->profile();
 			}
-		}
-		else {
+		} else {
 			$_SESSION['error'] = '[5] La page n\'existe pas';
 			$_SESSION['display_msg_error'] = true;
 			$this->profile();
 		}
 	}
-
+	
     //charge la page profile
 	public function profile()
 	{
@@ -427,7 +422,7 @@ class MainController
 		$profileView = new ProfileView();
 		echo $profileView->getView($infos['id'], $infos['login'], $infos['email'], $infos['type']);
 	}
-
+	
     //charge la page d'inscription
 	public function register()
 	{
@@ -443,8 +438,8 @@ class MainController
 		$registerView = new FormRegisterView();
 		echo $registerView->getView();
 	}
-
-
+	
+	
     //charge la page createModule
 	public function createModule()
 	{
@@ -463,11 +458,11 @@ class MainController
 			$this->profile();
 		}
 	}
-
+	
     //charge la page mise à jour module
 	public function updateModule()
 	{
-		if (isset($_GET['idModule'])){
+		if (isset($_GET['idModule'])) {
 			$infosUser = new UserDAO();
 			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
 			if ($infos['type'] != 'Etudiant') {
@@ -482,7 +477,7 @@ class MainController
 						$moduleController = new ModuleController();
 						$moduleController->updateModule($_POST['nameModule'], $_GET['idModule']);
 					}
-
+					
 					$managerModule = new ModuleDAO();
 					$infos = $managerModule->getNameModule($_GET['idModule']);
 					$formModuleView = new FormModuleView();
@@ -493,18 +488,17 @@ class MainController
 				$_SESSION['display_msg_error'] = true;
 				$this->profile();
 			}
-		}
-		else {
+		} else {
 			$_SESSION['error'] = '[6] La page n\'existe pas';
 			$_SESSION['display_msg_error'] = true;
 			$this->profile();
 		}
 	}
-
+	
     //charge la page delete module
 	public function deleteModule()
 	{
-		if (isset($_GET['idModule'])){
+		if (isset($_GET['idModule'])) {
 			$infosUser = new UserDAO();
 			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
 			if ($infos['type'] != 'Etudiant') {
@@ -518,15 +512,14 @@ class MainController
 				$_SESSION['display_msg_error'] = true;
 				$this->profile();
 			}
-		}
-		else {
+		} else {
 			$_SESSION['error'] = '[7] La page n\'existe pas';
 			$_SESSION['display_msg_error'] = true;
 			$this->profile();
 		}
 	}
-
-	//charge la page formation
+	
+    //charge la page formation
 	public function formation()
 	{
 		$infosUser = new UserDAO();
@@ -535,9 +528,9 @@ class MainController
 		$mesFormations = $managerFormation->getFormations();
 		$formationView = new FormationView();
 		echo $formationView->getView($mesFormations, $infos['type']);
-
+		
 	}
-
+	
     //charge la page createFormation
 	public function createFormation()
 	{
@@ -556,11 +549,11 @@ class MainController
 			$this->profile();
 		}
 	}
-
+	
     //charge la page mise à jour formation
 	public function updateFormation()
 	{
-		if (isset($_GET['idFormation'])){
+		if (isset($_GET['idFormation'])) {
 			$infosUser = new UserDAO();
 			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
 			if ($infos['type'] != 'Etudiant') {
@@ -575,7 +568,7 @@ class MainController
 						$formationController = new FormationController();
 						$formationController->updateFormation($_POST['nameFormation'], $_POST['descriptionFormation'], $_GET['idFormation']);
 					}
-
+					
 					$managerFormation = new FormationDAO();
 					$infos = $managerFormation->getNameAndDescriptionFormation($_GET['idFormation']);
 					$formFormationView = new FormFormationView();
@@ -586,18 +579,17 @@ class MainController
 				$_SESSION['display_msg_error'] = true;
 				$this->profile();
 			}
-		}
-		else {
+		} else {
 			$_SESSION['error'] = '[8] La page n\'existe pas';
 			$_SESSION['display_msg_error'] = true;
 			$this->profile();
 		}
 	}
-
+	
     //charge la page delete formation
 	public function deleteFormation()
 	{
-		if (isset($_GET['idFormation'])){
+		if (isset($_GET['idFormation'])) {
 			$infosUser = new UserDAO();
 			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
 			if ($infos['type'] != 'Etudiant') {
@@ -611,18 +603,17 @@ class MainController
 				$_SESSION['display_msg_error'] = true;
 				$this->profile();
 			}
-		}
-		else {
+		} else {
 			$_SESSION['error'] = '[9] La page n\'existe pas';
 			$_SESSION['display_msg_error'] = true;
 			$this->profile();
 		}
 	}
-
-	//charge la page show module
+	
+    //charge la page show module
 	public function showModule()
 	{
-		if (isset($_GET['idModule'])){
+		if (isset($_GET['idModule'])) {
 			$infosUser = new UserDAO();
 			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
 			if ($infos['type'] != 'Etudiant') {
@@ -635,7 +626,7 @@ class MainController
 				} else {
 					$managerPractice = new PracticeDAO();
 					$mesCours = $managerPractice->getPracticesByModule($_GET['idModule']);
-
+					
 					if ($mesCours) {
 						foreach ($mesCours as &$cours) {
 							$idUserForPractice = $cours['user'];
@@ -643,7 +634,7 @@ class MainController
 							$cours['user'] = $getInfoUser['login'];
 						}
 					}
-
+					
 					$managerModule = new ModuleDAO();
 					$infosModule = $managerModule->getNameModule($_GET['idModule']);
 					$practiceView = new PracticeView();
@@ -654,18 +645,17 @@ class MainController
 				$_SESSION['display_msg_error'] = true;
 				$this->profile();
 			}
-		}
-		else {
+		} else {
 			$_SESSION['error'] = '[10] La page n\'existe pas';
 			$_SESSION['display_msg_error'] = true;
 			$this->profile();
 		}
 	}
-
-	//charge la page show formation
+	
+    //charge la page show formation
 	public function showFormation()
 	{
-		if (isset($_GET['idFormation'])){
+		if (isset($_GET['idFormation'])) {
 			$infosUser = new UserDAO();
 			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
 			if ($infos['type'] != 'Etudiant') {
@@ -678,7 +668,7 @@ class MainController
 				} else {
 					$managerModule = new ModuleDAO();
 					$mesModules = $managerModule->getModulesByFormation($_GET['idFormation']);
-
+					
 					$managerFormation = new FormationDAO();
 					$infosFormation = $managerFormation->getNameAndDescriptionFormation($_GET['idFormation']);
 					$moduleView = new ModuleView();
@@ -689,8 +679,7 @@ class MainController
 				$_SESSION['display_msg_error'] = true;
 				$this->profile();
 			}
-		}
-		else {
+		} else {
 			$_SESSION['error'] = '[11] La page n\'existe pas';
 			$_SESSION['display_msg_error'] = true;
 			$this->profile();

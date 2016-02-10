@@ -196,5 +196,5 @@ class UserDAO
             $_SESSION['error'] = 'Erreur requete BDD';
             $_SESSION['display_msg_error'] = true;
         }
-    } 
+    }
 }
