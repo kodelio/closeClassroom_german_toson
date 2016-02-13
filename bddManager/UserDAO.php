@@ -168,23 +168,7 @@ class UserDAO
     public function deleteUser($idUser)
     {
         try {
-        	$resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM `users` WHERE `id` = '" . $idUser . "'");        	
-        	if (mysqli_num_rows($resultat) != '0')
-        	{
-        		$log = mysqli_fetch_assoc($resultat);
-        		if ($log['type'] != 'Admin')
-	        	{
-					mysqli_query($_SESSION['bdd'], "DELETE FROM `users` WHERE `id` = '" . $idUser . "'");
-	        	}
-	        	else
-	        	{
-	        		$_SESSION['error'] = 'Erreur impossible de supprimer un administrateur';
-	        	}
-        	}
-        	else
-        	{
-        		$_SESSION['error'] = 'Erreur utilisateur introuvable';
-        	}
+            mysqli_query($_SESSION['bdd'], "DELETE FROM `users` WHERE `id` = '" . $idUser . "'");
         }
         catch (Exception $e) {
             $_SESSION['error'] = 'Erreur requete BDD';

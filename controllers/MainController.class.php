@@ -441,10 +441,21 @@ class MainController
 			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
 			if ($infos['type'] == 'Admin') {
 				$userController = new UserController();
-				$deleteUser = $userController->deleteUser($_GET['idUser']);
-				$_SESSION['success'] = 'L\'utilisateur a bien été supprimé';
-				$_SESSION['display_msg_success'] = true;
-				$this->user();
+				$userToDelete = $userController->getInfoUser($_GET['idUser']);
+				if($userToDelete['type'] != 'Admin')
+				{
+					$deleteUser = $userController->deleteUser($_GET['idUser']);
+					$_SESSION['success'] = 'L\'utilisateur a bien été supprimé';
+					$_SESSION['display_msg_success'] = true;
+					$this->user();
+				}
+				else
+				{
+					$_SESSION['error'] = 'Vous ne pouvez pas supprimer un administrateur';
+					$_SESSION['display_msg_error'] = true;
+					$this->profile();
+				}
+				
 			} else {
 				$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
 				$_SESSION['display_msg_error'] = true;
