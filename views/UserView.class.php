@@ -77,7 +77,7 @@ class UserView
 					</div>
 				</form>
 				<a style="float: right;" href="index.php?page=updateUser&idUser='.$utilisateurs['id'].'" role="button" class="btn btn-info"><i class="fa fa-edit"></i></a>
-				<h4>'.$utilisateurs['login'].' ('.$utilisateurs['first_name'].' '.$utilisateurs['name'].')</h4>
+				<h4>'.$utilisateurs['login'].' ('.utf8_encode($utilisateurs['first_name']).' '.utf8_encode($utilisateurs['name']).')</h4>
 				<p class="list-group-item-text">'.$utilisateurs['email'].'</p>
 				<p>Type : '.$utilisateurs['type'].'</b></p>
 			</div>';

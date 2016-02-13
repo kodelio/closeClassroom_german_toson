@@ -19,7 +19,6 @@ class FormationDAO
                         array_push($tab, mysqli_fetch_assoc($resultat));
                     }
                 }
-                
                 return $tab;
             } else {
                 return false;
@@ -31,11 +30,10 @@ class FormationDAO
         }
     }
     
-    // Inutilisée
     public function getFormationsByUser($idUser)
     {
         try {
-            $resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM assouserformation WHERE `id_user`= '" . $idUser . "'");
+            $resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM formations WHERE id IN (SELECT id_formation FROM assouserformation WHERE `id_user`= '" . $idUser . "')");
             if (mysqli_num_rows($resultat) != '0') {
                 $tab[0] = mysqli_fetch_assoc($resultat);
                 if (mysqli_num_rows($resultat) > '0') {
@@ -43,7 +41,6 @@ class FormationDAO
                         array_push($tab, mysqli_fetch_assoc($resultat));
                     }
                 }
-                
                 return $tab;
             } else {
                 return false;

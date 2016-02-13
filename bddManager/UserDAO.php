@@ -31,10 +31,10 @@ class UserDAO
                 $_SESSION['email'] = $log['email'];
                 if ($addCookie) {
                     $cookie_value = $login . ' ' . $password;
-                    setcookie('nougatine', $cookie_value, time() + (86400 * 30), '/webserv/'); // 86400 = 1 jour
+                    setcookie('nougatine', $cookie_value, time() + (86400 * 30), '/closeClassroom_german_toson/'); // 86400 = 1 jour
                 }
                 new User($login, $password);
-                header('Location: /webserv/');
+                header('Location: /closeClassroom_german_toson/');
             } else {
                 $_SESSION['error'] = 'Mauvais mot de passe';
                 $_SESSION['display_msg_error'] = true;

@@ -41,8 +41,6 @@ class MainController
 		if (!$this->isLogged() && isset($_COOKIE['nougatine'])) {
 			$username_cookie = substr($_COOKIE['nougatine'], 0, strrpos($_COOKIE['nougatine'], ' '));
 			$username_cookie = substr($_COOKIE['nougatine'], strrpos($_COOKIE['nougatine'], ' ') + 1);
-			var_dump($username_cookie);
-			var_dump($password_cookie);
 			$login = new UserDAO();
 			$login->getUserByLoginAndPassword($username_cookie, $username_cookie, true);
 		}
@@ -208,11 +206,11 @@ class MainController
 	{
 		if (isset($_COOKIE['nougatine'])) {
 			unset($_COOKIE['nougatine']);
-			setcookie('nougatine', '', time() - 3600, '/webserv/');
+			setcookie('nougatine', '', time() - 3600, '/closeClassroom_german_toson/');
 		}
 		session_unset();
 		session_destroy();
-		header('Location: /webserv/');
+		header('Location: /closeClassroom_german_toson/');
 	}
 	
     //charge la page createPractice
@@ -228,8 +226,26 @@ class MainController
 				$_SESSION['error'] = 'Erreur avec le module';
 				$_SESSION['display_msg_error'] = true;
 			}
+			$managerFormation = new FormationDAO();
 			$managerModule = new ModuleDAO();
-			$mesModules = $managerModule->getModules();
+			if ($infos['type'] == 'Professeur'){
+				$formations = $managerFormation->getFormationsByUser($infos['id']);
+				$mesModulesOld = array();
+				foreach ($formations as $formation) {
+					array_push($mesModulesOld, $managerModule->getModulesByFormation($formation['id_formation']));
+				}	
+				$mesModules = array();
+				foreach ($mesModulesOld as $formation) {
+					foreach ($formation as $module) {
+						if (!array_key_exists($module['id'], $mesModules)){
+							array_push($mesModules, $module);
+						}
+					}
+				}
+			}
+			else {
+				$mesModules = $managerModule->getModules();
+			}
 			$formPracticeView = new FormPracticeView();
 			echo $formPracticeView->getViewInsert($mesModules);
 		} else {
@@ -244,10 +260,21 @@ class MainController
 	{
 		if (isset($_GET['idPractice'])) {
 			$infosUser = new UserDAO();
+			$managerPractice = new PracticeDAO();
 			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
-			if ($infos['type'] != 'Etudiant') {
-				$verifPractice = new PracticeDAO();
-				$isPracticeExist = $verifPractice->verifPractice($_GET['idPractice']);
+			$haveRight = false;
+			if ($infos['type'] == 'Professeur'){
+				$practices = $managerPractice->getPracticesByUser($infos['id']);
+				if ($practices){
+					foreach ($practices as $practice) {
+						if ($practice['user'] == $infos['id']){
+							$haveRight = true;
+						}
+					}
+				}
+			}
+			if ($infos['type'] == 'Admin' || $haveRight) {
+				$isPracticeExist = $managerPractice->verifPractice($_GET['idPractice']);
 				if (!$isPracticeExist) {
 					$_SESSION['error'] = 'Le cours n\'existe pas';
 					$_SESSION['display_msg_error'] = true;
@@ -256,8 +283,7 @@ class MainController
 					if (isset($_POST['namePractice'])) {
 						$newFile = false;
 						if (isset($_FILES['fichierUp']['name']) and $_FILES['fichierUp']['name'] != null) {
-							$getFile = new PracticeDAO();
-							$infos = $getFile->getFile($_GET['idPractice']);
+							$infos = $managerPractice->getFile($_GET['idPractice']);
 							unlink($_SERVER['DOCUMENT_ROOT'] . $infos['path']);
 							
 							$newFile = true;
@@ -268,7 +294,6 @@ class MainController
 							$uploader->updateFile($_POST['namePractice'], $_POST['descriptionPractice'], $_GET['idPractice'], $newFile);
 						}
 					}
-					$managerPractice = new PracticeDAO();
 					$infos = $managerPractice->getNameAndDescriptionPractice($_GET['idPractice']);
 					$file = $managerPractice->getFile($_GET['idPractice']);
 					$formPracticeView = new FormPracticeView();
@@ -291,8 +316,20 @@ class MainController
 	{
 		if (isset($_GET['idPractice'])) {
 			$infosUser = new UserDAO();
+			$managerPractice = new PracticeDAO();
 			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
-			if ($infos['type'] != 'Etudiant') {
+			$haveRight = false;
+			if ($infos['type'] == 'Professeur'){
+				$practices = $managerPractice->getPracticesByUser($infos['id']);
+				if ($practices){
+					foreach ($practices as $practice) {
+						if ($practice['user'] == $infos['id']){
+							$haveRight = true;
+						}
+					}
+				}
+			}
+			if ($infos['type'] == 'Admin' || $haveRight) {
 				$uploader = PracticeController::Instance();
 				$uploader->deleteFile($_GET['idPractice']);
 				$_SESSION['success'] = 'Le cours a bien été supprimé';
@@ -538,10 +575,14 @@ class MainController
 		$infosUser = new UserDAO();
 		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
 		$managerFormation = new FormationDAO();
-		$mesFormations = $managerFormation->getFormations();
+		if ($infos['type'] == 'Admin'){
+			$mesFormations = $managerFormation->getFormations();
+		}
+		else {
+			$mesFormations = $managerFormation->getFormationsByUser($infos['id']);
+		}
 		$formationView = new FormationView();
 		echo $formationView->getView($mesFormations, $infos['type']);
-		
 	}
 	
     //charge la page createFormation
@@ -629,9 +670,26 @@ class MainController
 		if (isset($_GET['idModule'])) {
 			$infosUser = new UserDAO();
 			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
-			if ($infos['type'] != 'Etudiant') {
-				$verifModule = new ModuleDAO();
-				$isModuleExist = $verifModule->verifModule($_GET['idModule']);
+			$managerFormation = new FormationDAO();
+			$managerModule = new ModuleDAO();
+			$haveRight = false;
+
+			if ($infos['type'] != 'Admin'){
+				$formations = $managerFormation->getFormationsByUser($infos['id']);		
+				$mesModules = array();
+				foreach ($formations as $formation) {
+					array_push($mesModules, $managerModule->getModulesByFormation($formation['id']));
+				}
+				foreach ($mesModules as $formation) {
+					foreach ($formation as $module) {
+						if ($module['id'] == $_GET['idModule']){
+							$haveRight = true;
+						}
+					}
+				}
+			}
+			if ($haveRight || $infos['type'] == 'Admin') {
+				$isModuleExist = $managerModule->verifModule($_GET['idModule']);
 				if (!$isModuleExist) {
 					$_SESSION['error'] = 'Le module n\'existe pas';
 					$_SESSION['display_msg_error'] = true;
@@ -639,7 +697,6 @@ class MainController
 				} else {
 					$managerPractice = new PracticeDAO();
 					$mesCours = $managerPractice->getPracticesByModule($_GET['idModule']);
-					
 					if ($mesCours) {
 						foreach ($mesCours as &$cours) {
 							$idUserForPractice = $cours['user'];
@@ -647,8 +704,6 @@ class MainController
 							$cours['user'] = $getInfoUser['login'];
 						}
 					}
-					
-					$managerModule = new ModuleDAO();
 					$infosModule = $managerModule->getNameModule($_GET['idModule']);
 					$practiceView = new PracticeView();
 					echo $practiceView->getView($mesCours, $infos['type'], $infosModule['name']);
@@ -671,7 +726,18 @@ class MainController
 		if (isset($_GET['idFormation'])) {
 			$infosUser = new UserDAO();
 			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
-			if ($infos['type'] != 'Etudiant') {
+			$managerFormation = new FormationDAO();
+			$haveRight = false;
+			if ($infos['type'] != 'Admin'){
+				$formations = $managerFormation->getFormationsByUser($infos['id']);
+
+				foreach ($formations as $formation) {
+					if ($formation['id'] == $_GET['idFormation']){
+						$haveRight = true;
+					}
+				}
+			}
+			if ($haveRight || $infos['type'] == 'Admin') {
 				$verifFormation = new FormationDAO();
 				$isFormationExist = $verifFormation->verifFormation($_GET['idFormation']);
 				if (!$isFormationExist) {
@@ -681,8 +747,7 @@ class MainController
 				} else {
 					$managerModule = new ModuleDAO();
 					$mesModules = $managerModule->getModulesByFormation($_GET['idFormation']);
-					
-					$managerFormation = new FormationDAO();
+
 					$infosFormation = $managerFormation->getNameAndDescriptionFormation($_GET['idFormation']);
 					$moduleView = new ModuleView();
 					echo $moduleView->getView($mesModules, $infos['type'], $infosFormation['name']);

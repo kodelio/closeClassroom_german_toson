@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Sam 06 Février 2016 à 16:46
+-- Généré le :  Sam 13 Février 2016 à 17:54
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `assomoduleformation` (
   PRIMARY KEY (`id`),
   KEY `id_formation` (`id_formation`,`id_module`),
   KEY `id_module` (`id_module`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=6 ;
 
 --
 -- Contenu de la table `assomoduleformation`
@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `assouserformation` (
   PRIMARY KEY (`id`),
   KEY `id_user` (`id_user`),
   KEY `id_formation` (`id_formation`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
 
 --
 -- Contenu de la table `assouserformation`
@@ -66,7 +66,8 @@ CREATE TABLE IF NOT EXISTS `assouserformation` (
 INSERT INTO `assouserformation` (`id`, `id_user`, `id_formation`) VALUES
 (1, 3, 1),
 (2, 2, 1),
-(3, 2, 2);
+(3, 2, 2),
+(4, 4, 2);
 
 -- --------------------------------------------------------
 
@@ -79,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `formations` (
   `name` varchar(30) COLLATE utf8_bin NOT NULL,
   `description` varchar(255) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
 
 --
 -- Contenu de la table `formations`
@@ -99,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `modules` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(30) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
 
 --
 -- Contenu de la table `modules`
@@ -134,7 +135,7 @@ CREATE TABLE IF NOT EXISTS `practices` (
 --
 
 INSERT INTO `practices` (`id`, `name`, `path`, `user`, `description`, `date`, `file`, `id_module`) VALUES
-(1, 'Pratiques', 'webserv/practices/pratiques_02-01-2016_admin.pdf', 2, 'Cours sur les bonnes pratiques du web', '02-01-2016', 'pratiques_02-01-2016_admin.pdf', 1);
+(1, 'Pratiques', 'closeClassroom_german_toson/practices/pratiques_02-01-2016_admin.pdf', 2, 'Cours sur les bonnes pratiques du web', '02-01-2016', 'pratiques_02-01-2016_admin.pdf', 2);
 
 -- --------------------------------------------------------
 
@@ -153,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `login` (`login`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=5 ;
 
 --
 -- Contenu de la table `users`
@@ -162,7 +163,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`id`, `type`, `login`, `password`, `email`, `name`, `first_name`) VALUES
 (1, 'Admin', 'admin', 'admin', 'contact@laurent-toson.fr', 'admin', 'admin'),
 (2, 'Professeur', 'laurent', 'laurent', 'laurentt96@outlook.fr', 'TOSON', 'Laurent'),
-(3, 'Etudiant', 'arnaud', 'arnaud', 'arnaud.german@gmail.com', 'GERMAN', 'Arnaud');
+(3, 'Etudiant', 'arnaud', 'arnaud', 'arnaud.german@gmail.com', 'GERMAN', 'Arnaud'),
+(4, 'Professeur', 'prof', 'prof', 'prof@gmail.com', 'Prof Nom', 'Prof Prénom');
 
 --
 -- Contraintes pour les tables exportées
@@ -186,8 +188,8 @@ ALTER TABLE `assouserformation`
 -- Contraintes pour la table `practices`
 --
 ALTER TABLE `practices`
-  ADD CONSTRAINT `id_user` FOREIGN KEY (`user`) REFERENCES `users` (`id`),
-  ADD CONSTRAINT `id_module` FOREIGN KEY (`id_module`) REFERENCES `modules` (`id`);
+  ADD CONSTRAINT `id_module` FOREIGN KEY (`id_module`) REFERENCES `modules` (`id`),
+  ADD CONSTRAINT `id_user` FOREIGN KEY (`user`) REFERENCES `users` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

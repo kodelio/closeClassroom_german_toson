@@ -19,7 +19,6 @@ class ModuleDAO
                         array_push($tab, mysqli_fetch_assoc($resultat));
                     }
                 }
-                
                 return $tab;
             } else {
                 return false;
@@ -42,7 +41,6 @@ class ModuleDAO
                         array_push($tab, mysqli_fetch_assoc($resultat));
                     }
                 }
-                
                 return $tab;
             } else {
                 return false;
@@ -60,7 +58,6 @@ class ModuleDAO
             $resultat = mysqli_query($_SESSION['bdd'], "SELECT name FROM modules WHERE `id`= '" . $idModule . "'");
             if (mysqli_num_rows($resultat) != '0') {
                 $tab[0] = mysqli_fetch_assoc($resultat);
-                
                 return $tab[0];
             } else {
                 return;
