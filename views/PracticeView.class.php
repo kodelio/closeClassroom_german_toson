@@ -10,7 +10,7 @@ class PracticeView
 	public function getViewTop($nameModule)
 	{
 		return '
-		<script>document.getElementById("tabPractice").className = "active";</script>
+		<script>document.getElementById("tabFormation").className = "active";</script>
 		<div class="container">  
 			<div class="panel panel-default">
 				<div class="panel-body" style="padding-top: 0px;">  

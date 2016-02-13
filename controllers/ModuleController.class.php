@@ -7,11 +7,11 @@ class ModuleController
     {
     }
     
-    public function createModule($nameModule)
+    public function createModule($nameModule, $formations)
     {
         if (!(isset($_SESSION['error']) and $_SESSION['error'] != null and isset($_SESSION['display_msg_error']) and $_SESSION['display_msg_error'])) {
             $createModule = new ModuleDAO();
-            $createModule->createModule($nameModule);
+            $createModule->createModule($nameModule, $formations);
             $_SESSION['success'] = 'Le module <b>' . $nameModule . '</b> a été crée.';
             $_SESSION['display_msg_success'] = true;
         } else {

@@ -72,10 +72,15 @@ class ModuleDAO
         }
     }
     
-    public function createModule($nameModule)
+    public function createModule($nameModule, $formations)
     {
         try {
             mysqli_query($_SESSION['bdd'], "INSERT INTO modules (name) VALUES ('" . $nameModule . "')");
+            $resultat = mysqli_query($_SESSION['bdd'], "SELECT id FROM modules WHERE `name` = '" . $nameModule . "'");
+            $log = mysqli_fetch_assoc($resultat);
+            foreach($formations as $idFormation) {
+                mysqli_query($_SESSION['bdd'], "INSERT INTO assomoduleformation (id_formation, id_module) VALUES ('" . $idFormation . "', '" . $log['id'] . "')");
+            }
         }
         catch (Exception $e) {
             $_SESSION['error'] = 'Erreur requete BDD';

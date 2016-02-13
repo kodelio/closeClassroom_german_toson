@@ -31,6 +31,7 @@ class FormationDAO
         }
     }
     
+    // Inutilisée
     public function getFormationsByUser($idUser)
     {
         try {

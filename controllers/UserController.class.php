@@ -63,7 +63,7 @@ class UserController
 		$managerUser->deleteUser($idUser);
 	}
 	
-	public function register($loginUser, $passwordUser, $emailUser, $nameUser, $firstNameUser)
+	public function register($loginUser, $passwordUser, $emailUser, $nameUser, $firstNameUser, $idFormation)
 	{
 		$getDoublon = new UserDAO();
 		$doublonEmail = $getDoublon->getDoublonByEmail($emailUser, '');
@@ -78,12 +78,14 @@ class UserController
 		} else {
 			if (!(isset($_SESSION['error']) and $_SESSION['error'] != null and isset($_SESSION['display_msg_error']) and $_SESSION['display_msg_error'])) {
 				$registerUser = new UserDAO();
-				$registerUser->register($loginUser, $passwordUser, $emailUser, $nameUser, $firstNameUser);
+				$registerUser->register($loginUser, $passwordUser, $emailUser, $nameUser, $firstNameUser, $idFormation);
+				$managerFormation = new FormationDAO();
+				$nameFormation = $managerFormation->getNameAndDescriptionFormation($idFormation);
                 //Mail d'inscription
 				$to = $emailUser;
 				$subject = "Inscription CloseClassroom";
 				$message = "Bonjour " . $_POST['loginUser'] . ",\n
-				Tu viens de t'inscrire sur CloseClassroom ! \n
+				Tu viens de t'inscrire sur CloseClassroom à la formation " . $nameFormation['name'] . " ! \n
 				Voici tes identifiants : \n
 				Login : " . $_POST['loginUser'] . " \n
 				Adresse mail : " . $_POST['emailUser'] . "\n
@@ -100,7 +102,7 @@ class UserController
 					$_SESSION['error'] = 'Inscription réussie mais une erreur est survenue lors d\'envoi du mail !';
 					$_SESSION['display_msg_error'] = true;
 				} else {
-					$_SESSION['success'] = 'Votre compte <b>' . $loginUser . '</b> (' . $emailUser . ') a été crée. Vous allez reçevoir un mail avec vos infos.';
+					$_SESSION['success'] = 'Votre compte <b>' . $loginUser . '</b> (' . $emailUser . ') a été crée et inscrit à la formation ' . $nameFormation['name'] . '. Vous allez reçevoir un mail avec vos infos.';
 					$_SESSION['display_msg_success'] = true;
 				}
 			} else {

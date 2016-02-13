@@ -7,11 +7,21 @@ class FormRegisterView
 	{
 	}
 
-	public function getView()
+	public function getView($mesFormations)
 	{
-		return '
-		<script>document.getElementById("tabUser").className = "active";</script>
-		<div class="container"> 
+		$view = '';
+		if (!$mesFormations) {
+			$view = $view.'<div class="container">
+			<div class="panel panel-info" style="margin-top: 20px;">
+				<div class="panel-heading">
+					<h3 class="panel-title">Aucune formation</h3>
+				</div>
+				<div class="panel-body">
+					Il n\'y a aucune formations dans la base de données ! Vous ne pouvez pas vous inscrire pour le moment !</div>
+				</div>
+			</div>';
+		} else {
+			$view = '<div class="container"> 
 			<div id="alert">  
 			</div>
 			<div style="margin-top:20px;" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
@@ -48,17 +58,34 @@ class FormRegisterView
 								Retapez votre mot de passe :<br> <input type="password" class="form-control" name="passwordUserCheck" placeholder="Entrez une deuxième fois votre mot de passe" required>                                      
 							</div>
 
-							<div style="margin-top:10px" class="form-group">
-								<div class="col-sm-12 controls">
-									<input style="margin-top: 10px;" type="submit" name="envoyer" class="btn btn-success" value="S\'inscrire">
-									<a style="margin-top: 10px;" class="btn btn-warning" href="index.php?page=login">Annuler</a>
+							<div style="margin-bottom: 25px;">
+								Formation : 
+								<div class="form-group">
+									<div class="col-lg-6">
+										<select class="form-control" name="idFormation" required>
+											<option value="">Séléctionnez la formation</option>
+											';
+											foreach ($mesFormations as &$formation) {
+												$view=$view.'<option value="'.$formation['id'].'">'.$formation['name'].' ('.$formation['description'].')</option>';
+											}
+											$view = $view.'</select>
+										</div>
+									</div>                                     
 								</div>
-							</div>
-						</form>     
-					</div>                     
-				</div>  
-			</div>
-		</div>
-		';
+
+								<div style="margin-top:10px" class="form-group">
+									<div class="col-sm-12 controls">
+										<input style="margin-top: 10px;" type="submit" name="envoyer" class="btn btn-success" value="S\'inscrire">
+										<a style="margin-top: 10px;" class="btn btn-warning" href="index.php?page=login">Annuler</a>
+									</div>
+								</div>
+							</form>     
+						</div>                     
+					</div>  
+				</div>
+			</div>';
+		}
+
+		return $view;
 	}
 }

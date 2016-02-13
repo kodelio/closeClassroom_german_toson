@@ -426,17 +426,24 @@ class MainController
     //charge la page d'inscription
 	public function register()
 	{
-		if (isset($_POST['loginUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser'])) {
+		if (isset($_POST['loginUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser']) && isset($_POST['idFormation']) && $_POST['idFormation'] != null) {
 			if ($_POST['passwordUser'] != $_POST['passwordUserCheck']) {
 				$_SESSION['error'] = 'Les mots de passe ne sont pas identiques';
 				$_SESSION['display_msg_error'] = true;
-			} else {
+			} 
+			else if (isset($_POST['idFormation']) && $_POST['idFormation'] == null) {
+				$_SESSION['error'] = 'Erreur avec la formation';
+				$_SESSION['display_msg_error'] = true;
+			}
+			else {
 				$userController = new UserController();
-				$createUser = $userController->register($_POST['loginUser'], $_POST['passwordUser'], $_POST['emailUser'], $_POST['nameUser'], $_POST['firstNameUser']);
+				$createUser = $userController->register($_POST['loginUser'], $_POST['passwordUser'], $_POST['emailUser'], $_POST['nameUser'], $_POST['firstNameUser'], $_POST['idFormation']);
 			}
 		}
+		$managerFormation = new FormationDAO();
+		$mesFormations = $managerFormation->getFormations();
 		$registerView = new FormRegisterView();
-		echo $registerView->getView();
+		echo $registerView->getView($mesFormations);
 	}
 	
 	
@@ -445,13 +452,19 @@ class MainController
 	{
 		$infosUser = new UserDAO();
 		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
-		if ($infos['type'] != 'Etudiant') {
-			if (isset($_POST['nameModule'])) {
+		if ($infos['type'] == 'Admin') {
+			if (isset($_POST['nameModule']) && isset($_POST['formations']) && $_POST['formations'] != null) {
 				$moduleController = new ModuleController();
-				$moduleController->createModule($_POST['nameModule']);
+				$moduleController->createModule($_POST['nameModule'], $_POST['formations']);
 			}
+			else if (isset($_POST['nameModule']) && empty($_POST['formations'])) {
+				$_SESSION['error'] = 'Vous devez choisir une formation';
+				$_SESSION['display_msg_error'] = true;
+			}
+			$managerFormation = new FormationDAO();
+			$mesFormations = $managerFormation->getFormations();
 			$formModuleView = new FormModuleView();
-			echo $formModuleView->getViewInsert();
+			echo $formModuleView->getViewInsert($mesFormations);
 		} else {
 			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
 			$_SESSION['display_msg_error'] = true;
@@ -465,7 +478,7 @@ class MainController
 		if (isset($_GET['idModule'])) {
 			$infosUser = new UserDAO();
 			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
-			if ($infos['type'] != 'Etudiant') {
+			if ($infos['type'] == 'Admin') {
 				$verifModule = new ModuleDAO();
 				$isModuleExist = $verifModule->verifModule($_GET['idModule']);
 				if (!$isModuleExist) {
@@ -501,7 +514,7 @@ class MainController
 		if (isset($_GET['idModule'])) {
 			$infosUser = new UserDAO();
 			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
-			if ($infos['type'] != 'Etudiant') {
+			if ($infos['type'] == 'Admin') {
 				$moduleController = new ModuleController();
 				$moduleController->deleteModule($_GET['idModule']);
 				$_SESSION['success'] = 'Le module a bien été supprimé';
@@ -536,7 +549,7 @@ class MainController
 	{
 		$infosUser = new UserDAO();
 		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
-		if ($infos['type'] != 'Etudiant') {
+		if ($infos['type'] == 'Admin') {
 			if (isset($_POST['nameFormation'])) {
 				$formationController = new FormationController();
 				$formationController->createFormation($_POST['nameFormation'], $_POST['descriptionFormation']);
@@ -556,7 +569,7 @@ class MainController
 		if (isset($_GET['idFormation'])) {
 			$infosUser = new UserDAO();
 			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
-			if ($infos['type'] != 'Etudiant') {
+			if ($infos['type'] == 'Admin') {
 				$verifFormation = new FormationDAO();
 				$isFormationExist = $verifFormation->verifFormation($_GET['idFormation']);
 				if (!$isFormationExist) {
@@ -592,7 +605,7 @@ class MainController
 		if (isset($_GET['idFormation'])) {
 			$infosUser = new UserDAO();
 			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
-			if ($infos['type'] != 'Etudiant') {
+			if ($infos['type'] == 'Admin') {
 				$formationController = new FormationController();
 				$formationController->deleteFormation($_GET['idFormation']);
 				$_SESSION['success'] = 'La formation a bien été supprimée';

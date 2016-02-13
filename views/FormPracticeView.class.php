@@ -9,16 +9,19 @@ class FormPracticeView
 
 	public function getViewInsert($mesModules)
 	{
+		$view = '';
 		if (!$mesModules) {
-			$view = $view.'<div class="panel panel-info" style="margin-top: 20px;">
-			<div class="panel-heading">
-				<h3 class="panel-title">Aucun module</h3>
-			</div>
-			<div class="panel-body">
-				Il n\'y a aucun modules dans la base de données ! Créez en un avant d\'ajouter un cours</div>
+			$view = $view.'<div class="container">
+			<div class="panel panel-info" style="margin-top: 20px;">
+				<div class="panel-heading">
+					<h3 class="panel-title">Aucun module</h3>
+				</div>
+				<div class="panel-body">
+					Il n\'y a aucun modules dans la base de données ! Créez en un avant d\'ajouter un cours</div>
+				</div>
 			</div>';
 		} else {
-			$view = '<script>document.getElementById("tabPractice").className = "active";</script>
+			$view = '<script>document.getElementById("tabFormation").className = "active";</script>
 			<div class="container"> 
 				<div id="alert">  
 				</div>
@@ -79,7 +82,7 @@ class FormPracticeView
 		public function getViewUpdate($idPractice, $name, $description, $file, $path)
 		{
 			return '
-			<script>document.getElementById("tabPractice").className = "active";</script>
+			<script>document.getElementById("tabFormation").className = "active";</script>
 			<div class="container"> 
 				<div id="alert">  
 				</div>
