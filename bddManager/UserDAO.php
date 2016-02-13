@@ -138,10 +138,15 @@ class UserDAO
         }
     }
     
-    public function createProfesseur($loginUser, $passwordUser, $emailUser, $typeUser, $nameUser, $firstNameUser)
+    public function createProfesseur($loginUser, $passwordUser, $emailUser, $typeUser, $nameUser, $firstNameUser, $formations)
     {
         try {
             mysqli_query($_SESSION['bdd'], "INSERT INTO users (type, login, password, email, name, first_name) VALUES ('" . $typeUser . "', '" . $loginUser . "', '" . $passwordUser . "', '" . $emailUser . "', '" . $nameUser . "', '" . $firstNameUser . "')");
+            $resultat = mysqli_query($_SESSION['bdd'], "SELECT id FROM users WHERE `login` = '" . $loginUser . "'");
+            $log = mysqli_fetch_assoc($resultat);
+            foreach($formations as $idFormation) {
+                mysqli_query($_SESSION['bdd'], "INSERT INTO assouserformation (id_user, id_formation) VALUES ('" . $log['id'] . "', '" . $idFormation . "')");
+            }
         }
         catch (Exception $e) {
             $_SESSION['error'] = 'Erreur requete BDD';

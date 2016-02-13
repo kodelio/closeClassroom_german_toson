@@ -373,13 +373,19 @@ class MainController
 		$infosUser = new UserDAO();
 		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
 		if ($infos['type'] == 'Admin') {
-			if (isset($_POST['loginUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser'])) {
+			if (isset($_POST['loginUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser']) && isset($_POST['formations']) && $_POST['formations'] != null) {
 				$userController = new UserController();
 				$professeur = "Professeur";
-				$createProfesseur = $userController->createProfesseur($_POST['loginUser'], $_POST['passwordUser'], $_POST['emailUser'], $professeur, $_POST['nameUser'], $_POST['firstNameUser']);
+				$createProfesseur = $userController->createProfesseur($_POST['loginUser'], $_POST['passwordUser'], $_POST['emailUser'], $professeur, $_POST['nameUser'], $_POST['firstNameUser'], $_POST['formations']);
 			}
+			else if (isset($_POST['loginUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser']) && empty($_POST['formations'])) {
+				$_SESSION['error'] = 'Vous devez choisir une formation';
+				$_SESSION['display_msg_error'] = true;
+			}
+			$managerFormation = new FormationDAO();
+			$mesFormations = $managerFormation->getFormations();
 			$userView = new FormUserView();
-			echo $userView->getViewInsert();
+			echo $userView->getViewInsert($mesFormations);
 		} else {
 			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
 			$_SESSION['display_msg_error'] = true;
