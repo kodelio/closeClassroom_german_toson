@@ -25,7 +25,7 @@ final class PracticeController
         return $inst;
     }
     
-    public function uploadFile($namePractice, $descriptionPractice, $idModule)
+    public function uploadFile($namePractice, $descriptionPractice, $idModule, $postHtml)
     {
         $getDoublonByName = new PracticeDAO();
         $doublon = $getDoublonByName->getDoublonByName($namePractice, '');
@@ -43,13 +43,13 @@ final class PracticeController
             
             if (!in_array($_extension, $_extensions)) {
                 // On teste si le fichier a la bonne extension
-                
+
                 $_SESSION['error'] = 'Vous devez uploader un fichier de type png, gif, jpg, jpeg, pdf, txt ou doc...';
                 $_SESSION['display_msg_error'] = true;
             }
             if ($_taille > $_taille_maxi) {
                 // On teste la taille du fichier avec la taille maximale autorisée
-                
+
                 $_SESSION['error'] = 'Le fichier est trop gros...';
                 $_SESSION['display_msg_error'] = true;
             }
@@ -65,7 +65,8 @@ final class PracticeController
                 
                 if (move_uploaded_file($_FILES['fichierUp']['tmp_name'], $_dossier . $_fichier)) {
                     $createPractice = new PracticeDAO();
-                    $createPractice->createPractice($namePractice, $_dossier, $_fichier, $descriptionPractice, $result, $idModule);
+                    $postHtml = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $postHtml);
+                    $createPractice->createPractice($namePractice, $_dossier, $_fichier, $descriptionPractice, $result, $idModule, $postHtml);
                     $_SESSION['success'] = 'Le cours <b>' . $namePractice . '</b> a été crée.';
                     $_SESSION['display_msg_success'] = true;
                 } else {
@@ -76,7 +77,7 @@ final class PracticeController
         }
     }
     
-    public function updateFile($namePractice, $descriptionPractice, $idPractice, $newFile)
+    public function updateFile($namePractice, $descriptionPractice, $idPractice, $newFile, $postHtml)
     {
         $getDoublonByName = new PracticeDAO();
         $doublon = $getDoublonByName->getDoublonByName($namePractice, $idPractice);
@@ -88,7 +89,8 @@ final class PracticeController
             if (!$newFile) {
                 if (!(isset($_SESSION['error']) and $_SESSION['error'] != null and isset($_SESSION['display_msg_error']) and $_SESSION['display_msg_error'])) {
                     $updatePracticeOldFile = new PracticeDAO();
-                    $updatePracticeOldFile->updatePracticeOldFile($idPractice, $namePractice, $descriptionPractice);
+                    $postHtml = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $postHtml);
+                    $updatePracticeOldFile->updatePracticeOldFile($idPractice, $namePractice, $descriptionPractice, $postHtml);
                     $_SESSION['success'] = 'Le cours <b>' . $namePractice . '</b> a été mis à jour';
                     $_SESSION['display_msg_success'] = true;
                 } else {
@@ -105,13 +107,13 @@ final class PracticeController
                 
                 if (!in_array($_extension, $_extensions)) {
                     // On teste si le fichier a la bonne extension
-                    
+
                     $_SESSION['error'] = 'Vous devez uploader un fichier de type png, gif, jpg, jpeg, pdf, txt ou doc...';
                     $_SESSION['display_msg_error'] = true;
                 }
                 if ($_taille > $_taille_maxi) {
                     // On teste la taille du fichier avec la taille maximale autorisée
-                    
+
                     $_SESSION['error'] = 'Le fichier est trop gros...';
                     $_SESSION['display_msg_error'] = true;
                 }
@@ -127,7 +129,8 @@ final class PracticeController
                     
                     if (move_uploaded_file($_FILES['fichierUp']['tmp_name'], $_dossier . $_fichier)) {
                         $updatePracticeNewFile = new PracticeDAO();
-                        $updatePracticeNewFile->updatePracticeNewFile($idPractice, $namePractice, $_dossier, $_fichier, $descriptionPractice);
+                        $postHtml = preg_replace('#<script(.*?)>(.*?)</script>#is', '', $postHtml);
+                        $updatePracticeNewFile->updatePracticeNewFile($idPractice, $namePractice, $_dossier, $_fichier, $descriptionPractice, $postHtml);
                         $_SESSION['success'] = 'Le cours <b>' . $namePractice . '</b> a été mis à jour';
                         $_SESSION['display_msg_success'] = true;
                     } else {

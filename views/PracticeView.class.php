@@ -77,7 +77,7 @@ class PracticeView
 				<a style="float: right;" href="index.php?page=updatePractice&idPractice='.$cours['id'].'" role="button" class="btn btn-info"><i class="fa fa-edit"></i></a>';
 			}
 			$view = $view.'<div class="list-group-item">'.$modif.'
-			<h4><a class="text-primary" target="_blank" href="/'.$cours['path'].'">'.$cours['name'].'</a><a style="margin-left: 10px;" class="text-primary" download target="_blank" href="/'.$cours['path'].'"><i class="fa fa-download"></i></a></h4>
+			<h4><a class="text-primary" target="_blank" href="index.php?page=showPractice&idPractice='.$cours['id'].'">'.$cours['name'].'</a><a style="margin-left: 10px;" class="text-primary" download target="_blank" href="/'.$cours['path'].'"><i class="fa fa-download"></i></a></h4>
 			<p class="list-group-item-text">'.$cours['description'].'</p>
 			<p>Crée le '.$cours['date'].' par <b>'.$cours['user'].'</b></p>
 		</div>';

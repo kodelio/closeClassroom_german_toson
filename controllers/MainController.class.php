@@ -13,6 +13,7 @@ include 'views/FormModuleView.class.php';
 include 'views/ModuleView.class.php';
 include 'views/FormFormationView.class.php';
 include 'views/FormationView.class.php';
+include 'views/ShowPracticeView.class.php';
 
 // models
 include 'models/User.class.php';
@@ -70,6 +71,10 @@ class MainController
 					
 					case 'deletePractice':
 					$this->deletePractice();
+					break;
+
+					case 'showPractice':
+					$this->showPractice();
 					break;
 					
 					case 'createModule':
@@ -221,7 +226,7 @@ class MainController
 		if ($infos['type'] != 'Etudiant') {
 			if (isset($_POST['namePractice']) && isset($_POST['idModule']) && $_POST['idModule'] != null && isset($_FILES['fichierUp']['name']) and $_FILES['fichierUp']['name'] != null) {
 				$uploader = PracticeController::Instance();
-				$uploader->uploadFile($_POST['namePractice'], $_POST['descriptionPractice'], $_POST['idModule']);
+				$uploader->uploadFile($_POST['namePractice'], $_POST['descriptionPractice'], $_POST['idModule'], $_POST['postHtml']);
 			} else if (isset($_POST['idModule']) && $_POST['idModule'] == null) {
 				$_SESSION['error'] = 'Erreur avec le module';
 				$_SESSION['display_msg_error'] = true;
@@ -288,16 +293,16 @@ class MainController
 							
 							$newFile = true;
 							$uploader = PracticeController::Instance();
-							$uploader->updateFile($_POST['namePractice'], $_POST['descriptionPractice'], $_GET['idPractice'], $newFile);
+							$uploader->updateFile($_POST['namePractice'], $_POST['descriptionPractice'], $_GET['idPractice'], $newFile, $_POST['postHtml']);
 						} else {
 							$uploader = PracticeController::Instance();
-							$uploader->updateFile($_POST['namePractice'], $_POST['descriptionPractice'], $_GET['idPractice'], $newFile);
+							$uploader->updateFile($_POST['namePractice'], $_POST['descriptionPractice'], $_GET['idPractice'], $newFile, $_POST['postHtml']);
 						}
 					}
 					$infos = $managerPractice->getNameAndDescriptionPractice($_GET['idPractice']);
 					$file = $managerPractice->getFile($_GET['idPractice']);
 					$formPracticeView = new FormPracticeView();
-					echo $formPracticeView->getViewUpdate($_GET['idPractice'], $infos['name'], $infos['description'], $file['file'], $file['path']);
+					echo $formPracticeView->getViewUpdate($_GET['idPractice'], $infos['name'], $infos['description'], $file['file'], $file['path'], $infos['editor']);
 				}
 			} else {
 				$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
@@ -776,6 +781,31 @@ class MainController
 			}
 		} else {
 			$_SESSION['error'] = '[11] La page n\'existe pas';
+			$_SESSION['display_msg_error'] = true;
+			$this->profile();
+		}
+	}
+
+	//charge la page show practice
+	public function showPractice()
+	{
+		if (isset($_GET['idPractice'])) {
+			$managerPractice = new PracticeDAO();
+
+			$isPracticeExist = $managerPractice->verifPractice($_GET['idPractice']);
+			if (!$isPracticeExist) {
+				$_SESSION['error'] = 'Le cours n\'existe pas';
+				$_SESSION['display_msg_error'] = true;
+				$this->profile();
+			} else {
+				$infos = $managerPractice->getNameAndDescriptionPractice($_GET['idPractice']);
+				$file = $managerPractice->getFile($_GET['idPractice']);
+				$showFormPracticeView = new ShowPracticeView();
+				echo $showFormPracticeView->getView($_GET['idPractice'], $infos['name'], $infos['description'], $file['file'], $file['path'], $infos['editor']);
+			}
+
+		} else {
+			$_SESSION['error'] = '[10] La page n\'existe pas';
 			$_SESSION['display_msg_error'] = true;
 			$this->profile();
 		}

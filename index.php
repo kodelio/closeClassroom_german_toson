@@ -12,9 +12,11 @@
     	<link href="//fonts.googleapis.com/css?family=Open+Sans:400italic,600italic,400,600" rel="stylesheet">
     	<link rel="shortcut icon" href="style/img/college.png" />
     	<link href="style/css/bootstrapM.css" type="text/css" rel="stylesheet" media="all"  />
-    	<link href="style/font-awesome-4.5.0/css/font-awesome.css" rel="stylesheet">
-    	<script src="style/js/jquery-1.7.2.min.js"></script>
-    	<script src="style/js/bootstrap.js"></script>
+    	<link href="style/font-awesome-4.5.0/css/font-awesome.css" rel="stylesheet" />
+        <link href="style/css/bootstrap3-wysihtml5.min.css" type="text/css" rel="stylesheet" />
+        <script src="style/js/jquery-1.7.2.min.js"></script>
+        <script src="style/js/bootstrap.js"></script>
+        <script src="style/js/bootstrap3-wysihtml5.all.min.js"></script>
     </head>
     <body>
     	<?php

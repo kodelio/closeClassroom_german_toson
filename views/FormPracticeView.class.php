@@ -25,7 +25,7 @@ class FormPracticeView
 			<div class="container"> 
 				<div id="alert">  
 				</div>
-				<div style="margin-top:20px;" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
+				<div style="margin-top:20px;" class="col-md-12">                    
 					<div class="panel panel-primary" >
 						<div class="panel-heading">
 							<div class="panel-title">Création de cours</div>
@@ -44,14 +44,34 @@ class FormPracticeView
 								</div>
 
 								<div style="margin-bottom: 25px">
+									Cours :<br> <textarea class="htmlPractice" class="form-control" name="htmlPractice" style="width: 100%; height: 200px; border: #b4bcc2 1px solid;"></textarea>                            
+								</div>
+								<script>
+									$(\'.htmlPractice\').wysihtml5({
+										toolbar: {
+											"font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
+											"emphasis": true, //Italics, bold, etc. Default true
+											"lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+											"html": true, //Button which allows you to edit the generated HTML. Default false
+											"link": true, //Button to insert a link. Default true
+											"image": true, //Button to insert an image. Default true,
+											"color": false, //Button to change color of font  
+											"blockquote": true //Blockquote  
+										}
+									});
+								</script>
+
+								<textarea style="display:none;" id="hidden-editor" class="htmlPractice" class="form-control" name="postHtml"></textarea> 
+
+								<div style="margin-bottom: 25px">
 									<input type="hidden" name="MAX_FILE_SIZE" value="10000000">
-									Fichier : <input type="file" name="fichierUp" size="50" required>                                       
+									Fichier (<b>Obligatoire</b>) : <input type="file" name="fichierUp" size="50" required>                                       
 								</div>
 
 								<div style="margin-bottom: 25px;">
 									Module : 
 									<div class="form-group">
-										<div class="col-lg-6">
+										<div class="col-lg-12">
 											<select class="form-control" name="idModule" required>
 												<option value="">Séléctionnez le module</option>
 												';
@@ -65,7 +85,7 @@ class FormPracticeView
 
 									<div style="margin-top:10px" class="form-group">
 										<div class="col-sm-12 controls">
-											<input style="margin-top: 10px;" type="submit" name="envoyer" class="btn btn-success" value="Créer le cours">
+											<input onclick="$(\'#hidden-editor\').html($(\'.htmlPractice\').val());" style="margin-top: 10px;" type="submit" name="envoyer" class="btn btn-success" value="Créer le cours">
 											<a style="margin-top: 10px;" class="btn btn-warning" href="javascript:history.go(-1)">Annuler</a>
 										</div>
 									</div>
@@ -74,19 +94,18 @@ class FormPracticeView
 						</div>  
 					</div>
 				</div>';
+				return $view;
 			}
-
-			return $view;
 		}
 
-		public function getViewUpdate($idPractice, $name, $description, $file, $path)
+		public function getViewUpdate($idPractice, $name, $description, $file, $path, $editor)
 		{
 			return '
 			<script>document.getElementById("tabFormation").className = "active";</script>
 			<div class="container"> 
 				<div id="alert">  
 				</div>
-				<div style="margin-top:20px;" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
+				<div style="margin-top:20px;" class="col-md-12">                    
 					<div class="panel panel-primary" >
 						<div class="panel-heading">
 							<div class="panel-title">Mise à jour du cours <b>'.$name.'</b></div>
@@ -105,6 +124,26 @@ class FormPracticeView
 								</div>
 
 								<div style="margin-bottom: 25px">
+									Cours :<br> <textarea class="htmlPractice" class="form-control" name="htmlPractice" style="width: 100%; height: 200px; border: #b4bcc2 1px solid;">'.$editor.'</textarea>                            
+								</div>
+								<script>
+									$(\'.htmlPractice\').wysihtml5({
+										toolbar: {
+											"font-styles": true, //Font styling, e.g. h1, h2, etc. Default true
+											"emphasis": true, //Italics, bold, etc. Default true
+											"lists": true, //(Un)ordered lists, e.g. Bullets, Numbers. Default true
+											"html": true, //Button which allows you to edit the generated HTML. Default false
+											"link": true, //Button to insert a link. Default true
+											"image": true, //Button to insert an image. Default true,
+											"color": false, //Button to change color of font  
+											"blockquote": true //Blockquote  
+										}
+									});
+								</script>
+
+								<textarea style="display:none;" id="hidden-editor" class="htmlPractice" class="form-control" name="postHtml"></textarea>
+
+								<div style="margin-bottom: 25px">
 									Fichier actuel : <b>'.$file.'</b><a style="margin-left: 10px;" class="text-primary" download target="_blank" href="/'.$path.'"><i class="fa fa-download"></i></a><br /><br />
 									<input type="hidden" name="MAX_FILE_SIZE" value="10000000">
 									Fichier (ne renvoyez pas de fichier si vous souhaitez garder le cours actuel) : <input type="file" name="fichierUp" size="50">                                       
@@ -112,7 +151,7 @@ class FormPracticeView
 
 								<div style="margin-top:10px" class="form-group">
 									<div class="col-sm-12 controls">
-										<input style="margin-top: 10px;" type="submit" name="envoyer" class="btn btn-success" value="Mettre à jour">
+										<input onclick="$(\'#hidden-editor\').html($(\'.htmlPractice\').val());" style="margin-top: 10px;" style="margin-top: 10px;" type="submit" name="envoyer" class="btn btn-success" value="Mettre à jour">
 										<a style="margin-top: 10px;" class="btn btn-warning" href="javascript:history.go(-1)">Annuler</a>
 									</div>
 								</div>

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Sam 13 Février 2016 à 17:54
+-- Généré le :  Dim 14 Février 2016 à 09:52
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `assomoduleformation` (
   PRIMARY KEY (`id`),
   KEY `id_formation` (`id_formation`,`id_module`),
   KEY `id_module` (`id_module`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
 
 --
 -- Contenu de la table `assomoduleformation`
@@ -80,7 +80,7 @@ CREATE TABLE IF NOT EXISTS `formations` (
   `name` varchar(30) COLLATE utf8_bin NOT NULL,
   `description` varchar(255) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
 
 --
 -- Contenu de la table `formations`
@@ -100,7 +100,7 @@ CREATE TABLE IF NOT EXISTS `modules` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(30) COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
 
 --
 -- Contenu de la table `modules`
@@ -125,6 +125,7 @@ CREATE TABLE IF NOT EXISTS `practices` (
   `date` varchar(12) COLLATE utf8_bin NOT NULL,
   `file` varchar(256) COLLATE utf8_bin NOT NULL,
   `id_module` int(11) NOT NULL,
+  `editor` text COLLATE utf8_bin NOT NULL,
   PRIMARY KEY (`id`),
   KEY `user` (`user`),
   KEY `module` (`id_module`)
@@ -134,8 +135,8 @@ CREATE TABLE IF NOT EXISTS `practices` (
 -- Contenu de la table `practices`
 --
 
-INSERT INTO `practices` (`id`, `name`, `path`, `user`, `description`, `date`, `file`, `id_module`) VALUES
-(1, 'Pratiques', 'closeClassroom_german_toson/practices/pratiques_02-01-2016_admin.pdf', 2, 'Cours sur les bonnes pratiques du web', '02-01-2016', 'pratiques_02-01-2016_admin.pdf', 2);
+INSERT INTO `practices` (`id`, `name`, `path`, `user`, `description`, `date`, `file`, `id_module`, `editor`) VALUES
+(1, 'Pratiques', 'closeClassroom_german_toson/practices/pratiques_02-01-2016_admin.pdf', 2, 'Cours sur les bonnes pratiques du web', '02-01-2016', 'pratiques_02-01-2016_admin.pdf', 2, '<b>Cours sur les bonnes pratiqualert("lol");es du web<br><img src="http://sebsauvage.net/streisand.me/thomasinthesky2/?m=http://thomasinthesky.legtux.org/wp-content/fichiers/2013/05/Code-PHP.jpg" title="Image: http://sebsauvage.net/streisand.me/thomasinthesky2/?m=http://thomasinthesky.legtux.org/wp-content/fichiers/2013/05/Code-PHP.jpg"><br></b>');
 
 -- --------------------------------------------------------
 

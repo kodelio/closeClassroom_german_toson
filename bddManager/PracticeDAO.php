@@ -57,7 +57,7 @@ class PracticeDAO
     public function getNameAndDescriptionPractice($idPractice)
     {
         try {
-            $resultat = mysqli_query($_SESSION['bdd'], "SELECT name, description FROM practices WHERE `id`= '" . $idPractice . "'");
+            $resultat = mysqli_query($_SESSION['bdd'], "SELECT name, description, editor FROM practices WHERE `id`= '" . $idPractice . "'");
             if (mysqli_num_rows($resultat) != '0') {
                 $tab[0] = mysqli_fetch_assoc($resultat);
                 
@@ -88,10 +88,10 @@ class PracticeDAO
         }
     }
     
-    public function createPractice($namePractice, $_dossier, $_fichier, $descriptionPractice, $result, $idModule)
+    public function createPractice($namePractice, $_dossier, $_fichier, $descriptionPractice, $result, $idModule, $postHtml)
     {
         try {
-            mysqli_query($_SESSION['bdd'], "INSERT INTO practices (name, path, file, user, description, date, id_module) VALUES ('" . $namePractice . "', 'closeClassroom_german_toson/" . $_dossier . $_fichier . "', '" . $_fichier . "', '" . $_SESSION['idUser'] . "', '" . $descriptionPractice . "', '" . $result . "', '" . $idModule . "')");
+            mysqli_query($_SESSION['bdd'], "INSERT INTO practices (name, path, file, user, description, date, id_module, editor) VALUES ('" . $namePractice . "', 'closeClassroom_german_toson/" . $_dossier . $_fichier . "', '" . $_fichier . "', '" . $_SESSION['idUser'] . "', '" . $descriptionPractice . "', '" . $result . "', '" . $idModule . "', '" . $postHtml . "')");
         }
         catch (Exception $e) {
             $_SESSION['error'] = 'Erreur requete BDD';
@@ -99,10 +99,10 @@ class PracticeDAO
         }
     }
     
-    public function updatePracticeNewFile($idPractice, $namePractice, $_dossier, $_fichier, $descriptionPractice)
+    public function updatePracticeNewFile($idPractice, $namePractice, $_dossier, $_fichier, $descriptionPractice, $postHtml)
     {
         try {
-            mysqli_query($_SESSION['bdd'], "UPDATE `practices` SET `name` = '" . $namePractice . "', `path` = 'closeClassroom_german_toson/" . $_dossier . $_fichier . "', `file` = '" . $_fichier . "', `description` = '" . $descriptionPractice . "' WHERE `id` = '" . $idPractice . "'");
+            mysqli_query($_SESSION['bdd'], "UPDATE `practices` SET `name` = '" . $namePractice . "', `path` = 'closeClassroom_german_toson/" . $_dossier . $_fichier . "', `file` = '" . $_fichier . "', `description` = '" . $descriptionPractice . "', `editor` = '" . $postHtml . "' WHERE `id` = '" . $idPractice . "'");
         }
         catch (Exception $e) {
             $_SESSION['error'] = 'Erreur requete BDD';
@@ -110,10 +110,10 @@ class PracticeDAO
         }
     }
     
-    public function updatePracticeOldFile($idPractice, $namePractice, $descriptionPractice)
+    public function updatePracticeOldFile($idPractice, $namePractice, $descriptionPractice, $postHtml)
     {
         try {
-            mysqli_query($_SESSION['bdd'], "UPDATE `practices` SET `name` = '" . $namePractice . "', `description` = '" . $descriptionPractice . "' WHERE `id` = '" . $idPractice . "'");
+            mysqli_query($_SESSION['bdd'], "UPDATE `practices` SET `name` = '" . $namePractice . "', `description` = '" . $descriptionPractice . "', `editor` = '" . $postHtml . "' WHERE `id` = '" . $idPractice . "'");
         }
         catch (Exception $e) {
             $_SESSION['error'] = 'Erreur requete BDD';
