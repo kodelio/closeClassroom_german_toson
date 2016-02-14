@@ -73,7 +73,7 @@ class FormationDAO
     public function createFormation($nameFormation, $descriptionFormation)
     {
         try {
-            mysqli_query($_SESSION['bdd'], "INSERT INTO formations (name, description) VALUES ('" . utf8_decode($nameFormation) . "', '" . utf8_decode($descriptionFormation) . "')");
+            mysqli_query($_SESSION['bdd'], "INSERT INTO formations (name, description) VALUES ('" . addslashes(utf8_decode($nameFormation)) . "', '" . addslashes(utf8_decode($descriptionFormation)) . "')");
         }
         catch (Exception $e) {
             $_SESSION['error'] = 'Erreur requete BDD';
@@ -84,7 +84,7 @@ class FormationDAO
     public function updateFormation($idFormation, $nameFormation, $descriptionFormation)
     {
         try {
-            mysqli_query($_SESSION['bdd'], "UPDATE `formations` SET `name` = '" . utf8_decode($nameFormation) . "', `description` = '" . utf8_decode($descriptionFormation) . "' WHERE `id` = '" . $idFormation . "'");
+            mysqli_query($_SESSION['bdd'], "UPDATE `formations` SET `name` = '" . addslashes(utf8_decode($nameFormation)) . "', `description` = '" . addslashes(utf8_decode($descriptionFormation)) . "' WHERE `id` = '" . $idFormation . "'");
         }
         catch (Exception $e) {
             $_SESSION['error'] = 'Erreur requete BDD';

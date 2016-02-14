@@ -72,8 +72,8 @@ class ModuleDAO
     public function createModule($nameModule, $formations)
     {
         try {
-            mysqli_query($_SESSION['bdd'], "INSERT INTO modules (name) VALUES ('" . utf8_decode($nameModule) . "')");
-            $resultat = mysqli_query($_SESSION['bdd'], "SELECT id FROM modules WHERE `name` = '" . $nameModule . "'");
+            mysqli_query($_SESSION['bdd'], "INSERT INTO modules (name) VALUES ('" . addslashes(utf8_decode($nameModule)) . "')");
+            $resultat = mysqli_query($_SESSION['bdd'], "SELECT id FROM modules WHERE `name` = '" . addslashes($nameModule) . "'");
             $log = mysqli_fetch_assoc($resultat);
             foreach($formations as $idFormation) {
                 mysqli_query($_SESSION['bdd'], "INSERT INTO assomoduleformation (id_formation, id_module) VALUES ('" . $idFormation . "', '" . $log['id'] . "')");
@@ -88,7 +88,7 @@ class ModuleDAO
     public function updateModule($idModule, $nameModule)
     {
         try {
-            mysqli_query($_SESSION['bdd'], "UPDATE `modules` SET `name` = '" . utf8_decode($nameModule) . "' WHERE `id` = '" . $idModule . "'");
+            mysqli_query($_SESSION['bdd'], "UPDATE `modules` SET `name` = '" . addslashes(utf8_decode($nameModule)) . "' WHERE `id` = '" . $idModule . "'");
         }
         catch (Exception $e) {
             $_SESSION['error'] = 'Erreur requete BDD';
@@ -128,7 +128,7 @@ class ModuleDAO
     public function getDoublonByName($nameModule, $idModule)
     {
         try {
-            $resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM modules WHERE `name`= '" . $nameModule . "' and `id` != '" . $idModule . "' ");
+            $resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM modules WHERE `name`= '" . addslashes($nameModule) . "' and `id` != '" . $idModule . "' ");
             if (mysqli_num_rows($resultat) != '0') {
                 return true;
             } else {

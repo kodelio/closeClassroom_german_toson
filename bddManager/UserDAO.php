@@ -132,7 +132,7 @@ class UserDAO
     public function getDoublonByEmail($emailUser, $idUser)
     {
         try {
-            $resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM users WHERE `email`= '" . $emailUser . "' and `id` != '" . $idUser . "' ");
+            $resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM users WHERE `email`= '" . addslashes($emailUser) . "' and `id` != '" . $idUser . "' ");
             if (mysqli_num_rows($resultat) != '0') {
                 return true;
             } else {
@@ -148,7 +148,7 @@ class UserDAO
     public function getDoublonByLogin($loginUser, $idUser)
     {
         try {
-            $resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM users WHERE `login`= '" . $loginUser . "' and `id` != '" . $idUser . "' ");
+            $resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM users WHERE `login`= '" . addslashes($loginUser) . "' and `id` != '" . $idUser . "' ");
             if (mysqli_num_rows($resultat) != '0') {
                 return true;
             } else {
@@ -164,8 +164,8 @@ class UserDAO
     public function createProfesseur($loginUser, $passwordUser, $emailUser, $typeUser, $nameUser, $firstNameUser, $formations)
     {
         try {
-            mysqli_query($_SESSION['bdd'], "INSERT INTO users (type, login, password, email, name, first_name) VALUES ('" . $typeUser . "', '" . $loginUser . "', '" . $passwordUser . "', '" . $emailUser . "', '" . $nameUser . "', '" . $firstNameUser . "')");
-            $resultat = mysqli_query($_SESSION['bdd'], "SELECT id FROM users WHERE `login` = '" . $loginUser . "'");
+            mysqli_query($_SESSION['bdd'], "INSERT INTO users (type, login, password, email, name, first_name) VALUES ('" . $typeUser . "', '" . addslashes($loginUser) . "', '" . addslashes($passwordUser) . "', '" . addslashes($emailUser) . "', '" . addslashes($nameUser) . "', '" . addslashes($firstNameUser) . "')");
+            $resultat = mysqli_query($_SESSION['bdd'], "SELECT id FROM users WHERE `login` = '" . addslashes($loginUser) . "'");
             $log = mysqli_fetch_assoc($resultat);
             foreach($formations as $idFormation) {
                 mysqli_query($_SESSION['bdd'], "INSERT INTO assouserformation (id_user, id_formation) VALUES ('" . $log['id'] . "', '" . $idFormation . "')");
@@ -180,7 +180,7 @@ class UserDAO
     public function updateUser($idUser, $loginUser, $passwordUser, $emailUser, $typeUser, $nameUser, $firstNameUser)
     {
         try {
-            mysqli_query($_SESSION['bdd'], "UPDATE `users` SET `type` = '" . $typeUser . "', `login` = '" . $loginUser . "', `password` = '" . $passwordUser . "', `email` = '" . $emailUser . "', `name` = '" . $nameUser . "', `first_name` = '" . $firstNameUser . "' WHERE `id` = '" . $idUser . "'");
+            mysqli_query($_SESSION['bdd'], "UPDATE `users` SET `type` = '" . $typeUser . "', `login` = '" . addslashes($loginUser) . "', `password` = '" . addslashes($passwordUser) . "', `email` = '" . addslashes($emailUser) . "', `name` = '" . addslashes($nameUser) . "', `first_name` = '" . addslashes($firstNameUser) . "' WHERE `id` = '" . $idUser . "'");
         }
         catch (Exception $e) {
             $_SESSION['error'] = 'Erreur requete BDD';
@@ -220,8 +220,8 @@ class UserDAO
     public function register($loginUser, $passwordUser, $emailUser, $nameUser, $firstNameUser, $idFormation)
     {
         try {
-            mysqli_query($_SESSION['bdd'], "INSERT INTO users (type, login, password, email, name, first_name) VALUES ('Etudiant', '" . $loginUser . "', '" . $passwordUser . "', '" . $emailUser . "', '" . $nameUser . "', '" . $firstNameUser . "')");
-            $resultat = mysqli_query($_SESSION['bdd'], "SELECT id FROM users WHERE `login` = '" . $loginUser . "'");
+            mysqli_query($_SESSION['bdd'], "INSERT INTO users (type, login, password, email, name, first_name) VALUES ('Etudiant', '" . addslashes($loginUser) . "', '" . addslashes($passwordUser) . "', '" . addslashes($emailUser) . "', '" . addslashes($nameUser) . "', '" . addslashes($firstNameUser) . "')");
+            $resultat = mysqli_query($_SESSION['bdd'], "SELECT id FROM users WHERE `login` = '" . addslashes($loginUser) . "'");
             $log = mysqli_fetch_assoc($resultat);
             mysqli_query($_SESSION['bdd'], "INSERT INTO assouserformation (id_user, id_formation) VALUES ('" . $log['id'] . "', '" . $idFormation . "')");
         }

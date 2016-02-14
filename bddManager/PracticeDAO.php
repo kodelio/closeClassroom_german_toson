@@ -75,7 +75,7 @@ class PracticeDAO
     public function getDoublonByName($namePractice, $idPractice)
     {
         try {
-            $resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM practices WHERE `name`= '" . $namePractice . "' and `id` != '" . $idPractice . "' ");
+            $resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM practices WHERE `name`= '" . addslashes($namePractice) . "' and `id` != '" . $idPractice . "' ");
             if (mysqli_num_rows($resultat) != '0') {
                 return true;
             } else {
@@ -91,7 +91,7 @@ class PracticeDAO
     public function createPractice($namePractice, $_dossier, $_fichier, $descriptionPractice, $result, $idModule, $postHtml)
     {
         try {
-            mysqli_query($_SESSION['bdd'], "INSERT INTO practices (name, path, file, user, description, date, id_module, editor) VALUES ('" . utf8_decode($namePractice) . "', 'closeClassroom_german_toson/" . $_dossier . $_fichier . "', '" . $_fichier . "', '" . $_SESSION['idUser'] . "', '" . utf8_decode($descriptionPractice) . "', '" . $result . "', '" . $idModule . "', '" . utf8_decode($postHtml) . "')");
+            mysqli_query($_SESSION['bdd'], "INSERT INTO practices (name, path, file, user, description, date, id_module, editor) VALUES ('" . addslashes(utf8_decode($namePractice)) . "', 'closeClassroom_german_toson/" . $_dossier . $_fichier . "', '" . $_fichier . "', '" . $_SESSION['idUser'] . "', '" . addslashes(utf8_decode($descriptionPractice)) . "', '" . $result . "', '" . $idModule . "', '" . addslashes(utf8_decode($postHtml)) . "')");
         }
         catch (Exception $e) {
             $_SESSION['error'] = 'Erreur requete BDD';
@@ -102,7 +102,7 @@ class PracticeDAO
     public function updatePracticeNewFile($idPractice, $namePractice, $_dossier, $_fichier, $descriptionPractice, $postHtml)
     {
         try {
-            mysqli_query($_SESSION['bdd'], "UPDATE `practices` SET `name` = '" . utf8_decode($namePractice) . "', `path` = 'closeClassroom_german_toson/" . $_dossier . $_fichier . "', `file` = '" . $_fichier . "', `description` = '" . utf8_decode($descriptionPractice) . "', `editor` = '" . utf8_decode($postHtml) . "' WHERE `id` = '" . $idPractice . "'");
+            mysqli_query($_SESSION['bdd'], "UPDATE `practices` SET `name` = '" . addslashes(utf8_decode($namePractice)) . "', `path` = 'closeClassroom_german_toson/" . $_dossier . $_fichier . "', `file` = '" . $_fichier . "', `description` = '" . addslashes(utf8_decode($descriptionPractice)) . "', `editor` = '" . addslashes(utf8_decode($postHtml)) . "' WHERE `id` = '" . $idPractice . "'");
         }
         catch (Exception $e) {
             $_SESSION['error'] = 'Erreur requete BDD';
@@ -113,7 +113,7 @@ class PracticeDAO
     public function updatePracticeOldFile($idPractice, $namePractice, $descriptionPractice, $postHtml)
     {
         try {
-            mysqli_query($_SESSION['bdd'], "UPDATE `practices` SET `name` = '" . utf8_decode($namePractice) . "', `description` = '" . utf8_decode($descriptionPractice) . "', `editor` = '" . utf8_decode($postHtml) . "' WHERE `id` = '" . $idPractice . "'");
+            mysqli_query($_SESSION['bdd'], "UPDATE `practices` SET `name` = '" . addslashes(utf8_decode($namePractice)) . "', `description` = '" . addslashes(utf8_decode($descriptionPractice)) . "', `editor` = '" . addslashes(utf8_decode($postHtml)) . "' WHERE `id` = '" . $idPractice . "'");
         }
         catch (Exception $e) {
             $_SESSION['error'] = 'Erreur requete BDD';
