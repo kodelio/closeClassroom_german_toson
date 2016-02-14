@@ -51,6 +51,28 @@ class FormationDAO
             $_SESSION['display_msg_error'] = true;
         }
     }
+
+    public function getFormationsByModule($idModule)
+    {
+        try {
+            $resultat = mysqli_query($_SESSION['bdd'], "SELECT * from formations WHERE id IN (SELECT id_formation from assomoduleformation where id_module = '" . $idModule . "');");
+            if (mysqli_num_rows($resultat) != '0') {
+                $tab[0] = mysqli_fetch_assoc($resultat);
+                if (mysqli_num_rows($resultat) > '0') {
+                    for ($i = 1; $i < mysqli_num_rows($resultat); $i++) {
+                        array_push($tab, mysqli_fetch_assoc($resultat));
+                    }
+                }
+                return $tab;
+            } else {
+                return false;
+            }
+        }
+        catch (Exception $e) {
+            $_SESSION['error'] = 'Erreur requete BDD';
+            $_SESSION['display_msg_error'] = true;
+        }
+    }
     
     public function getNameAndDescriptionFormation($idFormation)
     {
@@ -140,7 +162,7 @@ class FormationDAO
     public function getDoublonByName($nameFormation, $idFormation)
     {
         try {
-            $resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM formations WHERE `name`= '" . $nameFormation . "' and `id` != '" . $idFormation . "' ");
+            $resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM formations WHERE `name`= '" . addslashes($nameFormation) . "' and `id` != '" . $idFormation . "' ");
             if (mysqli_num_rows($resultat) != '0') {
                 return true;
             } else {

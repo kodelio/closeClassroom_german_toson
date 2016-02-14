@@ -419,21 +419,53 @@ class MainController
 		if (isset($_GET['idUser'])) {
 			$infosUser = new UserDAO();
 			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
+			$userUpdate = $infosUser->getInfoUser($_GET['idUser']);
 			if ($infos['type'] == 'Admin') {
-				$verifUser = new UserDAO();
-				$isUserExist = $verifUser->verifUser($_GET['idUser']);
+				$isUserExist = $infosUser->verifUser($_GET['idUser']);
 				if (!$isUserExist) {
 					$_SESSION['error'] = 'L\'utilisateur n\'existe pas';
 					$_SESSION['display_msg_error'] = true;
 					$this->user();
 				} else {
-					if (isset($_POST['loginUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser']) && isset($_POST['typeUser'])) {
-						if ($_POST['typeUser'] == '') {
-							$_SESSION['error'] = 'Vous devez renseigner le type d\'utilisateur';
+					if ($userUpdate['type'] == 'Professeur'){
+						if (isset($_POST['loginUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser']) && isset($_POST['typeUser']) && isset($_POST['formations']) && $_POST['formations'] != null) {
+							if ($_POST['typeUser'] == '') {
+								$_SESSION['error'] = 'Vous devez renseigner le type d\'utilisateur';
+								$_SESSION['display_msg_error'] = true;
+							} else {
+								$userController = new UserController();
+								$updateUser = $userController->updateProfesseur($_POST['loginUser'], $_POST['passwordUser'], $_POST['emailUser'], $_POST['typeUser'], $_GET['idUser'], $_POST['nameUser'], $_POST['firstNameUser'], $_POST['formations']);
+							}
+						}
+						else if (isset($_POST['loginUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser']) && empty($_POST['formations'])) {
+							$_SESSION['error'] = 'Vous devez choisir une formation';
 							$_SESSION['display_msg_error'] = true;
-						} else {
-							$userController = new UserController();
-							$updateUser = $userController->updateUser($_POST['loginUser'], $_POST['passwordUser'], $_POST['emailUser'], $_POST['typeUser'], $_GET['idUser'], $_POST['nameUser'], $_POST['firstNameUser']);
+						}
+					}
+					else if ($userUpdate['type'] == 'Etudiant'){
+						if (isset($_POST['loginUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser']) && isset($_POST['typeUser']) && isset($_POST['idFormation']) && $_POST['idFormation'] != null) {
+							if ($_POST['typeUser'] == '') {
+								$_SESSION['error'] = 'Vous devez renseigner le type d\'utilisateur';
+								$_SESSION['display_msg_error'] = true;
+							} else {
+								$userController = new UserController();
+								$updateUser = $userController->updateEtudiant($_POST['loginUser'], $_POST['passwordUser'], $_POST['emailUser'], $_POST['typeUser'], $_GET['idUser'], $_POST['nameUser'], $_POST['firstNameUser'], $_POST['idFormation']);
+							}
+						}
+						else if (isset($_POST['loginUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser']) && empty($_POST['idFormation'])) {
+							$_SESSION['error'] = 'Vous devez choisir une formation';
+							$_SESSION['display_msg_error'] = true;
+						}
+					}
+					else if ($userUpdate['type'] == 'Admin'){
+						if (isset($_POST['loginUser']) && isset($_POST['passwordUser']) && isset($_POST['emailUser']) && isset($_POST['typeUser'])) {
+							if ($_POST['typeUser'] == '') {
+								$_SESSION['error'] = 'Vous devez renseigner le type d\'utilisateur';
+								$_SESSION['display_msg_error'] = true;
+							} else {
+								$userController = new UserController();
+								$updateUser = $userController->updateAdmin($_POST['loginUser'], $_POST['passwordUser'], $_POST['emailUser'], $_POST['typeUser'], $_GET['idUser'], $_POST['nameUser'], $_POST['firstNameUser']);
+							}
 						}
 					}
 					$managerUser = new UserDAO();
@@ -554,22 +586,27 @@ class MainController
 			$infosUser = new UserDAO();
 			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
 			if ($infos['type'] == 'Admin') {
-				$verifModule = new ModuleDAO();
-				$isModuleExist = $verifModule->verifModule($_GET['idModule']);
+				$managerModule = new ModuleDAO();
+				$isModuleExist = $managerModule->verifModule($_GET['idModule']);
 				if (!$isModuleExist) {
 					$_SESSION['error'] = 'Le module n\'existe pas';
 					$_SESSION['display_msg_error'] = true;
 					$this->profile();
 				} else {
-					if (isset($_POST['nameModule'])) {
+					if (isset($_POST['nameModule']) && isset($_POST['formations']) && $_POST['formations'] != null) {
 						$moduleController = new ModuleController();
-						$moduleController->updateModule($_POST['nameModule'], $_GET['idModule']);
+						$moduleController->updateModule($_POST['nameModule'], $_GET['idModule'], $_POST['formations']);
+					}
+					else if (isset($_POST['nameModule']) && empty($_POST['formations'])) {
+						$_SESSION['error'] = 'Vous devez choisir une formation';
+						$_SESSION['display_msg_error'] = true;
 					}
 					
-					$managerModule = new ModuleDAO();
 					$infos = $managerModule->getNameModule($_GET['idModule']);
+					$managerFormation = new FormationDAO();
+					$mesFormations = $managerFormation->getFormations();
 					$formModuleView = new FormModuleView();
-					echo $formModuleView->getViewUpdate($_GET['idModule'], $infos['name']);
+					echo $formModuleView->getViewUpdate($_GET['idModule'], $infos['name'], $mesFormations);
 				}
 			} else {
 				$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';

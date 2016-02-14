@@ -164,11 +164,11 @@ class UserDAO
     public function createProfesseur($loginUser, $passwordUser, $emailUser, $typeUser, $nameUser, $firstNameUser, $formations)
     {
         try {
-            mysqli_query($_SESSION['bdd'], "INSERT INTO users (type, login, password, email, name, first_name) VALUES ('" . $typeUser . "', '" . addslashes($loginUser) . "', '" . addslashes($passwordUser) . "', '" . addslashes($emailUser) . "', '" . addslashes($nameUser) . "', '" . addslashes($firstNameUser) . "')");
+            mysqli_query($_SESSION['bdd'], "INSERT INTO users (type, login, password, email, name, first_name) VALUES ('" . $typeUser . "', '" . addslashes(utf8_decode($loginUser)) . "', '" . addslashes(utf8_decode($passwordUser)) . "', '" . addslashes(utf8_decode($emailUser)) . "', '" . addslashes(utf8_decode($nameUser)) . "', '" . addslashes(utf8_decode($firstNameUser)) . "')");
             $resultat = mysqli_query($_SESSION['bdd'], "SELECT id FROM users WHERE `login` = '" . addslashes($loginUser) . "'");
             $log = mysqli_fetch_assoc($resultat);
             foreach($formations as $idFormation) {
-                mysqli_query($_SESSION['bdd'], "INSERT INTO assouserformation (id_user, id_formation) VALUES ('" . $log['id'] . "', '" . $idFormation . "')");
+                mysqli_query($_SESSION['bdd'], "INSERT INTO `assouserformation` (id_user, id_formation) VALUES ('" . $log['id'] . "', '" . $idFormation . "')");
             }
         }
         catch (Exception $e) {
@@ -176,11 +176,38 @@ class UserDAO
             $_SESSION['display_msg_error'] = true;
         }
     }
-    
-    public function updateUser($idUser, $loginUser, $passwordUser, $emailUser, $typeUser, $nameUser, $firstNameUser)
+
+    public function updateAdmin($idUser, $loginUser, $passwordUser, $emailUser, $typeUser, $nameUser, $firstNameUser)
     {
         try {
-            mysqli_query($_SESSION['bdd'], "UPDATE `users` SET `type` = '" . $typeUser . "', `login` = '" . addslashes($loginUser) . "', `password` = '" . addslashes($passwordUser) . "', `email` = '" . addslashes($emailUser) . "', `name` = '" . addslashes($nameUser) . "', `first_name` = '" . addslashes($firstNameUser) . "' WHERE `id` = '" . $idUser . "'");
+            mysqli_query($_SESSION['bdd'], "UPDATE `users` SET `type` = '" . $typeUser . "', `login` = '" . addslashes(utf8_decode($loginUser)) . "', `password` = '" . addslashes(utf8_decode($passwordUser)) . "', `email` = '" . addslashes(utf8_decode($emailUser)) . "', `name` = '" . addslashes(utf8_decode($nameUser)) . "', `first_name` = '" . addslashes(utf8_decode($firstNameUser)) . "' WHERE `id` = '" . $idUser . "'");
+        }
+        catch (Exception $e) {
+            $_SESSION['error'] = 'Erreur requete BDD';
+            $_SESSION['display_msg_error'] = true;
+        }
+    }
+    
+    public function updateProfesseur($idUser, $loginUser, $passwordUser, $emailUser, $typeUser, $nameUser, $firstNameUser, $formations)
+    {
+        try {
+            mysqli_query($_SESSION['bdd'], "UPDATE `users` SET `type` = '" . $typeUser . "', `login` = '" . addslashes(utf8_decode($loginUser)) . "', `password` = '" . addslashes(utf8_decode($passwordUser)) . "', `email` = '" . addslashes(utf8_decode($emailUser)) . "', `name` = '" . addslashes(utf8_decode($nameUser)) . "', `first_name` = '" . addslashes(utf8_decode($firstNameUser)) . "' WHERE `id` = '" . $idUser . "'");
+            mysqli_query($_SESSION['bdd'], "DELETE FROM `assouserformation` WHERE `id_user` = '" . $idUser . "'");
+            foreach($formations as $idFormation) {
+                mysqli_query($_SESSION['bdd'], "INSERT INTO `assouserformation` (id_user, id_formation) VALUES ('" . $idUser . "', '" . $idFormation . "')");
+            }
+        }
+        catch (Exception $e) {
+            $_SESSION['error'] = 'Erreur requete BDD';
+            $_SESSION['display_msg_error'] = true;
+        }
+    }
+
+    public function updateEtudiant($idUser, $loginUser, $passwordUser, $emailUser, $typeUser, $nameUser, $firstNameUser, $idFormation)
+    {
+        try {
+            mysqli_query($_SESSION['bdd'], "UPDATE `users` SET `type` = '" . $typeUser . "', `login` = '" . addslashes(utf8_decode($loginUser)) . "', `password` = '" . addslashes(utf8_decode($passwordUser)) . "', `email` = '" . addslashes(utf8_decode($emailUser)) . "', `name` = '" . addslashes(utf8_decode($nameUser)) . "', `first_name` = '" . addslashes(utf8_decode($firstNameUser)) . "' WHERE `id` = '" . $idUser . "'");
+            mysqli_query($_SESSION['bdd'], "UPDATE `assouserformation` SET `id_formation` = '" . $idFormation . "' WHERE `id_user` = '" . $idUser . "'");
         }
         catch (Exception $e) {
             $_SESSION['error'] = 'Erreur requete BDD';
@@ -220,7 +247,7 @@ class UserDAO
     public function register($loginUser, $passwordUser, $emailUser, $nameUser, $firstNameUser, $idFormation)
     {
         try {
-            mysqli_query($_SESSION['bdd'], "INSERT INTO users (type, login, password, email, name, first_name) VALUES ('Etudiant', '" . addslashes($loginUser) . "', '" . addslashes($passwordUser) . "', '" . addslashes($emailUser) . "', '" . addslashes($nameUser) . "', '" . addslashes($firstNameUser) . "')");
+            mysqli_query($_SESSION['bdd'], "INSERT INTO users (type, login, password, email, name, first_name) VALUES ('Etudiant', '" . addslashes(utf8_decode($loginUser)) . "', '" . addslashes(utf8_decode($passwordUser)) . "', '" . addslashes(utf8_decode($emailUser)) . "', '" . addslashes(utf8_decode($nameUser)) . "', '" . addslashes(utf8_decode($firstNameUser)) . "')");
             $resultat = mysqli_query($_SESSION['bdd'], "SELECT id FROM users WHERE `login` = '" . addslashes($loginUser) . "'");
             $log = mysqli_fetch_assoc($resultat);
             mysqli_query($_SESSION['bdd'], "INSERT INTO assouserformation (id_user, id_formation) VALUES ('" . $log['id'] . "', '" . $idFormation . "')");

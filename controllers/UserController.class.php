@@ -32,7 +32,7 @@ class UserController
 		}
 	}
 	
-	public function updateUser($loginUser, $passwordUser, $emailUser, $typeUser, $idUser, $nameUser, $firstNameUser)
+	public function updateAdmin($loginUser, $passwordUser, $emailUser, $typeUser, $idUser, $nameUser, $firstNameUser)
 	{
 		$getDoublon = new UserDAO();
 		$doublonEmail = $getDoublon->getDoublonByEmail($emailUser, $idUser);
@@ -47,7 +47,57 @@ class UserController
 		} else {
 			if (!(isset($_SESSION['error']) and $_SESSION['error'] != null and isset($_SESSION['display_msg_error']) and $_SESSION['display_msg_error'])) {
 				$updateUser = new UserDAO();
-				$updateUser->updateUser($idUser, $loginUser, $passwordUser, $emailUser, $typeUser, $nameUser, $firstNameUser);
+				$updateUser->updateAdmin($idUser, $loginUser, $passwordUser, $emailUser, $typeUser, $nameUser, $firstNameUser);
+				$_SESSION['success'] = 'L\'utilisateur <b>' . $loginUser . '</b> (' . $emailUser . ') a été mis à jour';
+				$_SESSION['display_msg_success'] = true;
+			} else {
+				$_SESSION['error'] = 'L\'utilisateur n\'a pas été mis à jour';
+				$_SESSION['display_msg_error'] = true;
+			}
+		}
+	}
+
+	public function updateProfesseur($loginUser, $passwordUser, $emailUser, $typeUser, $idUser, $nameUser, $firstNameUser, $formations)
+	{
+		$getDoublon = new UserDAO();
+		$doublonEmail = $getDoublon->getDoublonByEmail($emailUser, $idUser);
+		$doublonLogin = $getDoublon->getDoublonByLogin($loginUser, $idUser);
+		
+		if ($doublonEmail) {
+			$_SESSION['error'] = 'Un utilisateur avec le même email existe déjà !';
+			$_SESSION['display_msg_error'] = true;
+		} elseif ($doublonLogin) {
+			$_SESSION['error'] = 'Un utilisateur avec le même login existe déjà !';
+			$_SESSION['display_msg_error'] = true;
+		} else {
+			if (!(isset($_SESSION['error']) and $_SESSION['error'] != null and isset($_SESSION['display_msg_error']) and $_SESSION['display_msg_error'])) {
+				$updateUser = new UserDAO();
+				$updateUser->updateProfesseur($idUser, $loginUser, $passwordUser, $emailUser, $typeUser, $nameUser, $firstNameUser, $formations);
+				$_SESSION['success'] = 'L\'utilisateur <b>' . $loginUser . '</b> (' . $emailUser . ') a été mis à jour';
+				$_SESSION['display_msg_success'] = true;
+			} else {
+				$_SESSION['error'] = 'L\'utilisateur n\'a pas été mis à jour';
+				$_SESSION['display_msg_error'] = true;
+			}
+		}
+	}
+
+	public function updateEtudiant($loginUser, $passwordUser, $emailUser, $typeUser, $idUser, $nameUser, $firstNameUser, $idFormation)
+	{
+		$getDoublon = new UserDAO();
+		$doublonEmail = $getDoublon->getDoublonByEmail($emailUser, $idUser);
+		$doublonLogin = $getDoublon->getDoublonByLogin($loginUser, $idUser);
+		
+		if ($doublonEmail) {
+			$_SESSION['error'] = 'Un utilisateur avec le même email existe déjà !';
+			$_SESSION['display_msg_error'] = true;
+		} elseif ($doublonLogin) {
+			$_SESSION['error'] = 'Un utilisateur avec le même login existe déjà !';
+			$_SESSION['display_msg_error'] = true;
+		} else {
+			if (!(isset($_SESSION['error']) and $_SESSION['error'] != null and isset($_SESSION['display_msg_error']) and $_SESSION['display_msg_error'])) {
+				$updateUser = new UserDAO();
+				$updateUser->updateEtudiant($idUser, $loginUser, $passwordUser, $emailUser, $typeUser, $nameUser, $firstNameUser, $idFormation);
 				$_SESSION['success'] = 'L\'utilisateur <b>' . $loginUser . '</b> (' . $emailUser . ') a été mis à jour';
 				$_SESSION['display_msg_success'] = true;
 			} else {

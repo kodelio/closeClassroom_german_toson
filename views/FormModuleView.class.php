@@ -66,9 +66,9 @@ class FormModuleView
 		return $view;
 	}
 
-	public function getViewUpdate($idModule, $name)
+	public function getViewUpdate($idModule, $name, $mesFormations)
 	{
-		return '
+		$form = '
 		<script>document.getElementById("tabFormation").className = "active";</script>
 		<div class="container"> 
 			<div id="alert">  
@@ -85,19 +85,44 @@ class FormModuleView
 
 							<div style="margin-bottom: 25px">
 								Nom du module :<br> <input type="text" class="form-control" name="nameModule" value="'.utf8_encode($name).'" required>                                      
-							</div>
+							</div>';
 
-							<div style="margin-top:10px" class="form-group">
-								<div class="col-sm-12 controls">
-									<input style="margin-top: 10px;" type="submit" name="envoyer" class="btn btn-success" value="Mettre à jour">
-									<a style="margin-top: 10px;" class="btn btn-warning" href="javascript:history.go(-1)">Annuler</a>
+							$managerFormation = new FormationDAO();
+							$mesFormations = $managerFormation->getFormations();
+							$listeFormations = $managerFormation->getFormationsByModule($idModule);
+
+							$form = $form.'<div style="margin-bottom: 25px;">
+							Formation : 
+							<div class="form-group">
+								<div class="col-lg-12">';
+									foreach ($mesFormations as &$formation) {
+										$form=$form.'<input type="checkbox"'; 
+
+										foreach ($listeFormations as $maFormation) {
+											if ($maFormation['id'] == $formation['id']){
+												$form = $form.' checked';
+											}
+										}
+
+										$form = $form.' name="formations[]" value="'.$formation['id'].'" />'.utf8_encode($formation['name']).'&nbsp;&nbsp;&nbsp;';
+									}
+									$form = $form.'
 								</div>
+							</div>                                     
+						</div>
+
+						<div style="margin-top:10px" class="form-group">
+							<div class="col-sm-12 controls">
+								<input style="margin-top: 10px;" type="submit" name="envoyer" class="btn btn-success" value="Mettre à jour">
+								<a style="margin-top: 10px;" class="btn btn-warning" href="javascript:history.go(-1)">Annuler</a>
 							</div>
-						</form>     
-					</div>                     
-				</div>  
-			</div>
+						</div>
+					</form>     
+				</div>                     
+			</div>  
 		</div>
-		';
-	}
+	</div>
+	';
+	return $form;
+}
 }

@@ -29,7 +29,7 @@ class ModuleController
         }
     }
     
-    public function updateModule($nameModule, $idModule)
+    public function updateModule($nameModule, $idModule, $formations)
     {
         $getDoublon = new ModuleDAO();
         $doublon = $getDoublon->getDoublonByName($nameModule, $idModule);
@@ -41,7 +41,7 @@ class ModuleController
         else {
             if (!(isset($_SESSION['error']) and $_SESSION['error'] != null and isset($_SESSION['display_msg_error']) and $_SESSION['display_msg_error'])) {
                 $updateModule = new ModuleDAO();
-                $updateModule->updateModule($idModule, $nameModule);
+                $updateModule->updateModule($idModule, $nameModule, $formations);
                 $_SESSION['success'] = 'Le module <b>' . $nameModule . '</b> a été mis à jour';
                 $_SESSION['display_msg_success'] = true;
             } else {

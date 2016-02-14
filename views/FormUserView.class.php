@@ -105,7 +105,7 @@ class FormUserView
 			<div style="margin-top:20px;" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
 				<div class="panel panel-primary" >
 					<div class="panel-heading">
-						<div class="panel-title">Mise à jour de l\'utilisateur <b>'.$loginUser.'</b></div>
+						<div class="panel-title">Mise à jour de l\'utilisateur <b>'.utf8_encode($loginUser).'</b></div>
 					</div>     
 
 					<div style="padding-top:30px" class="panel-body" >
@@ -113,7 +113,7 @@ class FormUserView
 						<form method="post" class="form-horizontal" role="form" action="index.php?page=updateUser&idUser='.$idUser.'" enctype="multipart/form-data">
 
 							<div style="margin-bottom: 25px">
-								Login :<br> <input type="text" class="form-control" value="'.$loginUser.'" name="loginUser" placeholder="Entrez le login" required>                                      
+								Login :<br> <input type="text" class="form-control" value="'.utf8_encode($loginUser).'" name="loginUser" placeholder="Entrez le login" required>                                      
 							</div>
 
 							<div style="margin-bottom: 25px">
@@ -130,35 +130,82 @@ class FormUserView
 
 							<div style="margin-bottom: 25px">
 								Mot de passe :<br> <input type="password" class="form-control" value="'.$passwordUser.'" name="passwordUser" placeholder="Entrez le mot de passe" required>                                      
-							</div>
+							</div>';
 
-							<div style="margin-bottom: 25px; display: none;">
-								Type : 
+							if ($typeUser == 'Etudiant') {
+								$managerFormation = new FormationDAO();
+								$mesFormations = $managerFormation->getFormations();
+								$maFormation = $managerFormation->getFormationsByUser($idUser);
+
+								$form = $form.'<div style="margin-bottom: 25px;">
+								Formation : 
 								<div class="form-group">
-									<div class="col-lg-6">
-										<select class="form-control" name="typeUser">
-											<option value="">Séléctionnez le type</option>
-											<option value="Etudiant"'.$typeEtudiant.'>Etudiant</option>
-											<option value="Professeur"'.$typeProfesseur.'>Professeur</option>
-											<option value="Admin"'.$typeAdmin.'>Admin</option>
-										</select>
+									<div class="col-lg-12">
+										<select class="form-control" name="idFormation" required>
+											<option value="">Séléctionnez la formation</option>
+											';
+											foreach ($mesFormations as $formation) {
+												$form=$form.'<option'; if($formation['id'] == $maFormation[0]['id']){ $form = $form.' selected';} $form = $form.' value="'.$formation['id'].'">'.utf8_encode($formation['name']).' ('.utf8_encode($formation['description']).')</option>';
+											}
+											$form = $form.'</select>
+										</div>
+									</div>                                     
+								</div>';
+							}
+
+							else if ($typeUser == 'Professeur') {
+								$managerFormation = new FormationDAO();
+								$mesFormations = $managerFormation->getFormations();
+								$listeFormations = $managerFormation->getFormationsByUser($idUser);
+
+								$form = $form.'<div style="margin-bottom: 25px;">
+								Formation : 
+								<div class="form-group">
+									<div class="col-lg-12">';
+										foreach ($mesFormations as &$formation) {
+											$form=$form.'<input type="checkbox"'; 
+
+											foreach ($listeFormations as $maFormation) {
+												if ($maFormation['id'] == $formation['id']){
+													$form = $form.' checked';
+												}
+											}
+
+											$form = $form.' name="formations[]" value="'.$formation['id'].'" />'.utf8_encode($formation['name']).'&nbsp;&nbsp;&nbsp;';
+										}
+										$form = $form.'
 									</div>
 								</div>                                     
-							</div>
+							</div>';
+						}
 
-							<div style="margin-top:10px" class="form-group">
-								<div class="col-sm-12 controls">
-									<input style="margin-top: 10px;" type="submit" name="envoyer" class="btn btn-success" value="Mettre à jour">
-									<a style="margin-top: 10px;" class="btn btn-warning" href="index.php?page=user">Annuler</a>
-								</div>
+						$form = $form.'<div style="margin-bottom: 25px; display: none;">
+						Type : 
+						<div class="form-group">
+							<div class="col-lg-6">
+								<select class="form-control" name="typeUser">
+									<option value="">Séléctionnez le type</option>
+									<option value="Etudiant"'.$typeEtudiant.'>Etudiant</option>
+									<option value="Professeur"'.$typeProfesseur.'>Professeur</option>
+									<option value="Admin"'.$typeAdmin.'>Admin</option>
+								</select>
 							</div>
-						</form>     
-					</div>                     
-				</div>  
-			</div>
-		</div>
-		';
+						</div>                                     
+					</div>
 
-		return $form;
-	}
+					<div style="margin-top:10px" class="form-group">
+						<div class="col-sm-12 controls">
+							<input style="margin-top: 10px;" type="submit" name="envoyer" class="btn btn-success" value="Mettre à jour">
+							<a style="margin-top: 10px;" class="btn btn-warning" href="index.php?page=user">Annuler</a>
+						</div>
+					</div>
+				</form>     
+			</div>                     
+		</div>  
+	</div>
+</div>
+';
+
+return $form;
+}
 }

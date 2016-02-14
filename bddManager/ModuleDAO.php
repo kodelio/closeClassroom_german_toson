@@ -85,10 +85,14 @@ class ModuleDAO
         }
     }
     
-    public function updateModule($idModule, $nameModule)
+    public function updateModule($idModule, $nameModule, $formations)
     {
         try {
             mysqli_query($_SESSION['bdd'], "UPDATE `modules` SET `name` = '" . addslashes(utf8_decode($nameModule)) . "' WHERE `id` = '" . $idModule . "'");
+            mysqli_query($_SESSION['bdd'], "DELETE FROM `assomoduleformation` WHERE `id_module` = '" . $idModule . "'");
+            foreach($formations as $idFormation) {
+                mysqli_query($_SESSION['bdd'], "INSERT INTO assomoduleformation (id_formation, id_module) VALUES ('" . $idFormation . "', '" . $idModule . "')");
+            }
         }
         catch (Exception $e) {
             $_SESSION['error'] = 'Erreur requete BDD';
