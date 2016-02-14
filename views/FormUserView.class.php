@@ -117,11 +117,11 @@ class FormUserView
 							</div>
 
 							<div style="margin-bottom: 25px">
-								Nom :<br> <input type="text" class="form-control" value="'.$nameUser.'" name="nameUser" placeholder="Entrez le nom" required>                                      
+								Nom :<br> <input type="text" class="form-control" value="'.utf8_encode($nameUser).'" name="nameUser" placeholder="Entrez le nom" required>                                      
 							</div>
 
 							<div style="margin-bottom: 25px">
-								Prénom :<br> <input type="text" class="form-control" value="'.$firstNameUser.'" name="firstNameUser" placeholder="Entrez le prénom" required>                                      
+								Prénom :<br> <input type="text" class="form-control" value="'.utf8_encode($firstNameUser).'" name="firstNameUser" placeholder="Entrez le prénom" required>                                      
 							</div>
 
 							<div style="margin-bottom: 25px">

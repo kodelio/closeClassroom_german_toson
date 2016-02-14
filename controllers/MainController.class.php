@@ -356,10 +356,9 @@ class MainController
 		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
 		if ($infos['type'] == 'Admin') {
 			$userView = new UserView();
-			echo $userView->getView($infos['type']);
-		} elseif ($infos['type'] == 'Professeur') {
-			$userView = new UserView();
-			echo $userView->getView($infos['type']);
+			$managerUser = new UserDAO();
+			$mesUtilisateurs = $managerUser->getUsers();
+			echo $userView->getView($mesUtilisateurs);
 		} else {
 			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
 			$_SESSION['display_msg_error'] = true;
@@ -437,13 +436,13 @@ class MainController
 	public function deleteUser()
 	{
 		if (isset($_GET['idUser'])) {
-			$infosUser = new UserDAO();
-			$infos = $infosUser->getInfoUser($_SESSION['idUser']);
+			$managerUser = new UserDAO();
+			$infos = $managerUser->getInfoUser($_SESSION['idUser']);
+			$userToDelete = $managerUser->getInfoUser($_GET['idUser']);
 			if ($infos['type'] == 'Admin') {
-				$userController = new UserController();
-				$userToDelete = $userController->getInfoUser($_GET['idUser']);
 				if($userToDelete['type'] != 'Admin')
 				{
+					$userController = new UserController();
 					$deleteUser = $userController->deleteUser($_GET['idUser']);
 					$_SESSION['success'] = 'L\'utilisateur a bien été supprimé';
 					$_SESSION['display_msg_success'] = true;
@@ -455,7 +454,6 @@ class MainController
 					$_SESSION['display_msg_error'] = true;
 					$this->profile();
 				}
-				
 			} else {
 				$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
 				$_SESSION['display_msg_error'] = true;
@@ -474,7 +472,9 @@ class MainController
 		$infosUser = new UserDAO();
 		$infos = $infosUser->getInfoUser($_SESSION['idUser']);
 		$profileView = new ProfileView();
-		echo $profileView->getView($infos['id'], $infos['login'], $infos['email'], $infos['type']);
+		$managerFormation = new FormationDAO();
+		$formations = $managerFormation->getFormationsByUser($infos['id']);
+		echo $profileView->getView($infos['id'], $infos['login'], $infos['email'], $infos['type'], $formations);
 	}
 	
     //charge la page d'inscription

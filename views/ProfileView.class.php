@@ -7,7 +7,7 @@ class ProfileView
 	{
 	}
 
-	public function getView($idUser, $loginUser, $emailUser, $typeUser)
+	public function getView($idUser, $loginUser, $emailUser, $typeUser, $formations)
 	{
 		if ($typeUser == 'Admin') {
 			$view = '
@@ -49,35 +49,48 @@ class ProfileView
 							Type de compte : <b>'.$typeUser.'</b> 
 							<br>
 							Email : <b>'.$emailUser.'</b>   
-						</div>                     
+							<br>';
+							$view = $view.'<p>Formations : ';
+							foreach ($formations as &$formation) {
+								$view = $view.'<span class="label label-primary">'.$formation['name'].'</span>&nbsp;&nbsp;';
+							}
+							$view = $view.'</div>                     
+						</div>
+						<a style="margin-top: 10px;" href="index.php?page=formation" class="btn btn-info"><span class="fa fa-graduation-cap"></span> Liste des formations</a>
+						<a style="margin-top: 10px;" href="index.php?page=createPractice" class="btn btn-info"><span class="fa fa-book"></span> Créer un cours</a>
 					</div>
-					<a style="margin-top: 10px;" href="index.php?page=formation" class="btn btn-info"><span class="fa fa-graduation-cap"></span> Liste des formations</a>
-					<a style="margin-top: 10px;" href="index.php?page=createPractice" class="btn btn-info"><span class="fa fa-book"></span> Créer un cours</a>
-				</div>
-			</div>';
-		}
-		else {
-			$view = '
-			<div class="container">    
-				<div style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
-					<div class="panel panel-primary" >
-						<div class="panel-heading">
-							<div class="panel-title">Informations</div>
-						</div>     
+				</div>';
+			}
+			else {
+				$view = '
+				<div class="container">    
+					<div style="margin-top:50px;" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
+						<div class="panel panel-primary" >
+							<div class="panel-heading">
+								<div class="panel-title">Informations</div>
+							</div>     
 
-						<div class="panel-body" >
-							Nom d\'utilisateur : <b>'.$loginUser.'</b>    
-							<br>
-							Type de compte : <b>'.$typeUser.'</b> 
-							<br>
-							Email : <b>'.$emailUser.'</b>   
-						</div>                     
-					</div>
-					<a style="margin-top: 10px;" href="index.php?page=formation" class="btn btn-info"><span class="fa fa-graduation-cap"></span> Liste des formations</a>
-				</div>
-			</div>';
-		}
+							<div class="panel-body" >
+								Nom d\'utilisateur : <b>'.$loginUser.'</b>    
+								<br>
+								Type de compte : <b>'.$typeUser.'</b> 
+								<br>
+								Email : <b>'.$emailUser.'</b>   
+								<br>';
+								if ($formations!= null){
+									$view = $view.'<p>Formations : ';
+									foreach ($formations as &$formation) {
 
-		return $view;
-	}
-}
+										$view = $view.'<span class="label label-primary">'.$formation['name'].'</span>&nbsp;&nbsp;';
+									}
+								}
+								$view = $view.'</div>                 
+							</div>
+							<a style="margin-top: 10px;" href="index.php?page=formation" class="btn btn-info"><span class="fa fa-graduation-cap"></span> Liste des formations</a>
+						</div>
+					</div>';
+				}
+
+				return $view;
+			}
+		}

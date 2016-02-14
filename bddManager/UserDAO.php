@@ -168,6 +168,8 @@ class UserDAO
     public function deleteUser($idUser)
     {
         try {
+            mysqli_query($_SESSION['bdd'], "DELETE FROM `practices` WHERE `user` = '" . $idUser . "'");
+            mysqli_query($_SESSION['bdd'], "DELETE FROM `assouserformation` WHERE `id_user` = '" . $idUser . "'");
             mysqli_query($_SESSION['bdd'], "DELETE FROM `users` WHERE `id` = '" . $idUser . "'");
         }
         catch (Exception $e) {

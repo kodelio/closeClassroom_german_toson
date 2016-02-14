@@ -64,7 +64,7 @@ class ModuleView
 									<h4 class="modal-title">Suppression de module</h4>
 								</div>
 								<div class="modal-body">
-									<p>Voulez-vous vraiment supprimer le module <b>'.$module['name'].'</b> ?</p>
+									<p>Voulez-vous vraiment supprimer le module <b>'.$module['name'].'</b> ? <br/>Cela supprimera les cours associés au module.</p>
 								</div>
 								<div class="modal-footer">
 									<button class="btn" data-dismiss="modal" aria-hidden="true">Non</button>

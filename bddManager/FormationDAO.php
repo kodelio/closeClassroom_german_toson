@@ -95,6 +95,24 @@ class FormationDAO
     public function deleteFormation($idFormation)
     {
         try {
+            mysqli_query($_SESSION['bdd'], "DELETE FROM `assouserformation` WHERE `id_formation` = '" . $idFormation . "'");   
+
+            $managerModule = new ModuleDAO();
+            $resultats = $managerModule->getModulesByFormation($idFormation);
+
+            $moduleToDelete = array();
+
+            foreach ($resultats as $module) {
+                $query = mysqli_query($_SESSION['bdd'], "SELECT * FROM `assomoduleformation` WHERE `id_formation` != '" . $idFormation . "' AND `id_module` = '".$module['id']."'");
+                if (mysqli_num_rows($query) == '0'){
+                    array_push($moduleToDelete, $module);
+                }
+            }
+            mysqli_query($_SESSION['bdd'], "DELETE FROM `assomoduleformation` WHERE `id_formation` = '" . $idFormation . "'");
+            foreach ($moduleToDelete as $module) {
+                mysqli_query($_SESSION['bdd'], "DELETE FROM `practices` WHERE `id_module` = '" . $module['id'] . "'");
+                mysqli_query($_SESSION['bdd'], "DELETE FROM `modules` WHERE `id` = '" . $module['id'] . "'");
+            }
             mysqli_query($_SESSION['bdd'], "DELETE FROM `formations` WHERE `id` = '" . $idFormation . "'");
         }
         catch (Exception $e) {
@@ -107,6 +125,22 @@ class FormationDAO
     {
         try {
             $resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM formations WHERE `id`= '" . $idFormation . "'");
+            if (mysqli_num_rows($resultat) != '0') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        catch (Exception $e) {
+            $_SESSION['error'] = 'Erreur requete BDD';
+            $_SESSION['display_msg_error'] = true;
+        }
+    }
+
+    public function getDoublonByName($nameFormation, $idFormation)
+    {
+        try {
+            $resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM formations WHERE `name`= '" . $nameFormation . "' and `id` != '" . $idFormation . "' ");
             if (mysqli_num_rows($resultat) != '0') {
                 return true;
             } else {

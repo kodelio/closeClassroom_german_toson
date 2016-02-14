@@ -64,7 +64,7 @@ class FormationView
 									<h4 class="modal-title">Suppression de formation</h4>
 								</div>
 								<div class="modal-body">
-									<p>Voulez-vous vraiment supprimer la formation <b>'.$formation['name'].'</b> ?</p>
+									<p>Voulez-vous vraiment supprimer la formation <b>'.$formation['name'].'</b> ? <br/> Cela supprimera les modules et les cours de cette formation.</p>
 								</div>
 								<div class="modal-footer">
 									<button class="btn" data-dismiss="modal" aria-hidden="true">Non</button>

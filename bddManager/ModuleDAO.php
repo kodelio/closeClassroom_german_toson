@@ -99,6 +99,8 @@ class ModuleDAO
     public function deleteModule($idModule)
     {
         try {
+            mysqli_query($_SESSION['bdd'], "DELETE FROM `practices` WHERE `id_module` = '" . $idModule . "'");
+            mysqli_query($_SESSION['bdd'], "DELETE FROM `assomoduleformation` WHERE `id_module` = '" . $idModule . "'");
             mysqli_query($_SESSION['bdd'], "DELETE FROM `modules` WHERE `id` = '" . $idModule . "'");
         }
         catch (Exception $e) {
@@ -111,6 +113,22 @@ class ModuleDAO
     {
         try {
             $resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM modules WHERE `id`= '" . $idModule . "'");
+            if (mysqli_num_rows($resultat) != '0') {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        catch (Exception $e) {
+            $_SESSION['error'] = 'Erreur requete BDD';
+            $_SESSION['display_msg_error'] = true;
+        }
+    }
+
+    public function getDoublonByName($nameModule, $idModule)
+    {
+        try {
+            $resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM modules WHERE `name`= '" . $nameModule . "' and `id` != '" . $idModule . "' ");
             if (mysqli_num_rows($resultat) != '0') {
                 return true;
             } else {

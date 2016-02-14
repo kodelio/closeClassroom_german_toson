@@ -28,22 +28,15 @@ class UserView
 		';
 	}
 
-	public function getView($userView)
+	public function getView($mesUtilisateurs)
 	{
-		$view = ''.$this->getViewTop().$this->getListe($userView).$this->getViewBottom();
+		$view = ''.$this->getViewTop().$this->getListe($mesUtilisateurs).$this->getViewBottom();
 
 		return $view;
 	}
 
-	public function getListe($userView)
+	public function getListe($mesUtilisateurs)
 	{
-		$managerUser = new UserDAO();
-		if ($userView == 'Professeur') {
-			$mesUtilisateurs = $managerUser->getEtudiants();
-		} else {
-			$mesUtilisateurs = $managerUser->getUsers();
-		}
-
 		$view = '<a style="margin-bottom: 20px;" href="index.php?page=createUser" class="btn btn-info"><span class="fa fa-plus"></span> Créer un professeur</a>';
 		if (!$mesUtilisateurs) {
 			$view = $view.'<div class="panel panel-info" style="margin-top: 20px;">
@@ -54,11 +47,13 @@ class UserView
 				Il n\'y a aucun utilisateur dans la base de données !</div>
 			</div>';
 		} else {
-			foreach ($mesUtilisateurs as &$utilisateurs) {
+			foreach ($mesUtilisateurs as &$utilisateur) {
+				$managerFormation = new FormationDAO();
+				$formations = $managerFormation->getFormationsByUser($utilisateur['id']);
 				$view = $view.'<div class="list-group-item">
-				<form method="POST" action="index.php?page=deleteUser&idUser='.$utilisateurs['id'].'" accept-charset="UTF-8" class="form-inline"><input name="_method" type="hidden" value="DELETE">
-					<a style="float: right; margin-left: 5px;" data-toggle="modal" href="#deleteUsers'.$utilisateurs['id'].'" role="button" class="btn btn-danger"><i class="fa fa-trash"></i></a>
-					<div id="deleteUsers'.$utilisateurs['id'].'" class="modal" style="display: none;">
+				<form method="POST" action="index.php?page=deleteUser&idUser='.$utilisateur['id'].'" accept-charset="UTF-8" class="form-inline"><input name="_method" type="hidden" value="DELETE">
+					<a style="float: right; margin-left: 5px;" data-toggle="modal" href="#deleteUsers'.$utilisateur['id'].'" role="button" class="btn btn-danger"><i class="fa fa-trash"></i></a>
+					<div id="deleteUsers'.$utilisateur['id'].'" class="modal" style="display: none;">
 						<div class="modal-dialog">
 							<div class="modal-content">
 								<div class="modal-header">
@@ -66,7 +61,7 @@ class UserView
 									<h4 class="modal-title">Suppression d\'utilisateur</h4>
 								</div>
 								<div class="modal-body">
-									<p>Voulez-vous vraiment supprimer l\'utilisateur <b>'.$utilisateurs['login'].'</b> ?</p>
+									<p>Voulez-vous vraiment supprimer l\'utilisateur <b>'.$utilisateur['login'].'</b> ? <br/>Cela supprimera les cours qui lui sont associés.</p>
 								</div>
 								<div class="modal-footer">
 									<button class="btn" data-dismiss="modal" aria-hidden="true">Non</button>
@@ -76,10 +71,17 @@ class UserView
 						</div>
 					</div>
 				</form>
-				<a style="float: right;" href="index.php?page=updateUser&idUser='.$utilisateurs['id'].'" role="button" class="btn btn-info"><i class="fa fa-edit"></i></a>
-				<h4>'.$utilisateurs['login'].' ('.utf8_encode($utilisateurs['first_name']).' '.utf8_encode($utilisateurs['name']).')</h4>
-				<p class="list-group-item-text">'.$utilisateurs['email'].'</p>
-				<p>Type : '.$utilisateurs['type'].'</b></p>
+				<a style="float: right;" href="index.php?page=updateUser&idUser='.$utilisateur['id'].'" role="button" class="btn btn-info"><i class="fa fa-edit"></i></a>
+				<h4>'.$utilisateur['login'].' ('.utf8_encode($utilisateur['first_name']).' '.utf8_encode($utilisateur['name']).')</h4>
+				<p class="list-group-item-text">'.$utilisateur['email'].'</p>
+				<p>Type : <b>'.$utilisateur['type'].'</b></p>';
+				if ($formations != null){
+					$view = $view.'<p>Formations : ';
+					foreach ($formations as &$formation) {
+						$view = $view.'<span class="label label-primary">'.$formation['name'].'</span>&nbsp;&nbsp;';
+					}
+				}
+				$view = $view.'</p>
 			</div>';
 		}
 	}
