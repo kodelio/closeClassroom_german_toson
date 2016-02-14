@@ -136,7 +136,7 @@ CREATE TABLE IF NOT EXISTS `practices` (
 --
 
 INSERT INTO `practices` (`id`, `name`, `path`, `user`, `description`, `date`, `file`, `id_module`, `editor`) VALUES
-(1, 'Pratiques', 'closeClassroom_german_toson/practices/pratiques_02-01-2016_admin.pdf', 2, 'Cours sur les bonnes pratiques du web', '02-01-2016', 'pratiques_02-01-2016_admin.pdf', 2, '<b>Cours sur les bonnes pratiqualert("lol");es du web<br><img src="http://sebsauvage.net/streisand.me/thomasinthesky2/?m=http://thomasinthesky.legtux.org/wp-content/fichiers/2013/05/Code-PHP.jpg" title="Image: http://sebsauvage.net/streisand.me/thomasinthesky2/?m=http://thomasinthesky.legtux.org/wp-content/fichiers/2013/05/Code-PHP.jpg"><br></b>');
+(1, 'Pratiques', 'closeClassroom_german_toson/practices/pratiques_02-01-2016_admin.pdf', 2, 'Cours sur les bonnes pratiques du web', '02-01-2016', 'pratiques_02-01-2016_admin.pdf', 2, '<b>Cours sur les bonnes pratiques du web<br><img src="http://sebsauvage.net/streisand.me/thomasinthesky2/?m=http://thomasinthesky.legtux.org/wp-content/fichiers/2013/05/Code-PHP.jpg" title="Image: http://sebsauvage.net/streisand.me/thomasinthesky2/?m=http://thomasinthesky.legtux.org/wp-content/fichiers/2013/05/Code-PHP.jpg"><br></b>');
 
 -- --------------------------------------------------------
 
