@@ -1,16 +1,25 @@
 # CloseClassroom
 Application pédagogique en PHP réalisée lors du DUT Informatique en alternance
 
-Objectif : L’application web sera une plateforme pédagogique numérique destiné à la diffusion d’enseignements.
+## Demo
+Lien vers la demo : http://laurent-toson.fr/closeClassroom_german_toson/
+- Login : demo
+- Mot de passe : demo
 
-Périmètre : L’application web sera accessible sur un réseau local et ne demande pas de visibilité sur internet. Il existe trois types 
+## Objectifs
+
+L’application web sera une plateforme pédagogique numérique destiné à la diffusion d’enseignements.
+
+## Périmètre
+L’application web sera accessible sur un réseau local et ne demande pas de visibilité sur internet. Il existe trois types 
 d’utilisateurs
 
 - Etudiant : Accès en lecture sur les enseignements de sa formation.
 - Professeur : Accès en lecture et écriture sur ses enseignements.
 - Administrateur : Accès totale.
 
-Fonctionnalités : L’application web contient une zone «Etudiant», «Enseignant» et «Administration».
+## Fonctionnalités : 
+L’application web contient une zone «Etudiant», «Enseignant» et «Administration».
 La page d’accueil de l’application web correspond à une page d’authentification.
 Le formulaire d’authentification contiendra:
 - Un champ «Nom d’utilisateur»
@@ -53,13 +62,18 @@ Le formulaire d’ajout d’un enseignant contiendra :
 - La liste des formations avec une case à choser pour chaque formation.
 
 
-Contraintes techniques :
-L’application web sera créé avec les technologies HTML5/CSS3/PHP/MySQL.
-L’application web implémentera une architecture objet.
-L’application web implémentera les design pattern MVC, Singleton, DAO au minimum.
-L’application web suivra les tendances «Web 2.0» en terme d’ergonomie.
+## Contraintes techniques :
+- L’application web sera créé avec les technologies HTML5/CSS3/PHP/MySQL.
+- L’application web implémentera une architecture objet.
+- L’application web implémentera les design pattern MVC, Singleton, DAO au minimum.
+- L’application web suivra les tendances «Web 2.0» en terme d’ergonomie.
+ 
+
+## Fonctionnalités supplémentaires
+- Editeur WYSIWYG pour les cours (https://github.com/bootstrap-wysiwyg/bootstrap3-wysiwyg)
+- Edition et suppression des utilisateurs, cours, modules et formation
 
 
-Dévelopée par Arnaud German & Laurent Toson
-
-Thème : Bootswatch Paper
+## Crédits
+- Développée par Arnaud German & Laurent Toson
+- Thème : Bootswatch Paper (http://bootswatch.com/paper/)
