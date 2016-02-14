@@ -45,7 +45,30 @@ class UserDAO
     public function getUsers()
     {
         try {
-            $resultat = mysqli_query($_SESSION['bdd'], 'SELECT * FROM users');
+            $resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM users");
+            if (mysqli_num_rows($resultat) != '0') {
+                $tab[0] = mysqli_fetch_assoc($resultat);
+                if (mysqli_num_rows($resultat) > '0') {
+                    for ($i = 1; $i < mysqli_num_rows($resultat); $i++) {
+                        array_push($tab, mysqli_fetch_assoc($resultat));
+                    }
+                }
+                
+                return $tab;
+            } else {
+                return false;
+            }
+        }
+        catch (Exception $e) {
+            $_SESSION['error'] = 'Erreur requete BDD';
+            $_SESSION['display_msg_error'] = true;
+        }
+    }
+
+    public function getUsersByType($typeUser)
+    {
+        try {
+            $resultat = mysqli_query($_SESSION['bdd'], "SELECT * FROM users WHERE `type` = '".$typeUser."'");
             if (mysqli_num_rows($resultat) != '0') {
                 $tab[0] = mysqli_fetch_assoc($resultat);
                 if (mysqli_num_rows($resultat) > '0') {

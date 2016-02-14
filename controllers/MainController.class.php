@@ -362,7 +362,23 @@ class MainController
 		if ($infos['type'] == 'Admin') {
 			$userView = new UserView();
 			$managerUser = new UserDAO();
-			$mesUtilisateurs = $managerUser->getUsers();
+			if (isset($_GET['tri'])){
+				if ($_GET['tri'] == 'Admin'){
+					$mesUtilisateurs = $managerUser->getUsersByType($_GET['tri']);
+				}
+				else if ($_GET['tri'] == 'Professeur'){
+					$mesUtilisateurs = $managerUser->getUsersByType($_GET['tri']);
+				}
+				else if ($_GET['tri'] == 'Etudiant'){
+					$mesUtilisateurs = $managerUser->getUsersByType($_GET['tri']);
+				}
+				else {
+					$mesUtilisateurs = $managerUser->getUsers();
+				}
+			}
+			else {
+				$mesUtilisateurs = $managerUser->getUsers();
+			}
 			echo $userView->getView($mesUtilisateurs);
 		} else {
 			$_SESSION['error'] = 'Vous n\'avez pas les droits requis pour accéder à cette page';
