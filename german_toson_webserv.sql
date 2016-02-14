@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Dim 14 Février 2016 à 09:52
+-- Généré le :  Dim 14 Février 2016 à 14:10
 -- Version du serveur :  5.6.17
 -- Version de PHP :  5.5.12
 
@@ -129,14 +129,15 @@ CREATE TABLE IF NOT EXISTS `practices` (
   PRIMARY KEY (`id`),
   KEY `user` (`user`),
   KEY `module` (`id_module`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
 
 --
 -- Contenu de la table `practices`
 --
 
 INSERT INTO `practices` (`id`, `name`, `path`, `user`, `description`, `date`, `file`, `id_module`, `editor`) VALUES
-(1, 'Pratiques', 'closeClassroom_german_toson/practices/pratiques_02-01-2016_admin.pdf', 2, 'Cours sur les bonnes pratiques du web', '02-01-2016', 'pratiques_02-01-2016_admin.pdf', 2, '<b>Cours sur les bonnes pratiques du web<br><img src="http://sebsauvage.net/streisand.me/thomasinthesky2/?m=http://thomasinthesky.legtux.org/wp-content/fichiers/2013/05/Code-PHP.jpg" title="Image: http://sebsauvage.net/streisand.me/thomasinthesky2/?m=http://thomasinthesky.legtux.org/wp-content/fichiers/2013/05/Code-PHP.jpg"><br></b>');
+(1, 'Pratiques', 'closeClassroom_german_toson/practices/pratiques_02-01-2016_admin.pdf', 2, 'Cours sur les bonnes pratiques du web', '02-01-2016', 'pratiques_02-01-2016_admin.pdf', 2, '<b>Cours sur les bonnes pratiques du web<br><img src="http://sebsauvage.net/streisand.me/thomasinthesky2/?m=http://thomasinthesky.legtux.org/wp-content/fichiers/2013/05/Code-PHP.jpg" title="Image: http://sebsauvage.net/streisand.me/thomasinthesky2/?m=http://thomasinthesky.legtux.org/wp-content/fichiers/2013/05/Code-PHP.jpg"><br></b>'),
+(2, 'Probabilités', 'closeClassroom_german_toson/practices/probabilites_14-02-2016_admin.pdf', 1, 'Cours sur les probabilités', '14-02-2016', 'probabilites_14-02-2016_admin.pdf', 1, '<u><h1>Cours de probabilités</h1></u>');
 
 -- --------------------------------------------------------
 

@@ -52,7 +52,7 @@ class ProfileView
 							<br>';
 							$view = $view.'<p>Formations : ';
 							foreach ($formations as &$formation) {
-								$view = $view.'<span class="label label-primary">'.$formation['name'].'</span>&nbsp;&nbsp;';
+								$view = $view.'<span class="label label-primary">'.utf8_encode($formation['name']).'</span>&nbsp;&nbsp;';
 							}
 							$view = $view.'</div>                     
 						</div>
@@ -81,7 +81,7 @@ class ProfileView
 									$view = $view.'<p>Formations : ';
 									foreach ($formations as &$formation) {
 
-										$view = $view.'<span class="label label-primary">'.$formation['name'].'</span>&nbsp;&nbsp;';
+										$view = $view.'<span class="label label-primary">'.utf8_encode($formation['name']).'</span>&nbsp;&nbsp;';
 									}
 								}
 								$view = $view.'</div>                 

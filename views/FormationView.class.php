@@ -64,7 +64,7 @@ class FormationView
 									<h4 class="modal-title">Suppression de formation</h4>
 								</div>
 								<div class="modal-body">
-									<p>Voulez-vous vraiment supprimer la formation <b>'.$formation['name'].'</b> ? <br/> Cela supprimera les modules et les cours de cette formation.</p>
+									<p>Voulez-vous vraiment supprimer la formation <b>'.utf8_encode($formation['name']).'</b> ? <br/> Cela supprimera les modules et les cours de cette formation.</p>
 								</div>
 								<div class="modal-footer">
 									<button class="btn" data-dismiss="modal" aria-hidden="true">Non</button>
@@ -77,8 +77,8 @@ class FormationView
 				<a style="float: right;" href="index.php?page=updateFormation&idFormation='.$formation['id'].'" role="button" class="btn btn-info"><i class="fa fa-edit"></i></a>';
 			}
 			$view = $view.'<div class="list-group-item">'.$modif.'
-			<h4><a href="index.php?page=showFormation&idFormation='.$formation['id'].'">'.$formation['name'].'</a></h4>
-			<p class="list-group-item-text">'.$formation['description'].'</p>
+			<h4><a href="index.php?page=showFormation&idFormation='.$formation['id'].'">'.utf8_encode($formation['name']).'</a></h4>
+			<p class="list-group-item-text">'.utf8_encode($formation['description']).'</p>
 		</div>';
 	}
 }

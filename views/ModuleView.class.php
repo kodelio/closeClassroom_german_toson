@@ -14,7 +14,7 @@ class ModuleView
 		<div class="container">  
 			<div class="panel panel-default">
 				<div class="panel-body" style="padding-top: 0px;">  
-					<h3>Modules de la formation '.$nameFormation.' :</h3>
+					<h3>Modules de la formation '.utf8_encode($nameFormation).' :</h3>
 					<div class="list-group">';
 					}
 
@@ -64,7 +64,7 @@ class ModuleView
 									<h4 class="modal-title">Suppression de module</h4>
 								</div>
 								<div class="modal-body">
-									<p>Voulez-vous vraiment supprimer le module <b>'.$module['name'].'</b> ? <br/>Cela supprimera les cours associés au module.</p>
+									<p>Voulez-vous vraiment supprimer le module <b>'.utf8_encode($module['name']).'</b> ? <br/>Cela supprimera les cours associés au module.</p>
 								</div>
 								<div class="modal-footer">
 									<button class="btn" data-dismiss="modal" aria-hidden="true">Non</button>
@@ -77,7 +77,7 @@ class ModuleView
 				<a style="float: right;" href="index.php?page=updateModule&idModule='.$module['id'].'" role="button" class="btn btn-info"><i class="fa fa-edit"></i></a>';
 			}
 			$view = $view.'<div class="list-group-item">'.$modif.'
-			<h4><a href="index.php?page=showModule&idModule='.$module['id'].'">'.$module['name'].'</a></h4>
+			<h4><a href="index.php?page=showModule&idModule='.$module['id'].'">'.utf8_encode($module['name']).'</a></h4>
 		</div>';
 	}
 }

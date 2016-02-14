@@ -83,7 +83,7 @@ class UserView
 			if ($formations != null){
 				$view = $view.'<p>Formations : ';
 				foreach ($formations as &$formation) {
-					$view = $view.'<span class="label label-primary">'.$formation['name'].'</span>&nbsp;&nbsp;';
+					$view = $view.'<span class="label label-primary">'.utf8_encode($formation['name']).'</span>&nbsp;&nbsp;';
 				}
 			}
 			$view = $view.'</p>

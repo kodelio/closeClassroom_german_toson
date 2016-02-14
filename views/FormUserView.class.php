@@ -60,7 +60,7 @@ class FormUserView
 									<div class="form-group">
 										<div class="col-lg-12">';
 											foreach ($mesFormations as &$formation) {
-												$view=$view.'<input type="checkbox" name="formations[]" value="'.$formation['id'].'" />'.$formation['name'].'&nbsp;&nbsp;&nbsp;';
+												$view=$view.'<input type="checkbox" name="formations[]" value="'.$formation['id'].'" />'.utf8_encode($formation['name']).'&nbsp;&nbsp;&nbsp;';
 											}
 											$view = $view.'
 										</div>
@@ -125,7 +125,7 @@ class FormUserView
 							</div>
 
 							<div style="margin-bottom: 25px">
-								Email :<br> <input type="email" class="form-control" value="'.$emailUser.'" name="emailUser" placeholder="Entrez l\'email" required>                                      
+								Email :<br> <input type="email" class="form-control" value="'.utf8_encode($emailUser).'" name="emailUser" placeholder="Entrez l\'email" required>                                      
 							</div>
 
 							<div style="margin-bottom: 25px">

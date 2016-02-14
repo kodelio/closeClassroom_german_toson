@@ -76,7 +76,7 @@ class FormPracticeView
 												<option value="">Séléctionnez le module</option>
 												';
 												foreach ($mesModules as &$module) {
-													$view=$view.'<option value="'.$module['id'].'">'.$module['name'].'</option>';
+													$view=$view.'<option value="'.$module['id'].'">'.utf8_encode($module['name']).'</option>';
 												}
 												$view = $view.'</select>
 											</div>
@@ -108,7 +108,7 @@ class FormPracticeView
 				<div style="margin-top:20px;" class="col-md-12">                    
 					<div class="panel panel-primary" >
 						<div class="panel-heading">
-							<div class="panel-title">Mise à jour du cours <b>'.$name.'</b></div>
+							<div class="panel-title">Mise à jour du cours <b>'.utf8_encode($name).'</b></div>
 						</div>     
 
 						<div style="padding-top:30px" class="panel-body" >
@@ -116,15 +116,15 @@ class FormPracticeView
 							<form method="post" class="form-horizontal" role="form" action="index.php?page=updatePractice&idPractice='.$idPractice.'" enctype="multipart/form-data">
 
 								<div style="margin-bottom: 25px">
-									Nom du cours :<br> <input type="text" class="form-control" name="namePractice" value="'.$name.'" required>                                      
+									Nom du cours :<br> <input type="text" class="form-control" name="namePractice" value="'.utf8_encode($name).'" required>                                      
 								</div>
 
 								<div style="margin-bottom: 25px">
-									Description du cours :<br> <textarea class="form-control" name="descriptionPractice" cols="0" rows="0" required>'.$description.'</textarea>                            
+									Description du cours :<br> <textarea class="form-control" name="descriptionPractice" cols="0" rows="0" required>'.utf8_encode($description).'</textarea>                            
 								</div>
 
 								<div style="margin-bottom: 25px">
-									Cours :<br> <textarea class="htmlPractice" class="form-control" name="htmlPractice" style="width: 100%; height: 200px; border: #b4bcc2 1px solid;">'.$editor.'</textarea>                            
+									Cours :<br> <textarea class="htmlPractice" class="form-control" name="htmlPractice" style="width: 100%; height: 200px; border: #b4bcc2 1px solid;">'.utf8_encode($editor).'</textarea>                            
 								</div>
 								<script>
 									$(\'.htmlPractice\').wysihtml5({

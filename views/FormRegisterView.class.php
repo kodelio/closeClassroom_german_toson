@@ -66,7 +66,7 @@ class FormRegisterView
 											<option value="">Séléctionnez la formation</option>
 											';
 											foreach ($mesFormations as &$formation) {
-												$view=$view.'<option value="'.$formation['id'].'">'.$formation['name'].' ('.$formation['description'].')</option>';
+												$view=$view.'<option value="'.$formation['id'].'">'.utf8_encode($formation['name']).' ('.utf8_encode($formation['description']).')</option>';
 											}
 											$view = $view.'</select>
 										</div>

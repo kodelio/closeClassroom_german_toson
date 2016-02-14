@@ -44,7 +44,7 @@ class FormModuleView
 									<div class="form-group">
 										<div class="col-lg-12">';
 											foreach ($mesFormations as &$formation) {
-												$view=$view.'<input type="checkbox" name="formations[]" value="'.$formation['id'].'" />'.$formation['name'].'&nbsp;&nbsp;&nbsp;';
+												$view=$view.'<input type="checkbox" name="formations[]" value="'.$formation['id'].'" />'.utf8_encode($formation['name']).'&nbsp;&nbsp;&nbsp;';
 											}
 											$view = $view.'
 										</div>
@@ -76,7 +76,7 @@ class FormModuleView
 			<div style="margin-top:20px;" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
 				<div class="panel panel-primary" >
 					<div class="panel-heading">
-						<div class="panel-title">Mise à jour du module <b>'.$name.'</b></div>
+						<div class="panel-title">Mise à jour du module <b>'.utf8_encode($name).'</b></div>
 					</div>     
 
 					<div style="padding-top:30px" class="panel-body" >
@@ -84,7 +84,7 @@ class FormModuleView
 						<form method="post" class="form-horizontal" role="form" action="index.php?page=updateModule&idModule='.$idModule.'" enctype="multipart/form-data">
 
 							<div style="margin-bottom: 25px">
-								Nom du module :<br> <input type="text" class="form-control" name="nameModule" value="'.$name.'" required>                                      
+								Nom du module :<br> <input type="text" class="form-control" name="nameModule" value="'.utf8_encode($name).'" required>                                      
 							</div>
 
 							<div style="margin-top:10px" class="form-group">

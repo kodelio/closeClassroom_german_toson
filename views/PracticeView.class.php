@@ -14,7 +14,7 @@ class PracticeView
 		<div class="container">  
 			<div class="panel panel-default">
 				<div class="panel-body" style="padding-top: 0px;">  
-					<h3>Cours du module '.$nameModule.' :</h3>
+					<h3>Cours du module '.utf8_encode($nameModule).' :</h3>
 					<div class="list-group">';
 					}
 
@@ -64,7 +64,7 @@ class PracticeView
 									<h4 class="modal-title">Suppression de cours</h4>
 								</div>
 								<div class="modal-body">
-									<p>Voulez-vous vraiment supprimer le cours <b>'.$cours['name'].'</b> ?</p>
+									<p>Voulez-vous vraiment supprimer le cours <b>'.utf8_encode($cours['name']).'</b> ?</p>
 								</div>
 								<div class="modal-footer">
 									<button class="btn" data-dismiss="modal" aria-hidden="true">Non</button>
@@ -77,8 +77,8 @@ class PracticeView
 				<a style="float: right;" href="index.php?page=updatePractice&idPractice='.$cours['id'].'" role="button" class="btn btn-info"><i class="fa fa-edit"></i></a>';
 			}
 			$view = $view.'<div class="list-group-item">'.$modif.'
-			<h4><a class="text-primary" href="index.php?page=showPractice&idPractice='.$cours['id'].'">'.$cours['name'].'</a><a style="margin-left: 10px;" class="text-primary" download target="_blank" href="/'.$cours['path'].'"><i class="fa fa-download"></i></a></h4>
-			<p class="list-group-item-text">'.$cours['description'].'</p>
+			<h4><a class="text-primary" href="index.php?page=showPractice&idPractice='.$cours['id'].'">'.utf8_encode($cours['name']).'</a><a style="margin-left: 10px;" class="text-primary" download target="_blank" href="/'.$cours['path'].'"><i class="fa fa-download"></i></a></h4>
+			<p class="list-group-item-text">'.utf8_encode($cours['description']).'</p>
 			<p>Crée le '.$cours['date'].' par <b>'.$cours['user'].'</b></p>
 		</div>';
 	}

@@ -56,7 +56,7 @@ class FormFormationView
 			<div style="margin-top:20px;" class="col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">                    
 				<div class="panel panel-primary" >
 					<div class="panel-heading">
-						<div class="panel-title">Mise à jour de la formation <b>'.$name.'</b></div>
+						<div class="panel-title">Mise à jour de la formation <b>'.utf8_encode($name).'</b></div>
 					</div>     
 
 					<div style="padding-top:30px" class="panel-body" >
@@ -64,11 +64,11 @@ class FormFormationView
 						<form method="post" class="form-horizontal" role="form" action="index.php?page=updateFormation&idFormation='.$idFormation.'" enctype="multipart/form-data">
 
 							<div style="margin-bottom: 25px">
-								Nom de la formation :<br> <input type="text" class="form-control" name="nameFormation" value="'.$name.'" required>                                      
+								Nom de la formation :<br> <input type="text" class="form-control" name="nameFormation" value="'.utf8_encode($name).'" required>                                      
 							</div>
 
 							<div style="margin-bottom: 25px">
-								Description de la formation :<br> <textarea class="form-control" name="descriptionFormation" cols="0" rows="0" required>'.$description.'</textarea>                            
+								Description de la formation :<br> <textarea class="form-control" name="descriptionFormation" cols="0" rows="0" required>'.utf8_encode($description).'</textarea>                            
 							</div>
 
 							<div style="margin-top:10px" class="form-group">
