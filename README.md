@@ -73,6 +73,9 @@ Le formulaire d’ajout d’un enseignant contiendra :
 - Editeur WYSIWYG pour les cours (https://github.com/bootstrap-wysiwyg/bootstrap3-wysiwyg)
 - Edition et suppression des utilisateurs, cours, modules et formation
 
+## Screenshots
+Screenshots de l'application : http://laurent-toson.fr/closeClassroom_german_toson/screenshots/
+
 
 ## Crédits
 - Développée par Arnaud German & Laurent Toson
