@@ -53,7 +53,7 @@ class PracticeView
 		} else {
 			foreach ($mesCours as &$cours) {
 				$modif = '';
-				if ($typeUser != 'Etudiant') {
+				if ($typeUser == 'Professeur' && $cours['haveRight'] || $typeUser == 'Admin') {
 					$modif = '<form method="POST" action="index.php?page=deletePractice&idPractice='.$cours['id'].'" accept-charset="UTF-8" class="form-inline"><input name="_method" type="hidden" value="DELETE">
 					<a style="float: right; margin-left: 5px;" data-toggle="modal" href="#deleteCours'.$cours['id'].'" role="button" class="btn btn-danger"><i class="fa fa-trash"></i></a>
 					<div id="deleteCours'.$cours['id'].'" class="modal" style="display: none;">

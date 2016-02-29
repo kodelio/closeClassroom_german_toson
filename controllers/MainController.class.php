@@ -237,7 +237,7 @@ class MainController
 				$formations = $managerFormation->getFormationsByUser($infos['id']);
 				$mesModulesOld = array();
 				foreach ($formations as $formation) {
-					array_push($mesModulesOld, $managerModule->getModulesByFormation($formation['id_formation']));
+					array_push($mesModulesOld, $managerModule->getModulesByFormation($formation['id']));
 				}	
 				$mesModules = array();
 				foreach ($mesModulesOld as $formation) {
@@ -272,7 +272,7 @@ class MainController
 				$practices = $managerPractice->getPracticesByUser($infos['id']);
 				if ($practices){
 					foreach ($practices as $practice) {
-						if ($practice['user'] == $infos['id']){
+						if ($practice['user'] == $infos['id'] && $_GET['idPractice'] == $practice['id']){
 							$haveRight = true;
 						}
 					}
@@ -328,7 +328,7 @@ class MainController
 				$practices = $managerPractice->getPracticesByUser($infos['id']);
 				if ($practices){
 					foreach ($practices as $practice) {
-						if ($practice['user'] == $infos['id']){
+						if ($practice['user'] == $infos['id'] && $_GET['idPractice'] == $practice['id']){
 							$haveRight = true;
 						}
 					}
@@ -776,6 +776,12 @@ class MainController
 						foreach ($mesCours as &$cours) {
 							$idUserForPractice = $cours['user'];
 							$getInfoUser = $infosUser->getInfoUser($idUserForPractice);
+							if ($cours['user'] == $infos['id']) {
+								$cours['haveRight'] = true;
+							}
+							else {
+								$cours['haveRight'] = false;
+							}
 							$cours['user'] = $getInfoUser['login'];
 						}
 					}

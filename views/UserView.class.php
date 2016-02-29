@@ -37,11 +37,12 @@ class UserView
 
 	public function getListe($mesUtilisateurs)
 	{
-		$view = '<a style="margin-bottom: 20px;" href="index.php?page=createUser" class="btn btn-info"><span class="fa fa-plus"></span> Créer un professeur</a><br /><div class="btn-group btn-group-justified">
-		<a href="index.php?page=user" class="btn btn-primary">Afficher tous les utilisateurs</a>
-		<a href="index.php?page=user&tri=Admin" class="btn btn-primary">Trier par Admin</a>
-		<a href="index.php?page=user&tri=Professeur" class="btn btn-primary">Trier par Professeur</a>
-		<a href="index.php?page=user&tri=Etudiant" class="btn btn-primary">Trier par Etudiant</a>
+		$view = '<a style="margin-bottom: 20px;" href="index.php?page=createUser" class="btn btn-info"><span class="fa fa-plus"></span> Créer un professeur</a><br />
+		<b>Tri</b> : <br /><div class="btn-group btn-group-justified">
+		<a href="index.php?page=user" class="btn btn-primary">Tous</a>
+		<a href="index.php?page=user&tri=Admin" class="btn btn-primary">Admins</a>
+		<a href="index.php?page=user&tri=Professeur" class="btn btn-primary">Professeurs</a>
+		<a href="index.php?page=user&tri=Etudiant" class="btn btn-primary">Etudiants</a>
 	</div><br />';
 	if (!$mesUtilisateurs) {
 		$view = $view.'<div class="panel panel-info" style="margin-top: 20px;">
